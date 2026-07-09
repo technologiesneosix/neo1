@@ -1,0 +1,12 @@
+export { HeroSection } from './HeroSection';
+export { AboutPreviewSection } from './AboutPreviewSection';
+export { ServicesSection } from './ServicesSection';
+export { SolutionsSection } from './SolutionsSection';
+export { IndustriesSection } from './IndustriesSection';
+export { TechStackSection } from './TechStackSection';
+export { ProcessSection } from './ProcessSection';
+export { PortfolioPreviewSection } from './PortfolioPreviewSection';
+export { TestimonialsSection } from './TestimonialsSection';
+export { BlogPreviewSection } from './BlogPreviewSection';
+export { FaqSection } from './FaqSection';
+export { CtaSection } from './CtaSection';

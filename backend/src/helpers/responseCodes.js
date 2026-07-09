@@ -1,0 +1,32 @@
+export const SUCCESS_MESSAGES = {
+  LOGIN: 'Login successful',
+  LOGOUT: 'Logout successful',
+  REGISTER: 'Registration successful',
+  PASSWORD_RESET: 'Password reset successful',
+  PROFILE_UPDATED: 'Profile updated successfully',
+  USER_CREATED: 'User created successfully',
+  USER_UPDATED: 'User updated successfully',
+  USER_DELETED: 'User deleted successfully',
+  EMAIL_VERIFIED: 'Email verified successfully',
+  EMAIL_SENT: 'Email sent successfully',
+};
+
+export const ERROR_MESSAGES = {
+  UNAUTHORIZED: 'Unauthorized access',
+  FORBIDDEN: 'Access forbidden',
+  NOT_FOUND: 'Resource not found',
+  VALIDATION_ERROR: 'Validation failed',
+  INTERNAL_ERROR: 'Internal server error',
+  EMAIL_EXISTS: 'Email already exists',
+  INVALID_CREDENTIALS: 'Invalid email or password',
+  TOKEN_EXPIRED: 'Token has expired',
+  INVALID_TOKEN: 'Invalid token',
+  EMAIL_NOT_VERIFIED: 'Email not verified',
+  ACCOUNT_SUSPENDED: 'Account has been suspended',
+  INACTIVE_ACCOUNT: 'Account is inactive',
+  WEAK_PASSWORD: 'Password does not meet requirements',
+  INVALID_EMAIL: 'Invalid email address',
+  FILE_TOO_LARGE: 'File size exceeds limit',
+  INVALID_FILE_TYPE: 'Invalid file type',
+  RATE_LIMIT_EXCEEDED: 'Too many requests',
+};
