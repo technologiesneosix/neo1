@@ -30,7 +30,7 @@
     "backend:lint": "npm run lint --workspace=backend",
     "backend:format": "npm run format --workspace=backend",
     "backend:start": "npm run start --workspace=backend",
-    "prepare": "husky"
+    "prepare": "node -e \"if (process.env.NODE_ENV === 'production' || process.env.CI) process.exit(0)\" && husky"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.2.0",
