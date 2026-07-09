@@ -29,8 +29,7 @@
     "backend:build": "npm run build --workspace=backend",
     "backend:lint": "npm run lint --workspace=backend",
     "backend:format": "npm run format --workspace=backend",
-    "backend:start": "npm run start --workspace=backend",
-    "prepare": "node -e \"if (process.env.NODE_ENV !== 'production' && !process.env.CI) { try { require('child_process').execSync('husky', { stdio: 'inherit' }) } catch (e) {} }\""
+    "backend:start": "npm run start --workspace=backend"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.2.0",
@@ -40,7 +39,6 @@
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "prettier": "^3.2.5",
-    "husky": "^9.0.11",
     "lint-staged": "^15.2.2"
   },
   "engines": {
