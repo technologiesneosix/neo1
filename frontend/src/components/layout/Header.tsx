@@ -205,11 +205,14 @@ export function Header() {
     };
   }, [mobileOpen]);
 
-  // Set focus on open
+  // Set focus on open and reset scroll position to top
   useEffect(() => {
     if (mobileOpen) {
+      const menuEl = document.getElementById('mobile-menu-container');
+      if (menuEl) {
+        menuEl.scrollTop = 0;
+      }
       setTimeout(() => {
-        const menuEl = document.getElementById('mobile-menu-container');
         const firstEl = menuEl?.querySelector('a[href], button') as HTMLElement;
         firstEl?.focus();
       }, 50);
@@ -233,14 +236,16 @@ export function Header() {
   };
 
   return (
-    <header
-      className={cn(
-        'sticky top-0 z-[100] bg-white transition-all duration-300',
-        scrolled
-          ? 'bg-white/90 backdrop-blur-md shadow-header border-b border-neutral-100/50'
-          : 'bg-white border-b border-transparent',
-      )}
-    >
+    <header className="sticky top-0 z-[100] bg-transparent">
+      {/* Background layer with blur & transition */}
+      <div
+        className={cn(
+          'absolute inset-0 z-[-1] bg-white transition-all duration-300',
+          scrolled
+            ? 'bg-white/90 backdrop-blur-md shadow-header border-b border-neutral-100/50'
+            : 'bg-white border-b border-transparent',
+        )}
+      />
       {/* Relative container ensures the megamenu anchors to the header's boundaries, not the nav link item */}
       <div className="container-site relative flex h-[76px] items-center justify-between gap-6">
         <Logo />
