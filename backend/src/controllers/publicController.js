@@ -12,6 +12,7 @@ import Testimonial from '../models/Testimonial.js';
 import Career from '../models/Career.js';
 import FAQ from '../models/FAQ.js';
 import WebsiteSetting from '../models/WebsiteSetting.js';
+import Certification from '../models/Certification.js';
 import ApiError from '../utils/ApiError.js';
 import ApiResponse from '../utils/ApiResponse.js';
 
@@ -784,6 +785,22 @@ export const getSettings = async (req, res, next) => {
 
     return res.status(200).json(
       ApiResponse.success('Settings retrieved successfully', settings)
+    );
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ * Get all published certifications ordered by displayOrder
+ */
+export const getPublicCertifications = async (req, res, next) => {
+  try {
+    const certifications = await Certification.find({ status: 'published' })
+      .sort({ displayOrder: 1 });
+
+    return res.status(200).json(
+      ApiResponse.success('Certifications retrieved successfully', { certifications })
     );
   } catch (error) {
     next(error);

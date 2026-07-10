@@ -13,7 +13,7 @@ export interface ResourceApi<T extends BaseEntity> {
 }
 
 // Mock-only resources that do not exist on the backend
-const mockOnlyKeys = ['timeline', 'certifications', 'pricing-plans', 'roles', 'process-steps', 'page-seo', 'case-studies'];
+const mockOnlyKeys = ['timeline', 'pricing-plans', 'roles', 'process-steps', 'page-seo', 'case-studies'];
 
 /* -------------------------------------------------------------------------- */
 /*                               Data Mappers                                 */
@@ -674,6 +674,32 @@ function mapFrontendUserToBackend(f: any): any {
   };
 }
 
+function mapBackendCertificationToFrontend(b: any): any {
+  if (!b) return null;
+  return {
+    id: b._id || b.id,
+    name: b.name || '',
+    issuer: b.issuer || '',
+    imageUrl: b.imageUrl || '',
+    year: b.year || '',
+    displayOrder: b.displayOrder || 0,
+    status: b.status || 'published',
+    createdAt: b.createdAt || '',
+    updatedAt: b.updatedAt || '',
+  };
+}
+
+function mapFrontendCertificationToBackend(f: any): any {
+  return {
+    name: f.name,
+    issuer: f.issuer,
+    imageUrl: f.imageUrl,
+    year: f.year,
+    displayOrder: Number(f.displayOrder || 0),
+    status: f.status || 'published',
+  };
+}
+
 /* -------------------------------------------------------------------------- */
 /*                               Mapping Registry                             */
 /* -------------------------------------------------------------------------- */
@@ -806,6 +832,12 @@ const mappedKeys: Record<string, {
     publicPath: '/public/testimonials',
     mapToFrontend: mapBackendTestimonialToFrontend,
     mapToBackend: mapFrontendTestimonialToBackend,
+  },
+  certifications: {
+    adminPath: '/admin/certifications',
+    publicPath: '/public/certifications',
+    mapToFrontend: mapBackendCertificationToFrontend,
+    mapToBackend: mapFrontendCertificationToBackend,
   },
   'job-openings': {
     adminPath: '/admin/careers',

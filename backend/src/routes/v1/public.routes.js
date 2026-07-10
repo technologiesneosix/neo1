@@ -23,6 +23,7 @@ import {
   getCareerBySlug,
   getFAQs,
   getSettings,
+  getPublicCertifications,
 } from '../../controllers/publicController.js';
 import { createContactMessage } from '../../controllers/contactController.js';
 import { createNewsletterSubscription } from '../../controllers/newsletterController.js';
@@ -148,6 +149,13 @@ router.get('/team', asyncHandler(getTeam));
  * @access  Public
  */
 router.get('/testimonials', asyncHandler(getTestimonials));
+
+/**
+ * @route   GET /api/v1/public/certifications
+ * @desc    Get certifications
+ * @access  Public
+ */
+router.get('/certifications', asyncHandler(getPublicCertifications));
 
 /**
  * @route   GET /api/v1/public/careers

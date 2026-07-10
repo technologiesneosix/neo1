@@ -23,6 +23,7 @@ import serviceRoutes from './service.routes.js';
 import jobApplicationRoutes from './jobApplication.routes.js';
 import contactRoutes from './contact.routes.js';
 import subscriberRoutes from './subscriber.routes.js';
+import certificationRoutes from './certification.routes.js';
 
 const router = Router();
 
@@ -52,5 +53,6 @@ router.use('/admin/services', serviceRoutes);
 router.use('/admin/applications', jobApplicationRoutes);
 router.use('/admin/messages', contactRoutes);
 router.use('/admin/subscribers', subscriberRoutes);
+router.use('/admin/certifications', certificationRoutes);
 
 export default router;

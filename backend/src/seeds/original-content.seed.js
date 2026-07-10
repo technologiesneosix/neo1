@@ -12,6 +12,7 @@ import Technology from '../models/Technology.js';
 import FAQ from '../models/FAQ.js';
 import WebsiteSetting from '../models/WebsiteSetting.js';
 import Career from '../models/Career.js';
+import Certification from '../models/Certification.js';
 
 // Helper function to generate IDs
 const generateId = () => Math.random().toString(36).substring(2, 15);
@@ -495,9 +496,47 @@ export const seedOriginalContent = async () => {
   await Career.deleteMany({});
   await FAQ.deleteMany({});
   await WebsiteSetting.deleteMany({});
+  await Certification.deleteMany({});
 
   // Seed data
   await WebsiteSetting.create(settingsData);
+
+  const certificationsData = [
+    {
+      name: 'ISO 27001',
+      issuer: 'International Organization for Standardization',
+      imageUrl: img('cert-iso', 400, 300),
+      year: '2020',
+      displayOrder: 1,
+      status: 'published'
+    },
+    {
+      name: 'SOC 2 Type II',
+      issuer: 'AICPA',
+      imageUrl: img('cert-soc2', 400, 300),
+      year: '2021',
+      displayOrder: 2,
+      status: 'published'
+    },
+    {
+      name: 'AWS Advanced Partner',
+      issuer: 'Amazon Web Services',
+      imageUrl: img('cert-aws', 400, 300),
+      year: '2022',
+      displayOrder: 3,
+      status: 'published'
+    },
+    {
+      name: 'Microsoft Gold Partner',
+      issuer: 'Microsoft',
+      imageUrl: img('cert-ms', 400, 300),
+      year: '2022',
+      displayOrder: 4,
+      status: 'published'
+    }
+  ];
+  await Certification.insertMany(certificationsData);
+  console.log('✓ Certifications seeded');
   console.log('✓ Website settings seeded');
 
   await Hero.insertMany(heroSlidesData);

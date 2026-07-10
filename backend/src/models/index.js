@@ -18,3 +18,4 @@ export { default as FAQ } from './FAQ.js';
 export { default as WebsiteSetting } from './WebsiteSetting.js';
 export { default as SEO } from './SEO.js';
 export { default as Media } from './Media.js';
+export { default as Certification } from './Certification.js';
