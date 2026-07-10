@@ -949,6 +949,9 @@ export function createResourceApi<T extends BaseEntity>(key: string): ResourceAp
         // Special handling for public heroSlides aggregation
         if (key === 'hero-slides' && !isAdmin) {
           if (payload && payload.hero) {
+            if (Array.isArray(payload.hero)) {
+              return payload.hero.map(mapBackendHeroToFrontend);
+            }
             return [mapBackendHeroToFrontend(payload.hero)];
           }
           return [];

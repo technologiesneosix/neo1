@@ -48,7 +48,39 @@ export function BlobFrame({ imageUrl, alt = '', className }: BlobFrameProps) {
             <stop offset="0" stopColor="#4130c9" />
             <stop offset="1" stopColor="#3d64ff" />
           </linearGradient>
+          <linearGradient id="ring-grad-1" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stopColor="#4c3de4" stopOpacity="0.25" />
+            <stop offset="1" stopColor="#2ab6f1" stopOpacity="0.05" />
+          </linearGradient>
+          <linearGradient id="ring-grad-2" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stopColor="#2ab6f1" stopOpacity="0.2" />
+            <stop offset="1" stopColor="#4c3de4" stopOpacity="0.05" />
+          </linearGradient>
         </defs>
+
+        {/* Two concentric outline circles rotating in opposite directions in the background */}
+        <circle
+          cx="100"
+          cy="100"
+          r="91"
+          fill="none"
+          stroke="url(#ring-grad-1)"
+          strokeWidth="1.5"
+          strokeDasharray="6 8"
+          className="animate-spin-slow origin-center"
+        />
+        <circle
+          cx="100"
+          cy="100"
+          r="95"
+          fill="none"
+          stroke="url(#ring-grad-2)"
+          strokeWidth="1"
+          strokeDasharray="4 6"
+          className="animate-spin-slow origin-center"
+          style={{ animationDirection: 'reverse', animationDuration: '32s' }}
+        />
+
         <image
           href={imageUrl}
           width="200"

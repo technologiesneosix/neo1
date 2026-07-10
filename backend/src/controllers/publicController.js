@@ -34,7 +34,7 @@ export const getHomeContent = async (req, res, next) => {
       faqs,
       settings,
     ] = await Promise.all([
-      Hero.findOne({ isActive: true }).select('-_id title subtitle description primaryButtonText primaryButtonLink secondaryButtonText secondaryButtonLink backgroundImage heroImage statistics'),
+      Hero.find({ isActive: true }).select('-_id title subtitle description primaryButtonText primaryButtonLink secondaryButtonText secondaryButtonLink backgroundImage heroImage statistics'),
       About.findOne().select('-_id companyName shortDescription fullDescription mission vision journey experience employees projectsCompleted countriesServed'),
       Service.find({ status: 'published', isFeatured: true })
         .select('-_id title slug shortDescription icon thumbnail displayOrder')

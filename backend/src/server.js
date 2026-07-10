@@ -4,6 +4,7 @@ import { connectDatabase } from './config/database.js';
 import { validateEnv, backendEnvSchema } from '@neosix/shared';
 import { logger } from './utils/logger.js';
 import { Service, Solution, Industry, Technology, Project, Blog } from './models/index.js';
+import { missingSolutions, missingIndustries } from './seeds/missing-content.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
@@ -40,8 +41,26 @@ const startServer = async () => {
         Blog.updateMany({ published: false }, { $set: { published: true } })
       ]);
       logger.info('✓ Database migration completed successfully');
+
+      // Incremental seeding: insert missing solutions and industries without resetting the database
+      logger.info('Running incremental seeding for missing solutions and industries...');
+      for (const sol of missingSolutions) {
+        const exists = await Solution.findOne({ slug: sol.slug });
+        if (!exists) {
+          await Solution.create(sol);
+          logger.info(`+ Incremental seed: Solution '${sol.title}'`);
+        }
+      }
+      for (const ind of missingIndustries) {
+        const exists = await Industry.findOne({ slug: ind.slug });
+        if (!exists) {
+          await Industry.create(ind);
+          logger.info(`+ Incremental seed: Industry '${ind.title}'`);
+        }
+      }
+      logger.info('✓ Incremental seeding completed successfully');
     } catch (migrateError) {
-      logger.error('Database migration failed:', migrateError);
+      logger.error('Database migration/seeding failed:', migrateError);
     }
     
     app.listen(PORT, () => {
