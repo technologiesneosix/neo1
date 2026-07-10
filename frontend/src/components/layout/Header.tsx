@@ -168,6 +168,54 @@ export function Header() {
     };
   }, [mobileOpen]);
 
+  // Close menu on Escape key press and handle focus trapping
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setMobileOpen(false);
+      }
+      if (e.key === 'Tab' && mobileOpen) {
+        const menuEl = document.getElementById('mobile-menu-container');
+        if (!menuEl) return;
+        const focusableElements = menuEl.querySelectorAll(
+          'a[href], button:not([disabled]), textarea, select, input, [tabindex="0"]'
+        );
+        if (focusableElements.length === 0) return;
+        const firstEl = focusableElements[0] as HTMLElement;
+        const lastEl = focusableElements[focusableElements.length - 1] as HTMLElement;
+
+        if (e.shiftKey) {
+          if (document.activeElement === firstEl) {
+            lastEl.focus();
+            e.preventDefault();
+          }
+        } else {
+          if (document.activeElement === lastEl) {
+            firstEl.focus();
+            e.preventDefault();
+          }
+        }
+      }
+    };
+    if (mobileOpen) {
+      window.addEventListener('keydown', handleKeyDown);
+    }
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [mobileOpen]);
+
+  // Set focus on open
+  useEffect(() => {
+    if (mobileOpen) {
+      setTimeout(() => {
+        const menuEl = document.getElementById('mobile-menu-container');
+        const firstEl = menuEl?.querySelector('a[href], button') as HTMLElement;
+        firstEl?.focus();
+      }, 50);
+    }
+  }, [mobileOpen]);
+
   const isItemActive = (item: typeof navConfig[0]) => {
     if (item.path) {
       if (item.path === '/') return pathname === '/';
@@ -187,7 +235,7 @@ export function Header() {
   return (
     <header
       className={cn(
-        'sticky top-0 z-[90] bg-white transition-all duration-300',
+        'sticky top-0 z-[100] bg-white transition-all duration-300',
         scrolled
           ? 'bg-white/90 backdrop-blur-md shadow-header border-b border-neutral-100/50'
           : 'bg-white border-b border-transparent',
@@ -388,9 +436,9 @@ export function Header() {
           type="button"
           className="rounded-full p-2.5 text-heading hover:bg-mist-100 transition-colors xl:hidden"
           aria-label="Toggle menu"
-          onClick={() => setMobileOpen(true)}
+          onClick={() => setMobileOpen(!mobileOpen)}
         >
-          <Menu size={22} />
+          {mobileOpen ? <X size={22} /> : <Menu size={22} />}
         </button>
       </div>
 
@@ -404,30 +452,20 @@ export function Header() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setMobileOpen(false)}
-              className="fixed inset-0 z-[100] bg-ink-950/45 backdrop-blur-sm xl:hidden"
+              className="fixed inset-0 top-[76px] z-[98] bg-ink-950/45 backdrop-blur-sm xl:hidden"
             />
 
-            {/* Sidebar drawer */}
+            {/* Sidebar drawer -> Dropdown overlay below header */}
             <motion.div
-              initial={{ x: '100%' }}
-              animate={{ x: 0 }}
-              exit={{ x: '100%' }}
-              transition={{ type: 'spring', damping: 28, stiffness: 260 }}
-              className="fixed top-0 right-0 bottom-0 z-[101] w-full max-w-[380px] bg-white shadow-2xl p-6 flex flex-col justify-between overflow-y-auto xl:hidden"
+              id="mobile-menu-container"
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.22, ease: 'easeInOut' }}
+              className="fixed top-[76px] left-0 right-0 bottom-0 z-[99] w-full bg-white p-6 flex flex-col justify-between overflow-y-auto xl:hidden border-t border-neutral-100/50"
             >
               <div>
-                <div className="flex items-center justify-between pb-6 border-b border-neutral-100">
-                  <Logo />
-                  <button
-                    type="button"
-                    onClick={() => setMobileOpen(false)}
-                    className="p-2 text-heading hover:bg-mist-100 rounded-full transition-colors"
-                  >
-                    <X size={20} />
-                  </button>
-                </div>
-
-                <div className="mt-6 flex flex-col gap-2">
+                <div className="flex flex-col gap-2">
                   {navConfig.map((item) => {
                     const isExpandable = item.type !== 'link';
                     const expanded = mobileExpanded === item.label;

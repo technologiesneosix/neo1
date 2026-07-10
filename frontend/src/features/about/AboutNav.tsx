@@ -16,7 +16,7 @@ const aboutLinks = [
  */
 export function AboutNav() {
   return (
-    <nav aria-label="About sections" className="bg-white pt-2">
+    <nav aria-label="About sections" className="relative z-10 bg-white pt-2">
       <div className="container-site">
         <ul className="-mt-6 flex flex-wrap items-center justify-center gap-2 md:-mt-8">
           {aboutLinks.map((link) => (
