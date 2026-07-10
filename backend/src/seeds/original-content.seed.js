@@ -545,20 +545,20 @@ export const seedOriginalContent = async () => {
   await About.create(aboutData);
   console.log('✓ About page seeded');
 
-  await Service.insertMany(servicesData);
+  await Service.insertMany(servicesData.map(item => ({ ...item, status: 'published' })));
   console.log('✓ Services seeded');
 
-  await Solution.insertMany(solutionsData);
+  await Solution.insertMany(solutionsData.map(item => ({ ...item, status: 'published' })));
   console.log('✓ Solutions seeded');
 
-  await Industry.insertMany(industriesData);
+  await Industry.insertMany(industriesData.map(item => ({ ...item, status: 'published' })));
   console.log('✓ Industries seeded');
 
   await Technology.deleteMany({});
-  await Technology.insertMany(technologiesData);
+  await Technology.insertMany(technologiesData.map(item => ({ ...item, status: 'published' })));
   console.log('✓ Technologies seeded');
 
-  await Project.insertMany(projectsData);
+  await Project.insertMany(projectsData.map(item => ({ ...item, status: 'published' })));
   console.log('✓ Projects seeded');
 
   await Team.insertMany(teamMembersData);
@@ -572,6 +572,7 @@ export const seedOriginalContent = async () => {
   
   await Blog.insertMany(blogPostsData.map(post => ({
     ...post,
+    published: true,
     category: techCategory?._id,
     author: author?._id
   })));

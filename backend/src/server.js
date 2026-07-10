@@ -3,6 +3,7 @@ import app from './app.js';
 import { connectDatabase } from './config/database.js';
 import { validateEnv, backendEnvSchema } from '@neosix/shared';
 import { logger } from './utils/logger.js';
+import { Service, Solution, Industry, Technology, Project, Blog } from './models/index.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
@@ -27,6 +28,21 @@ const startServer = async () => {
     
     await connectDatabase();
 
+    // Perform a one-time migration to publish seeded draft content (ensuring they aren't hidden from the public API)
+    try {
+      logger.info('Running database migration to auto-publish draft content...');
+      await Promise.all([
+        Service.updateMany({ status: 'draft' }, { $set: { status: 'published' } }),
+        Solution.updateMany({ status: 'draft' }, { $set: { status: 'published' } }),
+        Industry.updateMany({ status: 'draft' }, { $set: { status: 'published' } }),
+        Technology.updateMany({ status: 'draft' }, { $set: { status: 'published' } }),
+        Project.updateMany({ status: 'draft' }, { $set: { status: 'published' } }),
+        Blog.updateMany({ published: false }, { $set: { published: true } })
+      ]);
+      logger.info('✓ Database migration completed successfully');
+    } catch (migrateError) {
+      logger.error('Database migration failed:', migrateError);
+    }
     
     app.listen(PORT, () => {
       logger.info(`Server is running on port ${PORT}`);
