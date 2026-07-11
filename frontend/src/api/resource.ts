@@ -387,9 +387,11 @@ function mapBackendBlogToFrontend(b: any): any {
       metaDescription: b.seo?.metaDescription || '',
       keywords: Array.isArray(b.seo?.keywords) ? b.seo.keywords.join(', ') : '',
     },
+    views: b.views || 0,
     createdAt: b.createdAt || '',
     updatedAt: b.updatedAt || '',
   };
+
 }
 
 function mapFrontendBlogToBackend(f: any): any {

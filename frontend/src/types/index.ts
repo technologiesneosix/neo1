@@ -217,8 +217,10 @@ export interface BlogPost extends BaseEntity {
   featured: boolean;
   publishedAt: string;
   commentsCount: number;
+  views: number;
   seo: SeoMeta;
 }
+
 
 /* --------------------------------- People --------------------------------- */
 
