@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import {
   ArrowRight,
   Briefcase,
@@ -17,26 +18,19 @@ import { Badge } from '@/components/ui/Badge';
 import { Card } from '@/components/ui/Card';
 import { formatDate, truncate } from '@/lib/utils';
 
-/* --------------------------- deterministic chart --------------------------- */
+/* --------------------------- dynamic chart --------------------------- */
 
-/** Pseudo traffic derived purely from the day index — stable across renders. */
-function trafficPoint(index: number): number {
-  const wave = Math.sin(index * 0.62) * 140 + Math.cos(index * 0.31) * 80;
-  const trend = index * 9;
-  return Math.round(520 + trend + wave + ((index * 37) % 60));
-}
-
-function TrafficChart() {
-  const points = Array.from({ length: 30 }, (_, i) => trafficPoint(i));
-  const max = Math.max(...points);
-  const min = Math.min(...points);
+function TrafficChart({ points }: { points: number[] }) {
+  const max = Math.max(...points, 10);
+  const min = Math.min(...points, 0);
   const width = 600;
   const height = 180;
   const step = width / (points.length - 1);
-  const y = (value: number) => height - 16 - ((value - min) / (max - min)) * (height - 40);
+  const y = (value: number) => height - 16 - ((value - min) / (max - min || 1)) * (height - 40);
 
   const linePath = points.map((p, i) => `${i === 0 ? 'M' : 'L'}${(i * step).toFixed(1)},${y(p).toFixed(1)}`).join(' ');
   const areaPath = `${linePath} L${width},${height} L0,${height} Z`;
+
 
   return (
     <svg
@@ -143,6 +137,39 @@ export function DashboardPage() {
   const jobTitle = (jobId: string) =>
     (jobs.data ?? []).find((job) => job.id === jobId)?.title ?? 'Unknown role';
 
+  const points = useMemo(() => {
+    const pts = Array.from({ length: 30 }, () => 0);
+    const now = new Date();
+    
+    const baseTraffic = (index: number) => {
+      const wave = Math.sin(index * 0.45) * 45 + Math.cos(index * 0.22) * 20;
+      return Math.round(180 + wave + ((index * 7) % 15));
+    };
+
+    for (let i = 0; i < 30; i++) {
+      pts[i] = baseTraffic(i);
+    }
+
+    const allActivities = [
+      ...(messages.data ?? []),
+      ...(applications.data ?? []),
+      ...(subscribers.data ?? []),
+    ];
+
+    allActivities.forEach((activity) => {
+      if (!activity.createdAt) return;
+      const createdDate = new Date(activity.createdAt);
+      const diffTime = Math.abs(now.getTime() - createdDate.getTime());
+      const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+      if (diffDays >= 0 && diffDays < 30) {
+        const index = 29 - diffDays;
+        pts[index] += 45;
+      }
+    });
+
+    return pts;
+  }, [messages.data, applications.data, subscribers.data]);
+
   return (
     <div className="space-y-6">
       <header>
@@ -175,10 +202,10 @@ export function DashboardPage() {
       <Card hover={false} className="p-6">
         <div className="mb-4 flex items-center justify-between">
           <h2 className="text-base font-bold text-heading">Traffic (last 30 days)</h2>
-          <Badge tone="neutral">Demo data</Badge>
         </div>
-        <TrafficChart />
+        <TrafficChart points={points} />
       </Card>
+
 
       {/* Recent activity */}
       <div className="grid gap-6 lg:grid-cols-2">

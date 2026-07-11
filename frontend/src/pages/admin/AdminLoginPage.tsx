@@ -96,20 +96,8 @@ export function AdminLoginPage() {
           </Button>
         </form>
 
-        <aside
-          aria-label="Demo credentials"
-          className="mt-6 flex items-start gap-3 rounded-md border border-primary-100 bg-primary-50 px-4 py-3"
-        >
-          <KeyRound size={16} className="mt-0.5 shrink-0 text-primary-600" aria-hidden="true" />
-          <p className="text-xs leading-relaxed text-primary-800">
-            <strong className="font-semibold">Demo credentials</strong>
-            <br />
-            Email: <code className="font-mono">technologiesneosix@gmail.com</code>
-            <br />
-            Password: <code className="font-mono">neosix123</code>
-          </p>
-        </aside>
       </section>
     </main>
   );
 }
+
