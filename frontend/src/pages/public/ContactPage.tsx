@@ -1,8 +1,10 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { CalendarDays, Mail, MapPin, Smartphone } from 'lucide-react';
 import { useForm } from 'react-hook-form';
+import { useSearchParams } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { z } from 'zod';
+
 import { useSiteSettings } from '@/api/hooks';
 import { api } from '@/api/services';
 import { PageHero } from '@/components/common/PageHero';
@@ -16,6 +18,7 @@ import { parsePhoneNumbers, phoneHref } from '@/lib/utils';
 const contactSchema = z.object({
   name: z.string().min(2, 'Please enter your name'),
   email: z.string().email('Please enter a valid email address'),
+  phone: z.string().max(20, 'Phone number cannot exceed 20 characters').optional().or(z.literal('')),
   message: z.string().min(10, 'Please tell us a bit more — at least 10 characters'),
 });
 
@@ -24,13 +27,29 @@ type ContactValues = z.infer<typeof contactSchema>;
 export function ContactPage() {
   const { settings, isLoading } = useSiteSettings();
   const phoneNumbers = parsePhoneNumbers(settings?.phone ?? '');
+  const [searchParams] = useSearchParams();
+  const plan = searchParams.get('plan');
+  const billing = searchParams.get('billing');
+
+  const defaultMessage = plan
+    ? `Hi, I am interested in the ${plan} (${billing === 'annual' ? 'annual billing' : 'monthly billing'}). Please get in touch.`
+    : '';
 
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors, isSubmitting },
-  } = useForm<ContactValues>({ resolver: zodResolver(contactSchema) });
+  } = useForm<ContactValues>({
+    resolver: zodResolver(contactSchema),
+    defaultValues: {
+      name: '',
+      email: '',
+      phone: '',
+      message: defaultMessage,
+    },
+  });
+
 
   const onSubmit = async (values: ContactValues) => {
     try {
@@ -148,6 +167,14 @@ export function ContactPage() {
                       autoComplete="email"
                       error={errors.email?.message}
                       {...register('email')}
+                    />
+                    <Input
+                      aria-label="Phone Number"
+                      type="tel"
+                      placeholder="Phone Number (Optional)"
+                      autoComplete="tel"
+                      error={errors.phone?.message}
+                      {...register('phone')}
                     />
                   </div>
                   <Textarea

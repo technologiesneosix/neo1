@@ -13,6 +13,8 @@ import Career from '../models/Career.js';
 import FAQ from '../models/FAQ.js';
 import WebsiteSetting from '../models/WebsiteSetting.js';
 import Certification from '../models/Certification.js';
+import PricingPlan from '../models/PricingPlan.js';
+
 import ApiError from '../utils/ApiError.js';
 import ApiResponse from '../utils/ApiResponse.js';
 
@@ -61,11 +63,12 @@ export const getHomeContent = async (req, res, next) => {
         .sort({ displayOrder: 1 })
         .limit(6),
       Blog.find({ published: true })
-        .select('-_id title slug excerpt banner author category tags readingTime publishedAt')
+        .select('title slug excerpt banner author category tags readingTime publishedAt published featured')
         .populate('author', 'name designation photo')
         .populate('category', 'name slug')
         .sort({ publishedAt: -1 })
         .limit(3),
+
       FAQ.find({ status: 'active' })
         .select('-_id question answer category displayOrder')
         .sort({ displayOrder: 1 })
@@ -494,12 +497,13 @@ export const getBlogs = async (req, res, next) => {
 
     const [blogs, total] = await Promise.all([
       Blog.find(query)
-        .select('-_id title slug excerpt banner author category tags readingTime publishedAt')
+        .select('title slug excerpt banner author category tags readingTime publishedAt published featured')
         .populate('author', 'name designation photo')
         .populate('category', 'name slug')
         .sort(sortOptions)
         .skip(skip)
         .limit(parseInt(limit)),
+
       Blog.countDocuments(query),
     ]);
 
@@ -806,3 +810,19 @@ export const getPublicCertifications = async (req, res, next) => {
     next(error);
   }
 };
+
+/**
+ * Get all pricing plans ordered by displayOrder
+ */
+export const getPricingPlans = async (req, res, next) => {
+  try {
+    const pricingPlans = await PricingPlan.find().sort({ displayOrder: 1 });
+
+    return res.status(200).json(
+      ApiResponse.success('Pricing Plans retrieved successfully', { pricingPlans })
+    );
+  } catch (error) {
+    next(error);
+  }
+};
+

@@ -38,10 +38,12 @@ export type FieldDef =
     })
   | (FieldBase & { type: 'toggle' })
   | (FieldBase & { type: 'image' })
+  | (FieldBase & { type: 'imagelist' })
   | (FieldBase & { type: 'tags' })
   | (FieldBase & { type: 'list' })
   | (FieldBase & { type: 'icon' })
   | (FieldBase & { type: 'date' });
+
 
 export type FieldType = FieldDef['type'];
 

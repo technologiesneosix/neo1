@@ -24,7 +24,9 @@ const InternshipsPage = lazy(() => import('./careers/InternshipsPage').then((m) 
 const HiringProcessPage = lazy(() => import('./careers/HiringProcessPage').then((m) => ({ default: m.HiringProcessPage })));
 const JobDetailPage = lazy(() => import('./careers/JobDetailPage').then((m) => ({ default: m.JobDetailPage })));
 const ContactPage = lazy(() => import('./ContactPage').then((m) => ({ default: m.ContactPage })));
+const PricingPage = lazy(() => import('./PricingPage').then((m) => ({ default: m.PricingPage })));
 const FaqPage = lazy(() => import('./FaqPage').then((m) => ({ default: m.FaqPage })));
+
 const PrivacyPolicyPage = lazy(() => import('./PrivacyPolicyPage').then((m) => ({ default: m.PrivacyPolicyPage })));
 const TermsPage = lazy(() => import('./TermsPage').then((m) => ({ default: m.TermsPage })));
 const NotFoundPage = lazy(() => import('./NotFoundPage').then((m) => ({ default: m.NotFoundPage })));
@@ -59,7 +61,9 @@ export const publicRoutes: PublicRoute[] = [
   { path: '/careers/hiring-process', element: <HiringProcessPage /> },
   { path: '/careers/:slug', element: <JobDetailPage /> },
   { path: '/contact', element: <ContactPage /> },
+  { path: '/pricing', element: <PricingPage /> },
   { path: '/faq', element: <FaqPage /> },
+
   { path: '/privacy-policy', element: <PrivacyPolicyPage /> },
   { path: '/terms', element: <TermsPage /> },
   { path: '*', element: <NotFoundPage /> },

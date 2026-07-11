@@ -19,7 +19,9 @@ import { FieldWrapper, Input, Select, Textarea, Toggle } from '@/components/ui/F
 import { availableIconNames } from '@/components/common/DynamicIcon';
 import { cn } from '@/lib/cn';
 import { ImageField } from './ImageField';
+import { ImageListField } from './ImageListField';
 import { RichTextEditor } from './RichTextEditor';
+
 import type { AdminRecord, FieldDef, OptionsResourceKey, SelectOption } from './types';
 
 /* ------------------------------ zod building ------------------------------ */
@@ -32,10 +34,12 @@ function fieldSchema(field: FieldDef): z.ZodTypeAny {
       return z.boolean().default(false);
     case 'tags':
     case 'list':
+    case 'imagelist':
       return z
         .array(z.string())
         .default([])
         .transform((items) => items.map((item) => item.trim()).filter(Boolean));
+
     default: {
       const base = z.string({ required_error: `${field.label} is required` });
       return field.required
@@ -326,6 +330,26 @@ function FieldRenderer({ field, register, control, errors }: FieldRendererProps)
           )}
         />
       );
+    case 'imagelist':
+      return (
+        <Controller
+          name={field.name}
+          control={control}
+          render={({ field: rhf }) => (
+            <div>
+              <ImageListField
+                label={field.label}
+                required={field.required}
+                error={error}
+                value={Array.isArray(rhf.value) ? (rhf.value as string[]) : []}
+                onChange={rhf.onChange}
+              />
+              {hint}
+            </div>
+          )}
+        />
+      );
+
     case 'richtext':
       return (
         <Controller
@@ -394,7 +418,8 @@ function FieldRenderer({ field, register, control, errors }: FieldRendererProps)
 
 /* --------------------------------- form ----------------------------------- */
 
-const WIDE_TYPES: FieldDef['type'][] = ['textarea', 'richtext', 'list', 'image'];
+const WIDE_TYPES: FieldDef['type'][] = ['textarea', 'richtext', 'list', 'image', 'imagelist'];
+
 
 interface ResourceFormProps {
   fields: FieldDef[];

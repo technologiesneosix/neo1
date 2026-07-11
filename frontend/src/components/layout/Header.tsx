@@ -130,11 +130,13 @@ const navConfig = [
     type: 'dropdown' as const,
     children: [
       { label: 'Case Studies', path: '/portfolio/case-studies', description: 'Engineering deep-dives & reviews', icon: FileText },
+      { label: 'Pricing', path: '/pricing', description: 'Clear and transparent pricing plans', icon: DollarSign },
       { label: 'Blog', path: '/blog', description: 'Latest industry trends and thoughts', icon: BookOpen },
       { label: 'Technologies', path: '/technologies', description: 'Our custom modern production stack', icon: Cpu },
       { label: 'FAQs', path: '/faq', description: 'Common answers about our processes', icon: HelpCircle },
     ]
   }
+
 ];
 
 export function Header() {

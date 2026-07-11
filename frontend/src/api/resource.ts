@@ -13,7 +13,8 @@ export interface ResourceApi<T extends BaseEntity> {
 }
 
 // Mock-only resources that do not exist on the backend
-const mockOnlyKeys = ['timeline', 'pricing-plans', 'roles', 'process-steps', 'page-seo', 'case-studies'];
+const mockOnlyKeys = ['timeline', 'roles', 'process-steps', 'page-seo', 'case-studies'];
+
 
 /* -------------------------------------------------------------------------- */
 /*                               Data Mappers                                 */
@@ -901,7 +902,35 @@ const mappedKeys: Record<string, {
     mapToFrontend: mapBackendUserToFrontend,
     mapToBackend: mapFrontendUserToBackend,
   },
+  'pricing-plans': {
+    adminPath: '/admin/pricing',
+    publicPath: '/public/pricing',
+    mapToFrontend: (item: any) => ({
+      id: item._id || item.id,
+      name: item.name || '',
+      price: item.price || 0,
+      period: item.period || 'per month',
+      description: item.description || '',
+      features: item.features || [],
+      highlighted: typeof item.highlighted === 'boolean' ? item.highlighted : false,
+      ctaLabel: item.ctaLabel || 'Sign Up Now',
+      order: item.displayOrder || 0,
+      createdAt: item.createdAt || '',
+      updatedAt: item.updatedAt || '',
+    }),
+    mapToBackend: (item: any) => ({
+      name: item.name,
+      price: Number(item.price || 0),
+      period: item.period || 'per month',
+      description: item.description || '',
+      features: item.features || [],
+      highlighted: typeof item.highlighted === 'boolean' ? item.highlighted : false,
+      ctaLabel: item.ctaLabel || 'Sign Up Now',
+      displayOrder: Number(item.order || 0),
+    }),
+  },
 };
+
 
 /* -------------------------------------------------------------------------- */
 /*                               API Factory                                  */

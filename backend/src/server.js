@@ -3,7 +3,8 @@ import app from './app.js';
 import { connectDatabase } from './config/database.js';
 import { validateEnv, backendEnvSchema } from '@neosix/shared';
 import { logger } from './utils/logger.js';
-import { Service, Solution, Industry, Technology, Project, Blog } from './models/index.js';
+import { Service, Solution, Industry, Technology, Project, Blog, PricingPlan } from './models/index.js';
+
 import { missingSolutions, missingIndustries } from './seeds/missing-content.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -58,7 +59,24 @@ const startServer = async () => {
           logger.info(`+ Incremental seed: Industry '${ind.title}'`);
         }
       }
+
+      logger.info('Running incremental seeding for pricing plans...');
+      const defaultPricingPlans = [
+        { name: 'Basic Plan', price: 12, period: 'per month', description: 'For small teams validating an idea.', features: ['1 project', 'Email support', 'Weekly reports', 'Basic analytics'], highlighted: false, ctaLabel: 'Sign Up Now', displayOrder: 1 },
+        { name: 'Plus Plan', price: 29, period: 'per month', description: 'For growing products and teams.', features: ['3 projects', 'Priority support', 'Weekly reports', 'Advanced analytics'], highlighted: false, ctaLabel: 'Sign Up Now', displayOrder: 2 },
+        { name: 'Advanced Plan', price: 59, period: 'per month', description: 'Our most popular plan.', features: ['10 projects', 'Dedicated manager', 'Daily reports', 'Full analytics suite'], highlighted: true, ctaLabel: 'Sign Up Now', displayOrder: 3 },
+        { name: 'Enterprise Plan', price: 99, period: 'per month', description: 'For organizations at scale.', features: ['Unlimited projects', '24/7 support', 'Custom SLAs', 'White-glove onboarding'], highlighted: false, ctaLabel: 'Contact Sales', displayOrder: 4 },
+      ];
+      for (const plan of defaultPricingPlans) {
+        const exists = await PricingPlan.findOne({ name: plan.name });
+        if (!exists) {
+          await PricingPlan.create(plan);
+          logger.info(`+ Incremental seed: Pricing Plan '${plan.name}'`);
+        }
+      }
+
       logger.info('✓ Incremental seeding completed successfully');
+
     } catch (migrateError) {
       logger.error('Database migration/seeding failed:', migrateError);
     }

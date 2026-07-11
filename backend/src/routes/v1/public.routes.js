@@ -24,7 +24,9 @@ import {
   getFAQs,
   getSettings,
   getPublicCertifications,
+  getPricingPlans,
 } from '../../controllers/publicController.js';
+
 import { createContactMessage } from '../../controllers/contactController.js';
 import { createNewsletterSubscription } from '../../controllers/newsletterController.js';
 import { createJobApplication } from '../../controllers/jobApplicationController.js';
@@ -156,6 +158,14 @@ router.get('/testimonials', asyncHandler(getTestimonials));
  * @access  Public
  */
 router.get('/certifications', asyncHandler(getPublicCertifications));
+
+/**
+ * @route   GET /api/v1/public/pricing
+ * @desc    Get pricing plans
+ * @access  Public
+ */
+router.get('/pricing', asyncHandler(getPricingPlans));
+
 
 /**
  * @route   GET /api/v1/public/careers

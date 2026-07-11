@@ -221,7 +221,8 @@ export const resourceConfigs: Record<string, ModuleConfig> = {
       { name: 'excerpt', label: 'Excerpt', type: 'textarea', required: true },
       { name: 'description', label: 'Description', type: 'richtext', required: true },
       { name: 'coverImageUrl', label: 'Cover Image', type: 'image' },
-      { name: 'gallery', label: 'Gallery (image URLs)', type: 'list', hint: 'One image URL per line.' },
+      { name: 'gallery', label: 'Gallery Images', type: 'imagelist' },
+
       { name: 'technologies', label: 'Technologies', type: 'tags' },
       { name: 'features', label: 'Features', type: 'list' },
       { name: 'results', label: 'Results', type: 'list' },

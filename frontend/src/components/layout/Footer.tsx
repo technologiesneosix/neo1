@@ -14,8 +14,10 @@ const exploreLinks = [
   { label: 'Solutions', path: '/solutions' },
   { label: 'Portfolio', path: '/portfolio' },
   { label: 'Careers', path: '/careers' },
+  { label: 'Pricing Plans', path: '/pricing' },
   { label: 'Blog', path: '/blog' },
 ];
+
 
 const supportLinks = [
   { label: 'Contact Us', path: '/contact' },
