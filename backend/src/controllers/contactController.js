@@ -2,6 +2,7 @@ import ContactMessage from '../models/ContactMessage.js';
 import ApiError from '../utils/ApiError.js';
 import ApiResponse from '../utils/ApiResponse.js';
 import { logger } from '../utils/logger.js';
+import { sendContactNotificationEmail, sendContactConfirmationEmail } from '../config/mail.js';
 
 /**
  * Create a new contact message
@@ -24,6 +25,26 @@ export const createContactMessage = async (req, res, next) => {
     });
 
     logger.info(`Contact message created from ${email}`);
+
+    // Send email notifications asynchronously (non-blocking)
+    const adminEmail = process.env.ADMIN_EMAIL || 'technologiesneosix@gmail.com';
+    sendContactNotificationEmail(adminEmail, {
+      name,
+      email,
+      phone,
+      company,
+      subject,
+      message,
+    }).catch((err) => {
+      logger.error('Failed to send contact notification email to admin:', err);
+    });
+
+    sendContactConfirmationEmail(email, {
+      name,
+      subject,
+    }).catch((err) => {
+      logger.error('Failed to send contact confirmation email to user:', err);
+    });
 
     return res.status(201).json(
       ApiResponse.success('Message sent successfully', {

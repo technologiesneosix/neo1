@@ -77,7 +77,7 @@ export function AdminLoginPage() {
             label="Email"
             required
             autoComplete="email"
-            placeholder="technologiesneosix@gmail.com"
+            placeholder="admin@example.com"
             error={errors.email?.message}
             {...register('email')}
           />

@@ -1,6 +1,7 @@
 import dotenv from 'dotenv';
 import app from './app.js';
 import { connectDatabase } from './config/database.js';
+import { initializeMail } from './config/mail.js';
 import { validateEnv, backendEnvSchema } from '@neosix/shared';
 import { logger } from './utils/logger.js';
 import { Service, Solution, Industry, Technology, Project, Blog, PricingPlan } from './models/index.js';
@@ -27,7 +28,7 @@ const PORT = process.env.PORT || 5000;
 
 const startServer = async () => {
   try {
-    
+    initializeMail();
     await connectDatabase();
 
     // Perform a one-time migration to publish seeded draft content (ensuring they aren't hidden from the public API)

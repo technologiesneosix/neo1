@@ -4,6 +4,7 @@ import ApiError from '../utils/ApiError.js';
 import ApiResponse from '../utils/ApiResponse.js';
 import { logger } from '../utils/logger.js';
 import { uploadSingleFile } from '../services/mediaService.js';
+import { sendJobApplicationNotificationEmail, sendJobApplicationConfirmationEmail } from '../config/mail.js';
 
 /**
  * Create a new job application
@@ -53,6 +54,26 @@ export const createJobApplication = async (req, res, next) => {
     });
 
     logger.info(`Job application created for ${email} to career ${career.title}`);
+
+    // Send email notifications asynchronously (non-blocking)
+    const adminEmail = process.env.ADMIN_EMAIL || 'technologiesneosix@gmail.com';
+    sendJobApplicationNotificationEmail(adminEmail, {
+      name,
+      email,
+      phone,
+      careerTitle: career.title,
+      resumeUrl,
+      coverLetter,
+    }).catch((err) => {
+      logger.error('Failed to send job application notification email to admin:', err);
+    });
+
+    sendJobApplicationConfirmationEmail(email, {
+      name,
+      careerTitle: career.title,
+    }).catch((err) => {
+      logger.error('Failed to send job application confirmation email to candidate:', err);
+    });
 
     return res.status(201).json(
       ApiResponse.success('Application submitted successfully', {
