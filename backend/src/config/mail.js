@@ -1,10 +1,16 @@
 import nodemailer from 'nodemailer';
+import dns from 'dns';
 import { logger } from '../utils/logger.js';
 
 let transporter = null;
 
 export const initializeMail = () => {
   try {
+    // Force Node to prioritize IPv4 over IPv6 during DNS resolution to avoid ENETUNREACH in cloud environments
+    if (typeof dns.setDefaultResultOrder === 'function') {
+      dns.setDefaultResultOrder('ipv4first');
+    }
+
     transporter = nodemailer.createTransport({
       host: process.env.SMTP_HOST,
       port: process.env.SMTP_PORT,
