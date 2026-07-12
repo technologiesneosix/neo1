@@ -36,14 +36,14 @@ export const createContactMessage = async (req, res, next) => {
       subject,
       message,
     }).catch((err) => {
-      logger.error('Failed to send contact notification email to admin:', err);
+      logger.error('Failed to send contact notification email to admin: ' + (err?.message || err), err);
     });
 
     sendContactConfirmationEmail(email, {
       name,
       subject,
     }).catch((err) => {
-      logger.error('Failed to send contact confirmation email to user:', err);
+      logger.error('Failed to send contact confirmation email to user: ' + (err?.message || err), err);
     });
 
     return res.status(201).json(

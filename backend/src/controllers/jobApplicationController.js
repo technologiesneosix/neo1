@@ -65,14 +65,14 @@ export const createJobApplication = async (req, res, next) => {
       resumeUrl,
       coverLetter,
     }).catch((err) => {
-      logger.error('Failed to send job application notification email to admin:', err);
+      logger.error('Failed to send job application notification email to admin: ' + (err?.message || err), err);
     });
 
     sendJobApplicationConfirmationEmail(email, {
       name,
       careerTitle: career.title,
     }).catch((err) => {
-      logger.error('Failed to send job application confirmation email to candidate:', err);
+      logger.error('Failed to send job application confirmation email to candidate: ' + (err?.message || err), err);
     });
 
     return res.status(201).json(

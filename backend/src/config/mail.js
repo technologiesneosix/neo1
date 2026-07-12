@@ -39,7 +39,7 @@ export const sendMail = async (options) => {
     logger.info('Email sent:', info.messageId);
     return info;
   } catch (error) {
-    logger.error('Error sending email:', error);
+    logger.error('Error sending email: ' + (error?.message || error), error);
     throw error;
   }
 };
