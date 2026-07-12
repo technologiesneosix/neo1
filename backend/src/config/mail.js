@@ -29,6 +29,38 @@ export const initializeMail = () => {
 };
 
 export const sendMail = async (options) => {
+  // If RESEND_API_KEY is configured, use Resend HTTP API (ideal for Render Free Tier)
+  if (process.env.RESEND_API_KEY) {
+    try {
+      const response = await fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${process.env.RESEND_API_KEY}`,
+        },
+        body: JSON.stringify({
+          from: process.env.SMTP_FROM || 'onboarding@resend.dev',
+          to: Array.isArray(options.to) ? options.to : [options.to],
+          subject: options.subject,
+          html: options.html,
+          text: options.text,
+        }),
+      });
+
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.message || `Resend API error (${response.status})`);
+      }
+
+      logger.info('Email sent via Resend API:', data.id);
+      return data;
+    } catch (error) {
+      logger.error('Error sending email via Resend API: ' + (error?.message || error), error);
+      throw error;
+    }
+  }
+
+  // Fallback to standard SMTP Nodemailer transporter
   if (!transporter) {
     throw new Error('Mail transporter not initialized');
   }
@@ -50,6 +82,7 @@ export const sendMail = async (options) => {
     throw error;
   }
 };
+
 
 export const sendVerificationEmail = async (email, verificationUrl) => {
   const html = `
