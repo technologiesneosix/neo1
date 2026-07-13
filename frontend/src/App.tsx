@@ -6,6 +6,7 @@ import { PageLoader } from '@/components/ui/Spinner';
 import { publicRoutes } from '@/pages/public/routes';
 import { adminRoutes } from '@/pages/admin/routes';
 import { useFavicon } from '@/hooks/useFavicon';
+import { StartupLoader } from '@/components/StartupLoader';
 
 const AdminLayout = lazy(() =>
   import('@/components/layout/AdminLayout').then((m) => ({ default: m.AdminLayout })),
@@ -19,40 +20,43 @@ export default function App() {
   useFavicon();
 
   return (
-    <Routes>
-      <Route element={<PublicLayout />}>
-        {publicRoutes.map((route) => (
-          <Route key={route.path} path={route.path} element={route.element} />
-        ))}
-      </Route>
+    <StartupLoader>
+      <Routes>
+        <Route element={<PublicLayout />}>
+          {publicRoutes.map((route) => (
+            <Route key={route.path} path={route.path} element={route.element} />
+          ))}
+        </Route>
 
-      <Route
-        path="/admin/login"
-        element={
-          <Suspense fallback={<PageLoader className="min-h-screen" />}>
-            <AdminLoginPage />
-          </Suspense>
-        }
-      />
-
-      <Route element={<ProtectedRoute />}>
         <Route
-          path="/admin/*"
+          path="/admin/login"
           element={
             <Suspense fallback={<PageLoader className="min-h-screen" />}>
-              <AdminLayout />
+              <AdminLoginPage />
             </Suspense>
           }
-        >
-          {adminRoutes.map((route, i) =>
-            route.index ? (
-              <Route key={`admin-index-${i}`} index element={route.element} />
-            ) : (
-              <Route key={route.path ?? `admin-route-${i}`} path={route.path} element={route.element} />
-            ),
-          )}
+        />
+
+        <Route element={<ProtectedRoute />}>
+          <Route
+            path="/admin/*"
+            element={
+              <Suspense fallback={<PageLoader className="min-h-screen" />}>
+                <AdminLayout />
+              </Suspense>
+            }
+          >
+            {adminRoutes.map((route, i) =>
+              route.index ? (
+                <Route key={`admin-index-${i}`} index element={route.element} />
+              ) : (
+                <Route key={route.path ?? `admin-route-${i}`} path={route.path} element={route.element} />
+              ),
+            )}
+          </Route>
         </Route>
-      </Route>
-    </Routes>
+      </Routes>
+    </StartupLoader>
   );
 }
+
