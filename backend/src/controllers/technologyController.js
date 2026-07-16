@@ -27,7 +27,7 @@ export const createTechnology = async (req, res, next) => {
  */
 export const getAllTechnologies = async (req, res, next) => {
   try {
-    const { page = 1, limit = 10, status, category, search, sortBy = 'displayOrder', sortOrder = 'asc' } = req.query;
+    const { page = 1, limit = 100, status, category, search, sortBy = 'displayOrder', sortOrder = 'asc' } = req.query;
 
     const query = {};
     

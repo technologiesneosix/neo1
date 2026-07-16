@@ -331,7 +331,7 @@ export const getIndustryBySlug = async (req, res, next) => {
  */
 export const getTechnologies = async (req, res, next) => {
   try {
-    const { page = 1, limit = 10, search, category, sortBy = 'displayOrder', sortOrder = 'asc' } = req.query;
+    const { page = 1, limit = 100, search, category, sortBy = 'displayOrder', sortOrder = 'asc' } = req.query;
 
     const query = { status: 'published' };
 
