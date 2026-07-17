@@ -1,6 +1,6 @@
-import { Router } from 'express';
-import { asyncHandler, authenticate } from '../../middleware/index.js';
-import { validate } from '../../middleware/index.js';
+import { Router } from "express";
+import { asyncHandler, authenticate } from "../../middleware/index.js";
+import { validate } from "../../middleware/index.js";
 import {
   createProjectValidation,
   updateProjectValidation,
@@ -9,7 +9,7 @@ import {
   getProjectsValidation,
   updateProjectStatusValidation,
   toggleProjectFeaturedValidation,
-} from '../../validations/projectValidation.js';
+} from "../../validations/projectValidation.js";
 import {
   createProject,
   getAllProjects,
@@ -19,7 +19,7 @@ import {
   toggleProjectFeatured,
   updateProjectStatus,
   deleteProject,
-} from '../../controllers/projectController.js';
+} from "../../controllers/projectController.js";
 
 const router = Router();
 
@@ -29,11 +29,11 @@ const router = Router();
  * @access  Private (Admin)
  */
 router.post(
-  '/',
+  "/",
   authenticate,
   createProjectValidation,
   validate,
-  asyncHandler(createProject)
+  asyncHandler(createProject),
 );
 
 /**
@@ -42,11 +42,11 @@ router.post(
  * @access  Private (Admin)
  */
 router.get(
-  '/',
+  "/",
   authenticate,
   getProjectsValidation,
   validate,
-  asyncHandler(getAllProjects)
+  asyncHandler(getAllProjects),
 );
 
 /**
@@ -55,11 +55,11 @@ router.get(
  * @access  Private (Admin)
  */
 router.get(
-  '/slug/:slug',
+  "/slug/:slug",
   authenticate,
   projectSlugValidation,
   validate,
-  asyncHandler(getProjectBySlug)
+  asyncHandler(getProjectBySlug),
 );
 
 /**
@@ -68,11 +68,11 @@ router.get(
  * @access  Private (Admin)
  */
 router.get(
-  '/:id',
+  "/:id",
   authenticate,
   projectIdValidation,
   validate,
-  asyncHandler(getProjectById)
+  asyncHandler(getProjectById),
 );
 
 /**
@@ -81,12 +81,12 @@ router.get(
  * @access  Private (Admin)
  */
 router.put(
-  '/:id',
+  "/:id",
   authenticate,
   projectIdValidation,
   updateProjectValidation,
   validate,
-  asyncHandler(updateProject)
+  asyncHandler(updateProject),
 );
 
 /**
@@ -95,11 +95,11 @@ router.put(
  * @access  Private (Admin)
  */
 router.patch(
-  '/:id/toggle-featured',
+  "/:id/toggle-featured",
   authenticate,
   toggleProjectFeaturedValidation,
   validate,
-  asyncHandler(toggleProjectFeatured)
+  asyncHandler(toggleProjectFeatured),
 );
 
 /**
@@ -108,11 +108,11 @@ router.patch(
  * @access  Private (Admin)
  */
 router.patch(
-  '/:id/status',
+  "/:id/status",
   authenticate,
   updateProjectStatusValidation,
   validate,
-  asyncHandler(updateProjectStatus)
+  asyncHandler(updateProjectStatus),
 );
 
 /**
@@ -121,11 +121,11 @@ router.patch(
  * @access  Private (Admin)
  */
 router.delete(
-  '/:id',
+  "/:id",
   authenticate,
   projectIdValidation,
   validate,
-  asyncHandler(deleteProject)
+  asyncHandler(deleteProject),
 );
 
 export default router;

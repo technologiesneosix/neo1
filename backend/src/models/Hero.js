@@ -1,43 +1,43 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const heroSchema = new mongoose.Schema(
   {
     title: {
       type: String,
-      required: [true, 'Title is required'],
+      required: [true, "Title is required"],
       trim: true,
-      maxlength: [200, 'Title cannot exceed 200 characters'],
+      maxlength: [200, "Title cannot exceed 200 characters"],
     },
     subtitle: {
       type: String,
-      required: [true, 'Subtitle is required'],
+      required: [true, "Subtitle is required"],
       trim: true,
-      maxlength: [300, 'Subtitle cannot exceed 300 characters'],
+      maxlength: [300, "Subtitle cannot exceed 300 characters"],
     },
     description: {
       type: String,
-      required: [true, 'Description is required'],
+      required: [true, "Description is required"],
       trim: true,
-      maxlength: [500, 'Description cannot exceed 500 characters'],
+      maxlength: [500, "Description cannot exceed 500 characters"],
     },
     primaryButtonText: {
       type: String,
-      default: 'Get Started',
+      default: "Get Started",
       trim: true,
     },
     primaryButtonLink: {
       type: String,
-      default: '#',
+      default: "#",
       trim: true,
     },
     secondaryButtonText: {
       type: String,
-      default: 'Learn More',
+      default: "Learn More",
       trim: true,
     },
     secondaryButtonLink: {
       type: String,
-      default: '#',
+      default: "#",
       trim: true,
     },
     backgroundImage: {
@@ -67,12 +67,12 @@ const heroSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 // Index for active hero
 heroSchema.index({ isActive: 1 });
 
-const Hero = mongoose.model('Hero', heroSchema);
+const Hero = mongoose.model("Hero", heroSchema);
 
 export default Hero;

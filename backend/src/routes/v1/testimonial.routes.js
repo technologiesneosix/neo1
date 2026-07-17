@@ -1,6 +1,6 @@
-import { Router } from 'express';
-import { asyncHandler, authenticate } from '../../middleware/index.js';
-import { validate } from '../../middleware/index.js';
+import { Router } from "express";
+import { asyncHandler, authenticate } from "../../middleware/index.js";
+import { validate } from "../../middleware/index.js";
 import {
   createTestimonialValidation,
   updateTestimonialValidation,
@@ -9,7 +9,7 @@ import {
   updateTestimonialStatusValidation,
   toggleTestimonialFeaturedValidation,
   updateTestimonialDisplayOrderValidation,
-} from '../../validations/testimonialValidation.js';
+} from "../../validations/testimonialValidation.js";
 import {
   createTestimonial,
   getAllTestimonials,
@@ -19,7 +19,7 @@ import {
   updateTestimonialStatus,
   updateTestimonialDisplayOrder,
   deleteTestimonial,
-} from '../../controllers/testimonialController.js';
+} from "../../controllers/testimonialController.js";
 
 const router = Router();
 
@@ -29,11 +29,11 @@ const router = Router();
  * @access  Private (Admin)
  */
 router.post(
-  '/',
+  "/",
   authenticate,
   createTestimonialValidation,
   validate,
-  asyncHandler(createTestimonial)
+  asyncHandler(createTestimonial),
 );
 
 /**
@@ -42,11 +42,11 @@ router.post(
  * @access  Private (Admin)
  */
 router.get(
-  '/',
+  "/",
   authenticate,
   getTestimonialsValidation,
   validate,
-  asyncHandler(getAllTestimonials)
+  asyncHandler(getAllTestimonials),
 );
 
 /**
@@ -55,11 +55,11 @@ router.get(
  * @access  Private (Admin)
  */
 router.get(
-  '/:id',
+  "/:id",
   authenticate,
   testimonialIdValidation,
   validate,
-  asyncHandler(getTestimonialById)
+  asyncHandler(getTestimonialById),
 );
 
 /**
@@ -68,12 +68,12 @@ router.get(
  * @access  Private (Admin)
  */
 router.put(
-  '/:id',
+  "/:id",
   authenticate,
   testimonialIdValidation,
   updateTestimonialValidation,
   validate,
-  asyncHandler(updateTestimonial)
+  asyncHandler(updateTestimonial),
 );
 
 /**
@@ -82,11 +82,11 @@ router.put(
  * @access  Private (Admin)
  */
 router.patch(
-  '/:id/toggle-featured',
+  "/:id/toggle-featured",
   authenticate,
   toggleTestimonialFeaturedValidation,
   validate,
-  asyncHandler(toggleTestimonialFeatured)
+  asyncHandler(toggleTestimonialFeatured),
 );
 
 /**
@@ -95,11 +95,11 @@ router.patch(
  * @access  Private (Admin)
  */
 router.patch(
-  '/:id/status',
+  "/:id/status",
   authenticate,
   updateTestimonialStatusValidation,
   validate,
-  asyncHandler(updateTestimonialStatus)
+  asyncHandler(updateTestimonialStatus),
 );
 
 /**
@@ -108,11 +108,11 @@ router.patch(
  * @access  Private (Admin)
  */
 router.patch(
-  '/:id/display-order',
+  "/:id/display-order",
   authenticate,
   updateTestimonialDisplayOrderValidation,
   validate,
-  asyncHandler(updateTestimonialDisplayOrder)
+  asyncHandler(updateTestimonialDisplayOrder),
 );
 
 /**
@@ -121,11 +121,11 @@ router.patch(
  * @access  Private (Admin)
  */
 router.delete(
-  '/:id',
+  "/:id",
   authenticate,
   testimonialIdValidation,
   validate,
-  asyncHandler(deleteTestimonial)
+  asyncHandler(deleteTestimonial),
 );
 
 export default router;

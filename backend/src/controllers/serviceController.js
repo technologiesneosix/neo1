@@ -1,7 +1,7 @@
-import Service from '../models/Service.js';
-import ApiError from '../utils/ApiError.js';
-import ApiResponse from '../utils/ApiResponse.js';
-import { logger } from '../utils/logger.js';
+import Service from "../models/Service.js";
+import ApiError from "../utils/ApiError.js";
+import ApiResponse from "../utils/ApiResponse.js";
+import { logger } from "../utils/logger.js";
 
 /**
  * Create service
@@ -11,9 +11,9 @@ export const createService = async (req, res, next) => {
     const serviceData = req.body;
     const service = await Service.create(serviceData);
     logger.info(`Service created: ${service.title}`);
-    return res.status(201).json(
-      ApiResponse.success('Service created successfully', service)
-    );
+    return res
+      .status(201)
+      .json(ApiResponse.success("Service created successfully", service));
   } catch (error) {
     next(error);
   }
@@ -31,12 +31,12 @@ export const getAllServices = async (req, res, next) => {
       query.status = status;
     }
     if (featured !== undefined) {
-      query.isFeatured = featured === 'true';
+      query.isFeatured = featured === "true";
     }
     if (search) {
       query.$or = [
-        { title: { $regex: search, $options: 'i' } },
-        { shortDescription: { $regex: search, $options: 'i' } },
+        { title: { $regex: search, $options: "i" } },
+        { shortDescription: { $regex: search, $options: "i" } },
       ];
     }
 
@@ -44,7 +44,7 @@ export const getAllServices = async (req, res, next) => {
 
     const [services, total] = await Promise.all([
       Service.find(query)
-        .populate('technologies', 'name slug logo')
+        .populate("technologies", "name slug logo")
         .sort({ displayOrder: 1, createdAt: -1 })
         .skip(skip)
         .limit(parseInt(limit)),
@@ -52,7 +52,7 @@ export const getAllServices = async (req, res, next) => {
     ]);
 
     return res.status(200).json(
-      ApiResponse.success('Services retrieved successfully', {
+      ApiResponse.success("Services retrieved successfully", {
         services,
         pagination: {
           page: parseInt(page),
@@ -60,7 +60,7 @@ export const getAllServices = async (req, res, next) => {
           total,
           pages: Math.ceil(total / limit),
         },
-      })
+      }),
     );
   } catch (error) {
     next(error);
@@ -73,15 +73,18 @@ export const getAllServices = async (req, res, next) => {
 export const getServiceById = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const service = await Service.findById(id).populate('technologies', 'name slug logo');
+    const service = await Service.findById(id).populate(
+      "technologies",
+      "name slug logo",
+    );
 
     if (!service) {
-      throw ApiError.notFound('Service not found');
+      throw ApiError.notFound("Service not found");
     }
 
-    return res.status(200).json(
-      ApiResponse.success('Service retrieved successfully', service)
-    );
+    return res
+      .status(200)
+      .json(ApiResponse.success("Service retrieved successfully", service));
   } catch (error) {
     next(error);
   }
@@ -95,20 +98,19 @@ export const updateService = async (req, res, next) => {
     const { id } = req.params;
     const updateData = req.body;
 
-    const service = await Service.findByIdAndUpdate(
-      id,
-      updateData,
-      { new: true, runValidators: true }
-    ).populate('technologies', 'name slug logo');
+    const service = await Service.findByIdAndUpdate(id, updateData, {
+      new: true,
+      runValidators: true,
+    }).populate("technologies", "name slug logo");
 
     if (!service) {
-      throw ApiError.notFound('Service not found');
+      throw ApiError.notFound("Service not found");
     }
 
     logger.info(`Service updated: ${service.title}`);
-    return res.status(200).json(
-      ApiResponse.success('Service updated successfully', service)
-    );
+    return res
+      .status(200)
+      .json(ApiResponse.success("Service updated successfully", service));
   } catch (error) {
     next(error);
   }
@@ -123,13 +125,13 @@ export const deleteService = async (req, res, next) => {
     const service = await Service.findByIdAndDelete(id);
 
     if (!service) {
-      throw ApiError.notFound('Service not found');
+      throw ApiError.notFound("Service not found");
     }
 
     logger.info(`Service deleted: ${service.title}`);
-    return res.status(200).json(
-      ApiResponse.success('Service deleted successfully')
-    );
+    return res
+      .status(200)
+      .json(ApiResponse.success("Service deleted successfully"));
   } catch (error) {
     next(error);
   }

@@ -1,6 +1,6 @@
-import { Router } from 'express';
-import { asyncHandler, authenticate } from '../../middleware/index.js';
-import { validate } from '../../middleware/index.js';
+import { Router } from "express";
+import { asyncHandler, authenticate } from "../../middleware/index.js";
+import { validate } from "../../middleware/index.js";
 import {
   createSolutionValidation,
   updateSolutionValidation,
@@ -8,7 +8,7 @@ import {
   solutionSlugValidation,
   getSolutionsValidation,
   updateSolutionStatusValidation,
-} from '../../validations/solutionValidation.js';
+} from "../../validations/solutionValidation.js";
 import {
   createSolution,
   getAllSolutions,
@@ -17,7 +17,7 @@ import {
   updateSolution,
   updateSolutionStatus,
   deleteSolution,
-} from '../../controllers/solutionController.js';
+} from "../../controllers/solutionController.js";
 
 const router = Router();
 
@@ -27,11 +27,11 @@ const router = Router();
  * @access  Private (Admin)
  */
 router.post(
-  '/',
+  "/",
   authenticate,
   createSolutionValidation,
   validate,
-  asyncHandler(createSolution)
+  asyncHandler(createSolution),
 );
 
 /**
@@ -40,11 +40,11 @@ router.post(
  * @access  Private (Admin)
  */
 router.get(
-  '/',
+  "/",
   authenticate,
   getSolutionsValidation,
   validate,
-  asyncHandler(getAllSolutions)
+  asyncHandler(getAllSolutions),
 );
 
 /**
@@ -53,11 +53,11 @@ router.get(
  * @access  Private (Admin)
  */
 router.get(
-  '/slug/:slug',
+  "/slug/:slug",
   authenticate,
   solutionSlugValidation,
   validate,
-  asyncHandler(getSolutionBySlug)
+  asyncHandler(getSolutionBySlug),
 );
 
 /**
@@ -66,11 +66,11 @@ router.get(
  * @access  Private (Admin)
  */
 router.get(
-  '/:id',
+  "/:id",
   authenticate,
   solutionIdValidation,
   validate,
-  asyncHandler(getSolutionById)
+  asyncHandler(getSolutionById),
 );
 
 /**
@@ -79,12 +79,12 @@ router.get(
  * @access  Private (Admin)
  */
 router.put(
-  '/:id',
+  "/:id",
   authenticate,
   solutionIdValidation,
   updateSolutionValidation,
   validate,
-  asyncHandler(updateSolution)
+  asyncHandler(updateSolution),
 );
 
 /**
@@ -93,11 +93,11 @@ router.put(
  * @access  Private (Admin)
  */
 router.patch(
-  '/:id/status',
+  "/:id/status",
   authenticate,
   updateSolutionStatusValidation,
   validate,
-  asyncHandler(updateSolutionStatus)
+  asyncHandler(updateSolutionStatus),
 );
 
 /**
@@ -106,11 +106,11 @@ router.patch(
  * @access  Private (Admin)
  */
 router.delete(
-  '/:id',
+  "/:id",
   authenticate,
   solutionIdValidation,
   validate,
-  asyncHandler(deleteSolution)
+  asyncHandler(deleteSolution),
 );
 
 export default router;

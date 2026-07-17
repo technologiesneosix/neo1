@@ -1,7 +1,7 @@
-import Admin from '../models/Admin.js';
-import ApiError from '../utils/ApiError.js';
-import ApiResponse from '../utils/ApiResponse.js';
-import { logger } from '../utils/logger.js';
+import Admin from "../models/Admin.js";
+import ApiError from "../utils/ApiError.js";
+import ApiResponse from "../utils/ApiResponse.js";
+import { logger } from "../utils/logger.js";
 
 /**
  * Create a new user (Admin)
@@ -12,7 +12,7 @@ export const createUser = async (req, res, next) => {
 
     const existingUser = await Admin.findOne({ email });
     if (existingUser) {
-      throw ApiError.badRequest('User with this email already exists');
+      throw ApiError.badRequest("User with this email already exists");
     }
 
     const user = await Admin.create({
@@ -26,9 +26,9 @@ export const createUser = async (req, res, next) => {
 
     logger.info(`Admin user created: ${email}`);
 
-    return res.status(201).json(
-      ApiResponse.success('User created successfully', user)
-    );
+    return res
+      .status(201)
+      .json(ApiResponse.success("User created successfully", user));
   } catch (error) {
     next(error);
   }
@@ -44,8 +44,8 @@ export const getAllUsers = async (req, res, next) => {
     const query = {};
     if (search) {
       query.$or = [
-        { name: { $regex: search, $options: 'i' } },
-        { email: { $regex: search, $options: 'i' } },
+        { name: { $regex: search, $options: "i" } },
+        { email: { $regex: search, $options: "i" } },
       ];
     }
 
@@ -60,7 +60,7 @@ export const getAllUsers = async (req, res, next) => {
     ]);
 
     return res.status(200).json(
-      ApiResponse.success('Users retrieved successfully', {
+      ApiResponse.success("Users retrieved successfully", {
         users,
         pagination: {
           page: parseInt(page),
@@ -68,7 +68,7 @@ export const getAllUsers = async (req, res, next) => {
           total,
           pages: Math.ceil(total / limit),
         },
-      })
+      }),
     );
   } catch (error) {
     next(error);
@@ -84,12 +84,12 @@ export const getUserById = async (req, res, next) => {
     const user = await Admin.findById(id);
 
     if (!user) {
-      throw ApiError.notFound('User not found');
+      throw ApiError.notFound("User not found");
     }
 
-    return res.status(200).json(
-      ApiResponse.success('User retrieved successfully', user)
-    );
+    return res
+      .status(200)
+      .json(ApiResponse.success("User retrieved successfully", user));
   } catch (error) {
     next(error);
   }
@@ -104,13 +104,13 @@ export const updateUser = async (req, res, next) => {
     const updateData = { ...req.body };
 
     // If password is blank, don't update it
-    if (updateData.password === '' || updateData.password === undefined) {
+    if (updateData.password === "" || updateData.password === undefined) {
       delete updateData.password;
     }
 
     const user = await Admin.findById(id);
     if (!user) {
-      throw ApiError.notFound('User not found');
+      throw ApiError.notFound("User not found");
     }
 
     // Apply updates
@@ -119,9 +119,9 @@ export const updateUser = async (req, res, next) => {
 
     logger.info(`User updated: ${user.email}`);
 
-    return res.status(200).json(
-      ApiResponse.success('User updated successfully', user)
-    );
+    return res
+      .status(200)
+      .json(ApiResponse.success("User updated successfully", user));
   } catch (error) {
     next(error);
   }
@@ -137,19 +137,19 @@ export const deleteUser = async (req, res, next) => {
     // Check count: Do not delete the last user
     const totalUsers = await Admin.countDocuments();
     if (totalUsers <= 1) {
-      throw ApiError.badRequest('Cannot delete the last admin user');
+      throw ApiError.badRequest("Cannot delete the last admin user");
     }
 
     const user = await Admin.findByIdAndDelete(id);
     if (!user) {
-      throw ApiError.notFound('User not found');
+      throw ApiError.notFound("User not found");
     }
 
     logger.info(`User deleted: ${user.email}`);
 
-    return res.status(200).json(
-      ApiResponse.success('User deleted successfully')
-    );
+    return res
+      .status(200)
+      .json(ApiResponse.success("User deleted successfully"));
   } catch (error) {
     next(error);
   }

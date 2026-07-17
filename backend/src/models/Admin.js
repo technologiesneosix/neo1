@@ -1,26 +1,26 @@
-import mongoose from 'mongoose';
-import { hashPassword, comparePassword } from '../utils/password.js';
+import mongoose from "mongoose";
+import { hashPassword, comparePassword } from "../utils/password.js";
 
 const adminSchema = new mongoose.Schema(
   {
     name: {
       type: String,
-      required: [true, 'Name is required'],
+      required: [true, "Name is required"],
       trim: true,
-      maxlength: [100, 'Name cannot exceed 100 characters'],
+      maxlength: [100, "Name cannot exceed 100 characters"],
     },
     email: {
       type: String,
-      required: [true, 'Email is required'],
+      required: [true, "Email is required"],
       unique: true,
       lowercase: true,
       trim: true,
-      match: [/^\S+@\S+\.\S+$/, 'Please provide a valid email'],
+      match: [/^\S+@\S+\.\S+$/, "Please provide a valid email"],
     },
     password: {
       type: String,
-      required: [true, 'Password is required'],
-      minlength: [8, 'Password must be at least 8 characters'],
+      required: [true, "Password is required"],
+      minlength: [8, "Password must be at least 8 characters"],
       select: false,
     },
     avatar: {
@@ -30,7 +30,7 @@ const adminSchema = new mongoose.Schema(
     phone: {
       type: String,
       default: null,
-      match: [/^\+?[\d\s-()]+$/, 'Please provide a valid phone number'],
+      match: [/^\+?[\d\s-()]+$/, "Please provide a valid phone number"],
     },
     isActive: {
       type: Boolean,
@@ -55,12 +55,12 @@ const adminSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 // Hash password before saving
-adminSchema.pre('save', async function (next) {
-  if (!this.isModified('password')) {
+adminSchema.pre("save", async function (next) {
+  if (!this.isModified("password")) {
     return next();
   }
 
@@ -90,13 +90,17 @@ adminSchema.methods.toJSON = function () {
 adminSchema.statics.ensureSingleAdmin = async function () {
   const count = await this.countDocuments();
   if (count === 0) {
-    throw new Error('No admin account exists. Please create an admin account first.');
+    throw new Error(
+      "No admin account exists. Please create an admin account first.",
+    );
   }
   if (count > 1) {
-    throw new Error('Multiple admin accounts detected. Only one admin account is allowed.');
+    throw new Error(
+      "Multiple admin accounts detected. Only one admin account is allowed.",
+    );
   }
 };
 
-const Admin = mongoose.model('Admin', adminSchema);
+const Admin = mongoose.model("Admin", adminSchema);
 
 export default Admin;

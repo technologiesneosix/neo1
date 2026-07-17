@@ -1,13 +1,13 @@
-import mongoose from 'mongoose';
-import { generateSlug } from '../utils/generateSlug.js';
+import mongoose from "mongoose";
+import { generateSlug } from "../utils/generateSlug.js";
 
 const blogSchema = new mongoose.Schema(
   {
     title: {
       type: String,
-      required: [true, 'Title is required'],
+      required: [true, "Title is required"],
       trim: true,
-      maxlength: [200, 'Title cannot exceed 200 characters'],
+      maxlength: [200, "Title cannot exceed 200 characters"],
     },
     slug: {
       type: String,
@@ -17,13 +17,13 @@ const blogSchema = new mongoose.Schema(
     },
     excerpt: {
       type: String,
-      required: [true, 'Excerpt is required'],
+      required: [true, "Excerpt is required"],
       trim: true,
-      maxlength: [500, 'Excerpt cannot exceed 500 characters'],
+      maxlength: [500, "Excerpt cannot exceed 500 characters"],
     },
     content: {
       type: String,
-      required: [true, 'Content is required'],
+      required: [true, "Content is required"],
     },
     banner: {
       type: String,
@@ -31,13 +31,13 @@ const blogSchema = new mongoose.Schema(
     },
     author: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Team',
-      required: [true, 'Author is required'],
+      ref: "Team",
+      required: [true, "Author is required"],
     },
     category: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'BlogCategory',
-      required: [true, 'Category is required'],
+      ref: "BlogCategory",
+      required: [true, "Category is required"],
     },
     tags: [
       {
@@ -83,12 +83,12 @@ const blogSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 // Generate slug before saving
-blogSchema.pre('save', function (next) {
-  if (this.isModified('title') && !this.slug) {
+blogSchema.pre("save", function (next) {
+  if (this.isModified("title") && !this.slug) {
     this.slug = generateSlug(this.title);
   }
   next();
@@ -102,6 +102,6 @@ blogSchema.index({ publishedAt: -1 });
 blogSchema.index({ featured: 1 });
 blogSchema.index({ tags: 1 });
 
-const Blog = mongoose.model('Blog', blogSchema);
+const Blog = mongoose.model("Blog", blogSchema);
 
 export default Blog;

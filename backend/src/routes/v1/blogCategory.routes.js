@@ -1,13 +1,13 @@
-import { Router } from 'express';
-import { asyncHandler, authenticate } from '../../middleware/index.js';
-import { validate } from '../../middleware/index.js';
+import { Router } from "express";
+import { asyncHandler, authenticate } from "../../middleware/index.js";
+import { validate } from "../../middleware/index.js";
 import {
   createBlogCategoryValidation,
   updateBlogCategoryValidation,
   blogCategoryIdValidation,
   blogCategorySlugValidation,
   getBlogCategoriesValidation,
-} from '../../validations/blogCategoryValidation.js';
+} from "../../validations/blogCategoryValidation.js";
 import {
   createBlogCategory,
   getAllBlogCategories,
@@ -15,7 +15,7 @@ import {
   getBlogCategoryBySlug,
   updateBlogCategory,
   deleteBlogCategory,
-} from '../../controllers/blogCategoryController.js';
+} from "../../controllers/blogCategoryController.js";
 
 const router = Router();
 
@@ -25,11 +25,11 @@ const router = Router();
  * @access  Private (Admin)
  */
 router.post(
-  '/',
+  "/",
   authenticate,
   createBlogCategoryValidation,
   validate,
-  asyncHandler(createBlogCategory)
+  asyncHandler(createBlogCategory),
 );
 
 /**
@@ -38,11 +38,11 @@ router.post(
  * @access  Private (Admin)
  */
 router.get(
-  '/',
+  "/",
   authenticate,
   getBlogCategoriesValidation,
   validate,
-  asyncHandler(getAllBlogCategories)
+  asyncHandler(getAllBlogCategories),
 );
 
 /**
@@ -51,11 +51,11 @@ router.get(
  * @access  Private (Admin)
  */
 router.get(
-  '/slug/:slug',
+  "/slug/:slug",
   authenticate,
   blogCategorySlugValidation,
   validate,
-  asyncHandler(getBlogCategoryBySlug)
+  asyncHandler(getBlogCategoryBySlug),
 );
 
 /**
@@ -64,11 +64,11 @@ router.get(
  * @access  Private (Admin)
  */
 router.get(
-  '/:id',
+  "/:id",
   authenticate,
   blogCategoryIdValidation,
   validate,
-  asyncHandler(getBlogCategoryById)
+  asyncHandler(getBlogCategoryById),
 );
 
 /**
@@ -77,12 +77,12 @@ router.get(
  * @access  Private (Admin)
  */
 router.put(
-  '/:id',
+  "/:id",
   authenticate,
   blogCategoryIdValidation,
   updateBlogCategoryValidation,
   validate,
-  asyncHandler(updateBlogCategory)
+  asyncHandler(updateBlogCategory),
 );
 
 /**
@@ -91,11 +91,11 @@ router.put(
  * @access  Private (Admin)
  */
 router.delete(
-  '/:id',
+  "/:id",
   authenticate,
   blogCategoryIdValidation,
   validate,
-  asyncHandler(deleteBlogCategory)
+  asyncHandler(deleteBlogCategory),
 );
 
 export default router;

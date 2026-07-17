@@ -1,7 +1,7 @@
-import NewsletterSubscriber from '../models/NewsletterSubscriber.js';
-import ApiError from '../utils/ApiError.js';
-import ApiResponse from '../utils/ApiResponse.js';
-import { logger } from '../utils/logger.js';
+import NewsletterSubscriber from "../models/NewsletterSubscriber.js";
+import ApiError from "../utils/ApiError.js";
+import ApiResponse from "../utils/ApiResponse.js";
+import { logger } from "../utils/logger.js";
 
 /**
  * Create a new newsletter subscription
@@ -17,9 +17,9 @@ export const createNewsletterSubscription = async (req, res, next) => {
       // If already subscribed, return success without error
       if (existingSubscriber.isSubscribed) {
         return res.status(200).json(
-          ApiResponse.success('Already subscribed to newsletter', {
-            message: 'You are already subscribed to our newsletter',
-          })
+          ApiResponse.success("Already subscribed to newsletter", {
+            message: "You are already subscribed to our newsletter",
+          }),
         );
       }
 
@@ -30,9 +30,9 @@ export const createNewsletterSubscription = async (req, res, next) => {
       logger.info(`Newsletter subscription reactivated for ${email}`);
 
       return res.status(200).json(
-        ApiResponse.success('Subscription reactivated successfully', {
-          message: 'Your subscription has been reactivated',
-        })
+        ApiResponse.success("Subscription reactivated successfully", {
+          message: "Your subscription has been reactivated",
+        }),
       );
     }
 
@@ -45,13 +45,13 @@ export const createNewsletterSubscription = async (req, res, next) => {
     logger.info(`New newsletter subscription for ${email}`);
 
     return res.status(201).json(
-      ApiResponse.success('Successfully subscribed to newsletter', {
+      ApiResponse.success("Successfully subscribed to newsletter", {
         id: subscriber._id,
-        message: 'You have been successfully subscribed to our newsletter',
-      })
+        message: "You have been successfully subscribed to our newsletter",
+      }),
     );
   } catch (error) {
-    logger.error('Newsletter subscription error:', error);
+    logger.error("Newsletter subscription error:", error);
     next(error);
   }
 };
@@ -65,7 +65,7 @@ export const getAllNewsletterSubscribers = async (req, res, next) => {
 
     const query = {};
     if (search) {
-      query.email = { $regex: search, $options: 'i' };
+      query.email = { $regex: search, $options: "i" };
     }
 
     const skip = (page - 1) * limit;
@@ -79,7 +79,7 @@ export const getAllNewsletterSubscribers = async (req, res, next) => {
     ]);
 
     return res.status(200).json(
-      ApiResponse.success('Newsletter subscribers retrieved successfully', {
+      ApiResponse.success("Newsletter subscribers retrieved successfully", {
         subscribers,
         pagination: {
           page: parseInt(page),
@@ -87,7 +87,7 @@ export const getAllNewsletterSubscribers = async (req, res, next) => {
           total,
           pages: Math.ceil(total / limit),
         },
-      })
+      }),
     );
   } catch (error) {
     next(error);
@@ -103,12 +103,14 @@ export const getNewsletterSubscriberById = async (req, res, next) => {
     const subscriber = await NewsletterSubscriber.findById(id);
 
     if (!subscriber) {
-      throw ApiError.notFound('Subscriber not found');
+      throw ApiError.notFound("Subscriber not found");
     }
 
-    return res.status(200).json(
-      ApiResponse.success('Subscriber retrieved successfully', subscriber)
-    );
+    return res
+      .status(200)
+      .json(
+        ApiResponse.success("Subscriber retrieved successfully", subscriber),
+      );
   } catch (error) {
     next(error);
   }
@@ -125,17 +127,17 @@ export const updateNewsletterSubscriber = async (req, res, next) => {
     const subscriber = await NewsletterSubscriber.findByIdAndUpdate(
       id,
       updateData,
-      { new: true, runValidators: true }
+      { new: true, runValidators: true },
     );
 
     if (!subscriber) {
-      throw ApiError.notFound('Subscriber not found');
+      throw ApiError.notFound("Subscriber not found");
     }
 
     logger.info(`Subscriber updated for ID ${id}`);
-    return res.status(200).json(
-      ApiResponse.success('Subscriber updated successfully', subscriber)
-    );
+    return res
+      .status(200)
+      .json(ApiResponse.success("Subscriber updated successfully", subscriber));
   } catch (error) {
     next(error);
   }
@@ -150,13 +152,13 @@ export const deleteNewsletterSubscriber = async (req, res, next) => {
     const subscriber = await NewsletterSubscriber.findByIdAndDelete(id);
 
     if (!subscriber) {
-      throw ApiError.notFound('Subscriber not found');
+      throw ApiError.notFound("Subscriber not found");
     }
 
     logger.info(`Subscriber deleted for ID ${id}`);
-    return res.status(200).json(
-      ApiResponse.success('Subscriber deleted successfully')
-    );
+    return res
+      .status(200)
+      .json(ApiResponse.success("Subscriber deleted successfully"));
   } catch (error) {
     next(error);
   }

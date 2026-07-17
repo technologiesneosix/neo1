@@ -1,65 +1,69 @@
-import { Router } from 'express';
-import { asyncHandler, authenticate, validate } from '../../middleware/index.js';
+import { Router } from "express";
+import {
+  asyncHandler,
+  authenticate,
+  validate,
+} from "../../middleware/index.js";
 import {
   createCertificationValidation,
   updateCertificationValidation,
   certificationIdValidation,
   getCertificationsValidation,
-} from '../../validations/certificationValidation.js';
+} from "../../validations/certificationValidation.js";
 import {
   createCertification,
   getAllCertifications,
   getCertificationById,
   updateCertification,
   deleteCertification,
-} from '../../controllers/certificationController.js';
+} from "../../controllers/certificationController.js";
 
 const router = Router();
 
 // Get all certifications (admin view)
 router.get(
-  '/',
+  "/",
   authenticate,
   getCertificationsValidation,
   validate,
-  asyncHandler(getAllCertifications)
+  asyncHandler(getAllCertifications),
 );
 
 // Get a single certification by ID (admin view)
 router.get(
-  '/:id',
+  "/:id",
   authenticate,
   certificationIdValidation,
   validate,
-  asyncHandler(getCertificationById)
+  asyncHandler(getCertificationById),
 );
 
 // Create a certification (admin view)
 router.post(
-  '/',
+  "/",
   authenticate,
   createCertificationValidation,
   validate,
-  asyncHandler(createCertification)
+  asyncHandler(createCertification),
 );
 
 // Update a certification by ID (admin view)
 router.put(
-  '/:id',
+  "/:id",
   authenticate,
   certificationIdValidation,
   updateCertificationValidation,
   validate,
-  asyncHandler(updateCertification)
+  asyncHandler(updateCertification),
 );
 
 // Delete a certification by ID (admin view)
 router.delete(
-  '/:id',
+  "/:id",
   authenticate,
   certificationIdValidation,
   validate,
-  asyncHandler(deleteCertification)
+  asyncHandler(deleteCertification),
 );
 
 export default router;

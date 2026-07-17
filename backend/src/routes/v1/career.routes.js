@@ -1,13 +1,13 @@
-import { Router } from 'express';
-import { asyncHandler, authenticate } from '../../middleware/index.js';
-import { validate } from '../../middleware/index.js';
+import { Router } from "express";
+import { asyncHandler, authenticate } from "../../middleware/index.js";
+import { validate } from "../../middleware/index.js";
 import {
   createCareerValidation,
   updateCareerValidation,
   careerIdValidation,
   getCareersValidation,
   updateCareerStatusValidation,
-} from '../../validations/careerValidation.js';
+} from "../../validations/careerValidation.js";
 import {
   createCareer,
   getAllCareers,
@@ -15,7 +15,7 @@ import {
   updateCareer,
   updateCareerStatus,
   deleteCareer,
-} from '../../controllers/careerController.js';
+} from "../../controllers/careerController.js";
 
 const router = Router();
 
@@ -25,11 +25,11 @@ const router = Router();
  * @access  Private (Admin)
  */
 router.post(
-  '/',
+  "/",
   authenticate,
   createCareerValidation,
   validate,
-  asyncHandler(createCareer)
+  asyncHandler(createCareer),
 );
 
 /**
@@ -38,11 +38,11 @@ router.post(
  * @access  Private (Admin)
  */
 router.get(
-  '/',
+  "/",
   authenticate,
   getCareersValidation,
   validate,
-  asyncHandler(getAllCareers)
+  asyncHandler(getAllCareers),
 );
 
 /**
@@ -51,11 +51,11 @@ router.get(
  * @access  Private (Admin)
  */
 router.get(
-  '/:id',
+  "/:id",
   authenticate,
   careerIdValidation,
   validate,
-  asyncHandler(getCareerById)
+  asyncHandler(getCareerById),
 );
 
 /**
@@ -64,12 +64,12 @@ router.get(
  * @access  Private (Admin)
  */
 router.put(
-  '/:id',
+  "/:id",
   authenticate,
   careerIdValidation,
   updateCareerValidation,
   validate,
-  asyncHandler(updateCareer)
+  asyncHandler(updateCareer),
 );
 
 /**
@@ -78,11 +78,11 @@ router.put(
  * @access  Private (Admin)
  */
 router.patch(
-  '/:id/status',
+  "/:id/status",
   authenticate,
   updateCareerStatusValidation,
   validate,
-  asyncHandler(updateCareerStatus)
+  asyncHandler(updateCareerStatus),
 );
 
 /**
@@ -91,11 +91,11 @@ router.patch(
  * @access  Private (Admin)
  */
 router.delete(
-  '/:id',
+  "/:id",
   authenticate,
   careerIdValidation,
   validate,
-  asyncHandler(deleteCareer)
+  asyncHandler(deleteCareer),
 );
 
 export default router;

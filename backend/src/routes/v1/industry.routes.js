@@ -1,6 +1,6 @@
-import { Router } from 'express';
-import { asyncHandler, authenticate } from '../../middleware/index.js';
-import { validate } from '../../middleware/index.js';
+import { Router } from "express";
+import { asyncHandler, authenticate } from "../../middleware/index.js";
+import { validate } from "../../middleware/index.js";
 import {
   createIndustryValidation,
   updateIndustryValidation,
@@ -8,7 +8,7 @@ import {
   industrySlugValidation,
   getIndustriesValidation,
   updateIndustryStatusValidation,
-} from '../../validations/industryValidation.js';
+} from "../../validations/industryValidation.js";
 import {
   createIndustry,
   getAllIndustries,
@@ -17,7 +17,7 @@ import {
   updateIndustry,
   updateIndustryStatus,
   deleteIndustry,
-} from '../../controllers/industryController.js';
+} from "../../controllers/industryController.js";
 
 const router = Router();
 
@@ -27,11 +27,11 @@ const router = Router();
  * @access  Private (Admin)
  */
 router.post(
-  '/',
+  "/",
   authenticate,
   createIndustryValidation,
   validate,
-  asyncHandler(createIndustry)
+  asyncHandler(createIndustry),
 );
 
 /**
@@ -40,11 +40,11 @@ router.post(
  * @access  Private (Admin)
  */
 router.get(
-  '/',
+  "/",
   authenticate,
   getIndustriesValidation,
   validate,
-  asyncHandler(getAllIndustries)
+  asyncHandler(getAllIndustries),
 );
 
 /**
@@ -53,11 +53,11 @@ router.get(
  * @access  Private (Admin)
  */
 router.get(
-  '/slug/:slug',
+  "/slug/:slug",
   authenticate,
   industrySlugValidation,
   validate,
-  asyncHandler(getIndustryBySlug)
+  asyncHandler(getIndustryBySlug),
 );
 
 /**
@@ -66,11 +66,11 @@ router.get(
  * @access  Private (Admin)
  */
 router.get(
-  '/:id',
+  "/:id",
   authenticate,
   industryIdValidation,
   validate,
-  asyncHandler(getIndustryById)
+  asyncHandler(getIndustryById),
 );
 
 /**
@@ -79,12 +79,12 @@ router.get(
  * @access  Private (Admin)
  */
 router.put(
-  '/:id',
+  "/:id",
   authenticate,
   industryIdValidation,
   updateIndustryValidation,
   validate,
-  asyncHandler(updateIndustry)
+  asyncHandler(updateIndustry),
 );
 
 /**
@@ -93,11 +93,11 @@ router.put(
  * @access  Private (Admin)
  */
 router.patch(
-  '/:id/status',
+  "/:id/status",
   authenticate,
   updateIndustryStatusValidation,
   validate,
-  asyncHandler(updateIndustryStatus)
+  asyncHandler(updateIndustryStatus),
 );
 
 /**
@@ -106,11 +106,11 @@ router.patch(
  * @access  Private (Admin)
  */
 router.delete(
-  '/:id',
+  "/:id",
   authenticate,
   industryIdValidation,
   validate,
-  asyncHandler(deleteIndustry)
+  asyncHandler(deleteIndustry),
 );
 
 export default router;

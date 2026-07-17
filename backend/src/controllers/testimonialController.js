@@ -1,7 +1,7 @@
-import Testimonial from '../models/Testimonial.js';
-import ApiError from '../utils/ApiError.js';
-import ApiResponse from '../utils/ApiResponse.js';
-import { logger } from '../utils/logger.js';
+import Testimonial from "../models/Testimonial.js";
+import ApiError from "../utils/ApiError.js";
+import ApiResponse from "../utils/ApiResponse.js";
+import { logger } from "../utils/logger.js";
 
 /**
  * Create testimonial
@@ -14,9 +14,11 @@ export const createTestimonial = async (req, res, next) => {
 
     logger.info(`Testimonial created: ${testimonial.clientName}`);
 
-    return res.status(201).json(
-      ApiResponse.success('Testimonial created successfully', testimonial)
-    );
+    return res
+      .status(201)
+      .json(
+        ApiResponse.success("Testimonial created successfully", testimonial),
+      );
   } catch (error) {
     next(error);
   }
@@ -27,16 +29,25 @@ export const createTestimonial = async (req, res, next) => {
  */
 export const getAllTestimonials = async (req, res, next) => {
   try {
-    const { page = 1, limit = 10, status, featured, rating, search, sortBy = 'displayOrder', sortOrder = 'asc' } = req.query;
+    const {
+      page = 1,
+      limit = 10,
+      status,
+      featured,
+      rating,
+      search,
+      sortBy = "displayOrder",
+      sortOrder = "asc",
+    } = req.query;
 
     const query = {};
-    
+
     if (status) {
       query.status = status;
     }
-    
+
     if (featured !== undefined) {
-      query.featured = featured === 'true';
+      query.featured = featured === "true";
     }
 
     if (rating) {
@@ -45,16 +56,16 @@ export const getAllTestimonials = async (req, res, next) => {
 
     if (search) {
       query.$or = [
-        { clientName: { $regex: search, $options: 'i' } },
-        { company: { $regex: search, $options: 'i' } },
-        { review: { $regex: search, $options: 'i' } },
+        { clientName: { $regex: search, $options: "i" } },
+        { company: { $regex: search, $options: "i" } },
+        { review: { $regex: search, $options: "i" } },
       ];
     }
 
     const skip = (page - 1) * limit;
 
     const sortOptions = {};
-    sortOptions[sortBy] = sortOrder === 'asc' ? 1 : -1;
+    sortOptions[sortBy] = sortOrder === "asc" ? 1 : -1;
 
     const [testimonials, total] = await Promise.all([
       Testimonial.find(query)
@@ -65,7 +76,7 @@ export const getAllTestimonials = async (req, res, next) => {
     ]);
 
     return res.status(200).json(
-      ApiResponse.success('Testimonials retrieved successfully', {
+      ApiResponse.success("Testimonials retrieved successfully", {
         testimonials,
         pagination: {
           page: parseInt(page),
@@ -73,7 +84,7 @@ export const getAllTestimonials = async (req, res, next) => {
           total,
           pages: Math.ceil(total / limit),
         },
-      })
+      }),
     );
   } catch (error) {
     next(error);
@@ -90,12 +101,14 @@ export const getTestimonialById = async (req, res, next) => {
     const testimonial = await Testimonial.findById(id);
 
     if (!testimonial) {
-      throw ApiError.notFound('Testimonial not found');
+      throw ApiError.notFound("Testimonial not found");
     }
 
-    return res.status(200).json(
-      ApiResponse.success('Testimonial retrieved successfully', testimonial)
-    );
+    return res
+      .status(200)
+      .json(
+        ApiResponse.success("Testimonial retrieved successfully", testimonial),
+      );
   } catch (error) {
     next(error);
   }
@@ -109,21 +122,22 @@ export const updateTestimonial = async (req, res, next) => {
     const { id } = req.params;
     const updateData = req.body;
 
-    const testimonial = await Testimonial.findByIdAndUpdate(
-      id,
-      updateData,
-      { new: true, runValidators: true }
-    );
+    const testimonial = await Testimonial.findByIdAndUpdate(id, updateData, {
+      new: true,
+      runValidators: true,
+    });
 
     if (!testimonial) {
-      throw ApiError.notFound('Testimonial not found');
+      throw ApiError.notFound("Testimonial not found");
     }
 
     logger.info(`Testimonial updated: ${testimonial.clientName}`);
 
-    return res.status(200).json(
-      ApiResponse.success('Testimonial updated successfully', testimonial)
-    );
+    return res
+      .status(200)
+      .json(
+        ApiResponse.success("Testimonial updated successfully", testimonial),
+      );
   } catch (error) {
     next(error);
   }
@@ -139,17 +153,24 @@ export const toggleTestimonialFeatured = async (req, res, next) => {
     const testimonial = await Testimonial.findById(id);
 
     if (!testimonial) {
-      throw ApiError.notFound('Testimonial not found');
+      throw ApiError.notFound("Testimonial not found");
     }
 
     testimonial.featured = !testimonial.featured;
     await testimonial.save();
 
-    logger.info(`Testimonial featured toggled: ${testimonial.clientName} - ${testimonial.featured}`);
-
-    return res.status(200).json(
-      ApiResponse.success('Testimonial featured status toggled successfully', testimonial)
+    logger.info(
+      `Testimonial featured toggled: ${testimonial.clientName} - ${testimonial.featured}`,
     );
+
+    return res
+      .status(200)
+      .json(
+        ApiResponse.success(
+          "Testimonial featured status toggled successfully",
+          testimonial,
+        ),
+      );
   } catch (error) {
     next(error);
   }
@@ -163,25 +184,32 @@ export const updateTestimonialStatus = async (req, res, next) => {
     const { id } = req.params;
     const { status } = req.body;
 
-    if (!['active', 'inactive'].includes(status)) {
-      throw ApiError.badRequest('Invalid status value');
+    if (!["active", "inactive"].includes(status)) {
+      throw ApiError.badRequest("Invalid status value");
     }
 
     const testimonial = await Testimonial.findByIdAndUpdate(
       id,
       { status },
-      { new: true, runValidators: true }
+      { new: true, runValidators: true },
     );
 
     if (!testimonial) {
-      throw ApiError.notFound('Testimonial not found');
+      throw ApiError.notFound("Testimonial not found");
     }
 
-    logger.info(`Testimonial status updated: ${testimonial.clientName} - ${status}`);
-
-    return res.status(200).json(
-      ApiResponse.success('Testimonial status updated successfully', testimonial)
+    logger.info(
+      `Testimonial status updated: ${testimonial.clientName} - ${status}`,
     );
+
+    return res
+      .status(200)
+      .json(
+        ApiResponse.success(
+          "Testimonial status updated successfully",
+          testimonial,
+        ),
+      );
   } catch (error) {
     next(error);
   }
@@ -196,26 +224,33 @@ export const updateTestimonialDisplayOrder = async (req, res, next) => {
     const { displayOrder } = req.body;
 
     const order = parseInt(displayOrder, 10);
-    
+
     if (isNaN(order) || order < 0) {
-      throw ApiError.badRequest('Display order must be a non-negative number');
+      throw ApiError.badRequest("Display order must be a non-negative number");
     }
 
     const testimonial = await Testimonial.findByIdAndUpdate(
       id,
       { displayOrder: order },
-      { new: true, runValidators: true }
+      { new: true, runValidators: true },
     );
 
     if (!testimonial) {
-      throw ApiError.notFound('Testimonial not found');
+      throw ApiError.notFound("Testimonial not found");
     }
 
-    logger.info(`Testimonial display order updated: ${testimonial.clientName} - ${order}`);
-
-    return res.status(200).json(
-      ApiResponse.success('Testimonial display order updated successfully', testimonial)
+    logger.info(
+      `Testimonial display order updated: ${testimonial.clientName} - ${order}`,
     );
+
+    return res
+      .status(200)
+      .json(
+        ApiResponse.success(
+          "Testimonial display order updated successfully",
+          testimonial,
+        ),
+      );
   } catch (error) {
     next(error);
   }
@@ -231,14 +266,14 @@ export const deleteTestimonial = async (req, res, next) => {
     const testimonial = await Testimonial.findByIdAndDelete(id);
 
     if (!testimonial) {
-      throw ApiError.notFound('Testimonial not found');
+      throw ApiError.notFound("Testimonial not found");
     }
 
     logger.info(`Testimonial deleted: ${testimonial.clientName}`);
 
-    return res.status(200).json(
-      ApiResponse.success('Testimonial deleted successfully')
-    );
+    return res
+      .status(200)
+      .json(ApiResponse.success("Testimonial deleted successfully"));
   } catch (error) {
     next(error);
   }

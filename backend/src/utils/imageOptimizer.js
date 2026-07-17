@@ -1,18 +1,23 @@
-import getCloudinary from '../config/cloudinary.js';
+import getCloudinary from "../config/cloudinary.js";
 
 /**
  * Upload image to Cloudinary with optimizations (from buffer)
  */
-export const uploadImageToCloudinary = async (buffer, originalName, folder = 'general', options = {}) => {
+export const uploadImageToCloudinary = async (
+  buffer,
+  originalName,
+  folder = "general",
+  options = {},
+) => {
   try {
     const cloudinary = getCloudinary();
-    
+
     const uploadOptions = {
       folder,
-      resource_type: 'auto',
+      resource_type: "auto",
       transformation: [
-        { quality: 'auto', fetch_format: 'auto' },
-        { width: options.width || 1920, crop: 'limit' },
+        { quality: "auto", fetch_format: "auto" },
+        { width: options.width || 1920, crop: "limit" },
       ],
       public_id: options.publicId,
       ...options,
@@ -20,13 +25,12 @@ export const uploadImageToCloudinary = async (buffer, originalName, folder = 'ge
 
     // Upload buffer to Cloudinary
     const result = await new Promise((resolve, reject) => {
-      cloudinary.uploader.upload_stream(
-        uploadOptions,
-        (error, result) => {
+      cloudinary.uploader
+        .upload_stream(uploadOptions, (error, result) => {
           if (error) reject(error);
           else resolve(result);
-        }
-      ).end(buffer);
+        })
+        .end(buffer);
     });
 
     return {
@@ -47,9 +51,18 @@ export const uploadImageToCloudinary = async (buffer, originalName, folder = 'ge
 /**
  * Upload multiple images to Cloudinary
  */
-export const uploadMultipleImagesToCloudinary = async (fileObjects, folder = 'general', options = {}) => {
-  const uploadPromises = fileObjects.map((fileObj) => 
-    uploadImageToCloudinary(fileObj.buffer, fileObj.originalName, folder, options)
+export const uploadMultipleImagesToCloudinary = async (
+  fileObjects,
+  folder = "general",
+  options = {},
+) => {
+  const uploadPromises = fileObjects.map((fileObj) =>
+    uploadImageToCloudinary(
+      fileObj.buffer,
+      fileObj.originalName,
+      folder,
+      options,
+    ),
   );
   return Promise.all(uploadPromises);
 };
@@ -61,8 +74,8 @@ export const generateThumbnailUrl = (publicId, width = 300, height = 300) => {
   const cloudinary = getCloudinary();
   return cloudinary.url(publicId, {
     transformation: [
-      { width, height, crop: 'fill' },
-      { quality: 'auto', fetch_format: 'auto' },
+      { width, height, crop: "fill" },
+      { quality: "auto", fetch_format: "auto" },
     ],
   });
 };
@@ -72,14 +85,12 @@ export const generateThumbnailUrl = (publicId, width = 300, height = 300) => {
  */
 export const generateOptimizedImageUrl = (publicId, options = {}) => {
   const cloudinary = getCloudinary();
-  const { width, height, quality = 'auto', format = 'auto' } = options;
-  
-  const transformation = [
-    { quality, fetch_format: format },
-  ];
+  const { width, height, quality = "auto", format = "auto" } = options;
 
-  if (width) transformation.push({ width, crop: 'limit' });
-  if (height) transformation.push({ height, crop: 'limit' });
+  const transformation = [{ quality, fetch_format: format }];
+
+  if (width) transformation.push({ width, crop: "limit" });
+  if (height) transformation.push({ height, crop: "limit" });
 
   return cloudinary.url(publicId, { transformation });
 };
@@ -91,7 +102,7 @@ export const deleteImageFromCloudinary = async (publicId) => {
   try {
     const cloudinary = getCloudinary();
     const result = await cloudinary.uploader.destroy(publicId, {
-      resource_type: 'image',
+      resource_type: "image",
     });
     return result;
   } catch (error) {
@@ -106,7 +117,7 @@ export const deleteMultipleImagesFromCloudinary = async (publicIds) => {
   try {
     const cloudinary = getCloudinary();
     const result = await cloudinary.api.delete_resources(publicIds, {
-      resource_type: 'image',
+      resource_type: "image",
     });
     return result;
   } catch (error) {

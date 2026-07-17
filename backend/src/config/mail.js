@@ -1,20 +1,20 @@
-import nodemailer from 'nodemailer';
-import dns from 'dns';
-import { logger } from '../utils/logger.js';
+import nodemailer from "nodemailer";
+import dns from "dns";
+import { logger } from "../utils/logger.js";
 
 let transporter = null;
 
 export const initializeMail = () => {
   try {
     // Force Node to prioritize IPv4 over IPv6 during DNS resolution to avoid ENETUNREACH in cloud environments
-    if (typeof dns.setDefaultResultOrder === 'function') {
-      dns.setDefaultResultOrder('ipv4first');
+    if (typeof dns.setDefaultResultOrder === "function") {
+      dns.setDefaultResultOrder("ipv4first");
     }
 
     transporter = nodemailer.createTransport({
       host: process.env.SMTP_HOST,
       port: process.env.SMTP_PORT,
-      secure: process.env.SMTP_PORT === '465',
+      secure: process.env.SMTP_PORT === "465",
       auth: {
         user: process.env.SMTP_USER,
         pass: process.env.SMTP_PASS,
@@ -22,9 +22,9 @@ export const initializeMail = () => {
       family: 4, // Force IPv4 to prevent ENETUNREACH issues on cloud hosting providers
     });
 
-    logger.info('Mail transporter initialized');
+    logger.info("Mail transporter initialized");
   } catch (error) {
-    logger.error('Failed to initialize mail transporter:', error);
+    logger.error("Failed to initialize mail transporter:", error);
   }
 };
 
@@ -32,14 +32,14 @@ export const sendMail = async (options) => {
   // If RESEND_API_KEY is configured, use Resend HTTP API (ideal for Render Free Tier)
   if (process.env.RESEND_API_KEY) {
     try {
-      const response = await fetch('https://api.resend.com/emails', {
-        method: 'POST',
+      const response = await fetch("https://api.resend.com/emails", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${process.env.RESEND_API_KEY}`,
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
         },
         body: JSON.stringify({
-          from: process.env.SMTP_FROM || 'onboarding@resend.dev',
+          from: process.env.SMTP_FROM || "onboarding@resend.dev",
           to: Array.isArray(options.to) ? options.to : [options.to],
           subject: options.subject,
           html: options.html,
@@ -49,20 +49,25 @@ export const sendMail = async (options) => {
 
       const data = await response.json();
       if (!response.ok) {
-        throw new Error(data.message || `Resend API error (${response.status})`);
+        throw new Error(
+          data.message || `Resend API error (${response.status})`,
+        );
       }
 
-      logger.info('Email sent via Resend API:', data.id);
+      logger.info("Email sent via Resend API:", data.id);
       return data;
     } catch (error) {
-      logger.error('Error sending email via Resend API: ' + (error?.message || error), error);
+      logger.error(
+        "Error sending email via Resend API: " + (error?.message || error),
+        error,
+      );
       throw error;
     }
   }
 
   // Fallback to standard SMTP Nodemailer transporter
   if (!transporter) {
-    throw new Error('Mail transporter not initialized');
+    throw new Error("Mail transporter not initialized");
   }
 
   try {
@@ -75,14 +80,13 @@ export const sendMail = async (options) => {
     };
 
     const info = await transporter.sendMail(mailOptions);
-    logger.info('Email sent:', info.messageId);
+    logger.info("Email sent:", info.messageId);
     return info;
   } catch (error) {
-    logger.error('Error sending email: ' + (error?.message || error), error);
+    logger.error("Error sending email: " + (error?.message || error), error);
     throw error;
   }
 };
-
 
 export const sendVerificationEmail = async (email, verificationUrl) => {
   const html = `
@@ -94,7 +98,7 @@ export const sendVerificationEmail = async (email, verificationUrl) => {
 
   return sendMail({
     to: email,
-    subject: 'Verify Your Email',
+    subject: "Verify Your Email",
     html,
   });
 };
@@ -110,7 +114,7 @@ export const sendPasswordResetEmail = async (email, resetUrl) => {
 
   return sendMail({
     to: email,
-    subject: 'Reset Your Password',
+    subject: "Reset Your Password",
     html,
   });
 };
@@ -124,7 +128,7 @@ export const sendWelcomeEmail = async (email, name) => {
 
   return sendMail({
     to: email,
-    subject: 'Welcome to Neosix',
+    subject: "Welcome to Neosix",
     html,
   });
 };
@@ -152,11 +156,11 @@ export const sendContactNotificationEmail = async (adminEmail, details) => {
             </tr>
             <tr>
               <td style="padding: 10px 0; font-weight: 600; color: #0f172a; border-bottom: 1px solid #f1f5f9; vertical-align: top;">Phone:</td>
-              <td style="padding: 10px 0; color: #334155; border-bottom: 1px solid #f1f5f9; vertical-align: top;">${phone || 'N/A'}</td>
+              <td style="padding: 10px 0; color: #334155; border-bottom: 1px solid #f1f5f9; vertical-align: top;">${phone || "N/A"}</td>
             </tr>
             <tr>
               <td style="padding: 10px 0; font-weight: 600; color: #0f172a; border-bottom: 1px solid #f1f5f9; vertical-align: top;">Company:</td>
-              <td style="padding: 10px 0; color: #334155; border-bottom: 1px solid #f1f5f9; vertical-align: top;">${company || 'N/A'}</td>
+              <td style="padding: 10px 0; color: #334155; border-bottom: 1px solid #f1f5f9; vertical-align: top;">${company || "N/A"}</td>
             </tr>
             <tr>
               <td style="padding: 10px 0; font-weight: 600; color: #0f172a; border-bottom: 1px solid #f1f5f9; vertical-align: top;">Subject:</td>
@@ -217,7 +221,10 @@ export const sendContactConfirmationEmail = async (userEmail, details) => {
   });
 };
 
-export const sendJobApplicationNotificationEmail = async (adminEmail, details) => {
+export const sendJobApplicationNotificationEmail = async (
+  adminEmail,
+  details,
+) => {
   const { name, email, phone, careerTitle, resumeUrl, coverLetter } = details;
   const html = `
     <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #f8fafc; padding: 32px 16px; color: #334155; line-height: 1.6;">
@@ -240,7 +247,7 @@ export const sendJobApplicationNotificationEmail = async (adminEmail, details) =
             </tr>
             <tr>
               <td style="padding: 10px 0; font-weight: 600; color: #0f172a; border-bottom: 1px solid #f1f5f9; vertical-align: top;">Phone:</td>
-              <td style="padding: 10px 0; color: #334155; border-bottom: 1px solid #f1f5f9; vertical-align: top;">${phone || 'N/A'}</td>
+              <td style="padding: 10px 0; color: #334155; border-bottom: 1px solid #f1f5f9; vertical-align: top;">${phone || "N/A"}</td>
             </tr>
             <tr>
               <td style="padding: 10px 0; font-weight: 600; color: #0f172a; border-bottom: 1px solid #f1f5f9; vertical-align: top;">Position:</td>
@@ -248,7 +255,7 @@ export const sendJobApplicationNotificationEmail = async (adminEmail, details) =
             </tr>
             <tr>
               <td style="padding: 10px 0; font-weight: 600; color: #0f172a; vertical-align: top;">Cover Letter:</td>
-              <td style="padding: 10px 0; color: #334155; white-space: pre-wrap; vertical-align: top;">${coverLetter || 'None provided.'}</td>
+              <td style="padding: 10px 0; color: #334155; white-space: pre-wrap; vertical-align: top;">${coverLetter || "None provided."}</td>
             </tr>
           </table>
 
@@ -275,7 +282,10 @@ export const sendJobApplicationNotificationEmail = async (adminEmail, details) =
   });
 };
 
-export const sendJobApplicationConfirmationEmail = async (userEmail, details) => {
+export const sendJobApplicationConfirmationEmail = async (
+  userEmail,
+  details,
+) => {
   const { name, careerTitle } = details;
   const html = `
     <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #f8fafc; padding: 32px 16px; color: #334155; line-height: 1.6;">

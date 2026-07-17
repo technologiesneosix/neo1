@@ -1,6 +1,6 @@
-import { Router } from 'express';
-import { asyncHandler, authenticate } from '../../middleware/index.js';
-import { validate } from '../../middleware/index.js';
+import { Router } from "express";
+import { asyncHandler, authenticate } from "../../middleware/index.js";
+import { validate } from "../../middleware/index.js";
 import {
   createTeamValidation,
   updateTeamValidation,
@@ -8,7 +8,7 @@ import {
   getTeamValidation,
   updateTeamStatusValidation,
   updateTeamDisplayOrderValidation,
-} from '../../validations/teamValidation.js';
+} from "../../validations/teamValidation.js";
 import {
   createTeamMember,
   getAllTeamMembers,
@@ -17,7 +17,7 @@ import {
   updateTeamMemberStatus,
   updateTeamMemberDisplayOrder,
   deleteTeamMember,
-} from '../../controllers/teamController.js';
+} from "../../controllers/teamController.js";
 
 const router = Router();
 
@@ -27,11 +27,11 @@ const router = Router();
  * @access  Private (Admin)
  */
 router.post(
-  '/',
+  "/",
   authenticate,
   createTeamValidation,
   validate,
-  asyncHandler(createTeamMember)
+  asyncHandler(createTeamMember),
 );
 
 /**
@@ -40,11 +40,11 @@ router.post(
  * @access  Private (Admin)
  */
 router.get(
-  '/',
+  "/",
   authenticate,
   getTeamValidation,
   validate,
-  asyncHandler(getAllTeamMembers)
+  asyncHandler(getAllTeamMembers),
 );
 
 /**
@@ -53,11 +53,11 @@ router.get(
  * @access  Private (Admin)
  */
 router.get(
-  '/:id',
+  "/:id",
   authenticate,
   teamIdValidation,
   validate,
-  asyncHandler(getTeamMemberById)
+  asyncHandler(getTeamMemberById),
 );
 
 /**
@@ -66,12 +66,12 @@ router.get(
  * @access  Private (Admin)
  */
 router.put(
-  '/:id',
+  "/:id",
   authenticate,
   teamIdValidation,
   updateTeamValidation,
   validate,
-  asyncHandler(updateTeamMember)
+  asyncHandler(updateTeamMember),
 );
 
 /**
@@ -80,11 +80,11 @@ router.put(
  * @access  Private (Admin)
  */
 router.patch(
-  '/:id/status',
+  "/:id/status",
   authenticate,
   updateTeamStatusValidation,
   validate,
-  asyncHandler(updateTeamMemberStatus)
+  asyncHandler(updateTeamMemberStatus),
 );
 
 /**
@@ -93,11 +93,11 @@ router.patch(
  * @access  Private (Admin)
  */
 router.patch(
-  '/:id/display-order',
+  "/:id/display-order",
   authenticate,
   updateTeamDisplayOrderValidation,
   validate,
-  asyncHandler(updateTeamMemberDisplayOrder)
+  asyncHandler(updateTeamMemberDisplayOrder),
 );
 
 /**
@@ -106,11 +106,11 @@ router.patch(
  * @access  Private (Admin)
  */
 router.delete(
-  '/:id',
+  "/:id",
   authenticate,
   teamIdValidation,
   validate,
-  asyncHandler(deleteTeamMember)
+  asyncHandler(deleteTeamMember),
 );
 
 export default router;

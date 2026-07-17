@@ -1,10 +1,10 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const websiteSettingSchema = new mongoose.Schema(
   {
     siteName: {
       type: String,
-      required: [true, 'Site name is required'],
+      required: [true, "Site name is required"],
       trim: true,
     },
     tagline: {
@@ -22,10 +22,10 @@ const websiteSettingSchema = new mongoose.Schema(
     },
     contactEmail: {
       type: String,
-      required: [true, 'Contact email is required'],
+      required: [true, "Contact email is required"],
       trim: true,
       lowercase: true,
-      match: [/^\S+@\S+\.\S+$/, 'Please provide a valid email'],
+      match: [/^\S+@\S+\.\S+$/, "Please provide a valid email"],
     },
     phone: {
       type: String,
@@ -74,7 +74,7 @@ const websiteSettingSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 // Only one website settings document should exist
@@ -86,6 +86,6 @@ websiteSettingSchema.statics.getSettings = async function () {
   return settings;
 };
 
-const WebsiteSetting = mongoose.model('WebsiteSetting', websiteSettingSchema);
+const WebsiteSetting = mongoose.model("WebsiteSetting", websiteSettingSchema);
 
 export default WebsiteSetting;

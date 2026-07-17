@@ -1,8 +1,11 @@
-import ContactMessage from '../models/ContactMessage.js';
-import ApiError from '../utils/ApiError.js';
-import ApiResponse from '../utils/ApiResponse.js';
-import { logger } from '../utils/logger.js';
-import { sendContactNotificationEmail, sendContactConfirmationEmail } from '../config/mail.js';
+import ContactMessage from "../models/ContactMessage.js";
+import ApiError from "../utils/ApiError.js";
+import ApiResponse from "../utils/ApiResponse.js";
+import { logger } from "../utils/logger.js";
+import {
+  sendContactNotificationEmail,
+  sendContactConfirmationEmail,
+} from "../config/mail.js";
 
 /**
  * Create a new contact message
@@ -12,7 +15,7 @@ export const createContactMessage = async (req, res, next) => {
     const { name, email, phone, company, subject, message } = req.body;
 
     // Map frontend 'read' field to backend 'status' if provided
-    const status = req.body.read === true ? 'read' : 'unread';
+    const status = req.body.read === true ? "read" : "unread";
 
     const contactMessage = await ContactMessage.create({
       name,
@@ -27,7 +30,8 @@ export const createContactMessage = async (req, res, next) => {
     logger.info(`Contact message created from ${email}`);
 
     // Send email notifications asynchronously (non-blocking)
-    const adminEmail = process.env.ADMIN_EMAIL || 'technologiesneosix@gmail.com';
+    const adminEmail =
+      process.env.ADMIN_EMAIL || "technologiesneosix@gmail.com";
     sendContactNotificationEmail(adminEmail, {
       name,
       email,
@@ -36,24 +40,32 @@ export const createContactMessage = async (req, res, next) => {
       subject,
       message,
     }).catch((err) => {
-      logger.error('Failed to send contact notification email to admin: ' + (err?.message || err), err);
+      logger.error(
+        "Failed to send contact notification email to admin: " +
+          (err?.message || err),
+        err,
+      );
     });
 
     sendContactConfirmationEmail(email, {
       name,
       subject,
     }).catch((err) => {
-      logger.error('Failed to send contact confirmation email to user: ' + (err?.message || err), err);
+      logger.error(
+        "Failed to send contact confirmation email to user: " +
+          (err?.message || err),
+        err,
+      );
     });
 
     return res.status(201).json(
-      ApiResponse.success('Message sent successfully', {
+      ApiResponse.success("Message sent successfully", {
         id: contactMessage._id,
-        message: 'Message sent successfully',
-      })
+        message: "Message sent successfully",
+      }),
     );
   } catch (error) {
-    logger.error('Contact message creation error:', error);
+    logger.error("Contact message creation error:", error);
     next(error);
   }
 };
@@ -72,9 +84,9 @@ export const getAllContactMessages = async (req, res, next) => {
 
     if (search) {
       query.$or = [
-        { name: { $regex: search, $options: 'i' } },
-        { email: { $regex: search, $options: 'i' } },
-        { subject: { $regex: search, $options: 'i' } },
+        { name: { $regex: search, $options: "i" } },
+        { email: { $regex: search, $options: "i" } },
+        { subject: { $regex: search, $options: "i" } },
       ];
     }
 
@@ -89,7 +101,7 @@ export const getAllContactMessages = async (req, res, next) => {
     ]);
 
     return res.status(200).json(
-      ApiResponse.success('Contact messages retrieved successfully', {
+      ApiResponse.success("Contact messages retrieved successfully", {
         messages,
         pagination: {
           page: parseInt(page),
@@ -97,7 +109,7 @@ export const getAllContactMessages = async (req, res, next) => {
           total,
           pages: Math.ceil(total / limit),
         },
-      })
+      }),
     );
   } catch (error) {
     next(error);
@@ -113,12 +125,14 @@ export const getContactMessageById = async (req, res, next) => {
     const message = await ContactMessage.findById(id);
 
     if (!message) {
-      throw ApiError.notFound('Contact message not found');
+      throw ApiError.notFound("Contact message not found");
     }
 
-    return res.status(200).json(
-      ApiResponse.success('Contact message retrieved successfully', message)
-    );
+    return res
+      .status(200)
+      .json(
+        ApiResponse.success("Contact message retrieved successfully", message),
+      );
   } catch (error) {
     next(error);
   }
@@ -132,20 +146,21 @@ export const updateContactMessage = async (req, res, next) => {
     const { id } = req.params;
     const updateData = req.body;
 
-    const message = await ContactMessage.findByIdAndUpdate(
-      id,
-      updateData,
-      { new: true, runValidators: true }
-    );
+    const message = await ContactMessage.findByIdAndUpdate(id, updateData, {
+      new: true,
+      runValidators: true,
+    });
 
     if (!message) {
-      throw ApiError.notFound('Contact message not found');
+      throw ApiError.notFound("Contact message not found");
     }
 
     logger.info(`Contact message updated for ID ${id}`);
-    return res.status(200).json(
-      ApiResponse.success('Contact message updated successfully', message)
-    );
+    return res
+      .status(200)
+      .json(
+        ApiResponse.success("Contact message updated successfully", message),
+      );
   } catch (error) {
     next(error);
   }
@@ -160,13 +175,13 @@ export const deleteContactMessage = async (req, res, next) => {
     const message = await ContactMessage.findByIdAndDelete(id);
 
     if (!message) {
-      throw ApiError.notFound('Contact message not found');
+      throw ApiError.notFound("Contact message not found");
     }
 
     logger.info(`Contact message deleted for ID ${id}`);
-    return res.status(200).json(
-      ApiResponse.success('Contact message deleted successfully')
-    );
+    return res
+      .status(200)
+      .json(ApiResponse.success("Contact message deleted successfully"));
   } catch (error) {
     next(error);
   }

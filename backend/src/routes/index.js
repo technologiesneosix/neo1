@@ -1,1 +1,1 @@
-export { default as v1Routes } from './v1/index.js';
+export { default as v1Routes } from "./v1/index.js";

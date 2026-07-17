@@ -1,20 +1,20 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const pricingPlanSchema = new mongoose.Schema(
   {
     name: {
       type: String,
-      required: [true, 'Name is required'],
+      required: [true, "Name is required"],
       trim: true,
     },
     price: {
       type: Number,
-      required: [true, 'Price is required'],
-      min: [0, 'Price must be non-negative'],
+      required: [true, "Price is required"],
+      min: [0, "Price must be non-negative"],
     },
     period: {
       type: String,
-      default: 'per month',
+      default: "per month",
       trim: true,
     },
     description: {
@@ -31,7 +31,7 @@ const pricingPlanSchema = new mongoose.Schema(
     },
     ctaLabel: {
       type: String,
-      default: 'Sign Up Now',
+      default: "Sign Up Now",
       trim: true,
     },
     displayOrder: {
@@ -41,12 +41,12 @@ const pricingPlanSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 // Indexes
 pricingPlanSchema.index({ displayOrder: 1 });
 
-const PricingPlan = mongoose.model('PricingPlan', pricingPlanSchema);
+const PricingPlan = mongoose.model("PricingPlan", pricingPlanSchema);
 
 export default PricingPlan;

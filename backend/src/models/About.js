@@ -1,29 +1,29 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const aboutSchema = new mongoose.Schema(
   {
     companyName: {
       type: String,
-      required: [true, 'Company name is required'],
+      required: [true, "Company name is required"],
       trim: true,
     },
     shortDescription: {
       type: String,
-      required: [true, 'Short description is required'],
+      required: [true, "Short description is required"],
       trim: true,
-      maxlength: [500, 'Short description cannot exceed 500 characters'],
+      maxlength: [500, "Short description cannot exceed 500 characters"],
     },
     fullDescription: {
       type: String,
-      required: [true, 'Full description is required'],
+      required: [true, "Full description is required"],
     },
     mission: {
       type: String,
-      required: [true, 'Mission is required'],
+      required: [true, "Mission is required"],
     },
     vision: {
       type: String,
-      required: [true, 'Vision is required'],
+      required: [true, "Vision is required"],
     },
     journey: {
       type: String,
@@ -48,9 +48,9 @@ const aboutSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
-const About = mongoose.model('About', aboutSchema);
+const About = mongoose.model("About", aboutSchema);
 
 export default About;

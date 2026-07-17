@@ -1,13 +1,13 @@
-import mongoose from 'mongoose';
-import { generateSlug } from '../utils/generateSlug.js';
+import mongoose from "mongoose";
+import { generateSlug } from "../utils/generateSlug.js";
 
 const technologySchema = new mongoose.Schema(
   {
     name: {
       type: String,
-      required: [true, 'Name is required'],
+      required: [true, "Name is required"],
       trim: true,
-      maxlength: [100, 'Name cannot exceed 100 characters'],
+      maxlength: [100, "Name cannot exceed 100 characters"],
     },
     slug: {
       type: String,
@@ -17,8 +17,16 @@ const technologySchema = new mongoose.Schema(
     },
     category: {
       type: String,
-      required: [true, 'Category is required'],
-      enum: ['frontend', 'backend', 'database', 'devops', 'mobile', 'design', 'other'],
+      required: [true, "Category is required"],
+      enum: [
+        "frontend",
+        "backend",
+        "database",
+        "devops",
+        "mobile",
+        "design",
+        "other",
+      ],
     },
     logo: {
       type: String,
@@ -39,18 +47,18 @@ const technologySchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ['draft', 'published', 'archived'],
-      default: 'draft',
+      enum: ["draft", "published", "archived"],
+      default: "draft",
     },
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 // Generate slug before saving
-technologySchema.pre('save', function (next) {
-  if (this.isModified('name') && !this.slug) {
+technologySchema.pre("save", function (next) {
+  if (this.isModified("name") && !this.slug) {
     this.slug = generateSlug(this.name);
   }
   next();
@@ -61,6 +69,6 @@ technologySchema.index({ category: 1 });
 technologySchema.index({ status: 1 });
 technologySchema.index({ displayOrder: 1 });
 
-const Technology = mongoose.model('Technology', technologySchema);
+const Technology = mongoose.model("Technology", technologySchema);
 
 export default Technology;

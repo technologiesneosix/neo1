@@ -1,12 +1,12 @@
-import { Router } from 'express';
-import { asyncHandler, authenticate } from '../../middleware/index.js';
-import { validate } from '../../middleware/index.js';
+import { Router } from "express";
+import { asyncHandler, authenticate } from "../../middleware/index.js";
+import { validate } from "../../middleware/index.js";
 import {
   createHeroValidation,
   updateHeroValidation,
   heroIdValidation,
   getHeroesValidation,
-} from '../../validations/heroValidation.js';
+} from "../../validations/heroValidation.js";
 import {
   createHero,
   getAllHeroes,
@@ -14,7 +14,7 @@ import {
   updateHero,
   toggleHeroStatus,
   deleteHero,
-} from '../../controllers/heroController.js';
+} from "../../controllers/heroController.js";
 
 const router = Router();
 
@@ -24,11 +24,11 @@ const router = Router();
  * @access  Private (Admin)
  */
 router.post(
-  '/',
+  "/",
   authenticate,
   createHeroValidation,
   validate,
-  asyncHandler(createHero)
+  asyncHandler(createHero),
 );
 
 /**
@@ -37,11 +37,11 @@ router.post(
  * @access  Private (Admin)
  */
 router.get(
-  '/',
+  "/",
   authenticate,
   getHeroesValidation,
   validate,
-  asyncHandler(getAllHeroes)
+  asyncHandler(getAllHeroes),
 );
 
 /**
@@ -50,11 +50,11 @@ router.get(
  * @access  Private (Admin)
  */
 router.get(
-  '/:id',
+  "/:id",
   authenticate,
   heroIdValidation,
   validate,
-  asyncHandler(getHeroById)
+  asyncHandler(getHeroById),
 );
 
 /**
@@ -63,12 +63,12 @@ router.get(
  * @access  Private (Admin)
  */
 router.put(
-  '/:id',
+  "/:id",
   authenticate,
   heroIdValidation,
   updateHeroValidation,
   validate,
-  asyncHandler(updateHero)
+  asyncHandler(updateHero),
 );
 
 /**
@@ -77,11 +77,11 @@ router.put(
  * @access  Private (Admin)
  */
 router.patch(
-  '/:id/toggle-status',
+  "/:id/toggle-status",
   authenticate,
   heroIdValidation,
   validate,
-  asyncHandler(toggleHeroStatus)
+  asyncHandler(toggleHeroStatus),
 );
 
 /**
@@ -90,11 +90,11 @@ router.patch(
  * @access  Private (Admin)
  */
 router.delete(
-  '/:id',
+  "/:id",
   authenticate,
   heroIdValidation,
   validate,
-  asyncHandler(deleteHero)
+  asyncHandler(deleteHero),
 );
 
 export default router;

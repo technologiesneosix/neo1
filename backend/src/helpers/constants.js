@@ -1,13 +1,13 @@
 export const USER_ROLES = {
-  ADMIN: 'admin',
-  USER: 'user',
+  ADMIN: "admin",
+  USER: "user",
 };
 
 export const USER_STATUS = {
-  ACTIVE: 'active',
-  INACTIVE: 'inactive',
-  SUSPENDED: 'suspended',
-  PENDING: 'pending',
+  ACTIVE: "active",
+  INACTIVE: "inactive",
+  SUSPENDED: "suspended",
+  PENDING: "pending",
 };
 
 export const HTTP_STATUS = {
@@ -33,8 +33,12 @@ export const PAGINATION = {
 
 export const FILE_UPLOAD = {
   MAX_FILE_SIZE: 5 * 1024 * 1024, // 5MB
-  ALLOWED_IMAGE_TYPES: ['image/jpeg', 'image/png', 'image/gif', 'image/webp'],
-  ALLOWED_DOCUMENT_TYPES: ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'],
+  ALLOWED_IMAGE_TYPES: ["image/jpeg", "image/png", "image/gif", "image/webp"],
+  ALLOWED_DOCUMENT_TYPES: [
+    "application/pdf",
+    "application/msword",
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+  ],
 };
 
 export const RATE_LIMITS = {

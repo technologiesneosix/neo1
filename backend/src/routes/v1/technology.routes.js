@@ -1,6 +1,6 @@
-import { Router } from 'express';
-import { asyncHandler, authenticate } from '../../middleware/index.js';
-import { validate } from '../../middleware/index.js';
+import { Router } from "express";
+import { asyncHandler, authenticate } from "../../middleware/index.js";
+import { validate } from "../../middleware/index.js";
 import {
   createTechnologyValidation,
   updateTechnologyValidation,
@@ -9,7 +9,7 @@ import {
   getTechnologiesValidation,
   updateTechnologyStatusValidation,
   updateDisplayOrderValidation,
-} from '../../validations/technologyValidation.js';
+} from "../../validations/technologyValidation.js";
 import {
   createTechnology,
   getAllTechnologies,
@@ -19,7 +19,7 @@ import {
   updateTechnologyStatus,
   updateTechnologyDisplayOrder,
   deleteTechnology,
-} from '../../controllers/technologyController.js';
+} from "../../controllers/technologyController.js";
 
 const router = Router();
 
@@ -29,11 +29,11 @@ const router = Router();
  * @access  Private (Admin)
  */
 router.post(
-  '/',
+  "/",
   authenticate,
   createTechnologyValidation,
   validate,
-  asyncHandler(createTechnology)
+  asyncHandler(createTechnology),
 );
 
 /**
@@ -42,11 +42,11 @@ router.post(
  * @access  Private (Admin)
  */
 router.get(
-  '/',
+  "/",
   authenticate,
   getTechnologiesValidation,
   validate,
-  asyncHandler(getAllTechnologies)
+  asyncHandler(getAllTechnologies),
 );
 
 /**
@@ -55,11 +55,11 @@ router.get(
  * @access  Private (Admin)
  */
 router.get(
-  '/slug/:slug',
+  "/slug/:slug",
   authenticate,
   technologySlugValidation,
   validate,
-  asyncHandler(getTechnologyBySlug)
+  asyncHandler(getTechnologyBySlug),
 );
 
 /**
@@ -68,11 +68,11 @@ router.get(
  * @access  Private (Admin)
  */
 router.get(
-  '/:id',
+  "/:id",
   authenticate,
   technologyIdValidation,
   validate,
-  asyncHandler(getTechnologyById)
+  asyncHandler(getTechnologyById),
 );
 
 /**
@@ -81,12 +81,12 @@ router.get(
  * @access  Private (Admin)
  */
 router.put(
-  '/:id',
+  "/:id",
   authenticate,
   technologyIdValidation,
   updateTechnologyValidation,
   validate,
-  asyncHandler(updateTechnology)
+  asyncHandler(updateTechnology),
 );
 
 /**
@@ -95,11 +95,11 @@ router.put(
  * @access  Private (Admin)
  */
 router.patch(
-  '/:id/status',
+  "/:id/status",
   authenticate,
   updateTechnologyStatusValidation,
   validate,
-  asyncHandler(updateTechnologyStatus)
+  asyncHandler(updateTechnologyStatus),
 );
 
 /**
@@ -108,11 +108,11 @@ router.patch(
  * @access  Private (Admin)
  */
 router.patch(
-  '/:id/display-order',
+  "/:id/display-order",
   authenticate,
   updateDisplayOrderValidation,
   validate,
-  asyncHandler(updateTechnologyDisplayOrder)
+  asyncHandler(updateTechnologyDisplayOrder),
 );
 
 /**
@@ -121,11 +121,11 @@ router.patch(
  * @access  Private (Admin)
  */
 router.delete(
-  '/:id',
+  "/:id",
   authenticate,
   technologyIdValidation,
   validate,
-  asyncHandler(deleteTechnology)
+  asyncHandler(deleteTechnology),
 );
 
 export default router;

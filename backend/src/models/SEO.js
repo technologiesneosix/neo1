@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const seoSchema = new mongoose.Schema(
   {
@@ -29,7 +29,7 @@ const seoSchema = new mongoose.Schema(
     },
     robots: {
       type: String,
-      default: 'index,follow',
+      default: "index,follow",
     },
     schema: {
       type: mongoose.Schema.Types.Mixed,
@@ -38,9 +38,9 @@ const seoSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
-const SEO = mongoose.model('SEO', seoSchema);
+const SEO = mongoose.model("SEO", seoSchema);
 
 export default SEO;

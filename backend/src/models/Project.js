@@ -1,13 +1,13 @@
-import mongoose from 'mongoose';
-import { generateSlug } from '../utils/generateSlug.js';
+import mongoose from "mongoose";
+import { generateSlug } from "../utils/generateSlug.js";
 
 const projectSchema = new mongoose.Schema(
   {
     title: {
       type: String,
-      required: [true, 'Title is required'],
+      required: [true, "Title is required"],
       trim: true,
-      maxlength: [200, 'Title cannot exceed 200 characters'],
+      maxlength: [200, "Title cannot exceed 200 characters"],
     },
     slug: {
       type: String,
@@ -17,34 +17,34 @@ const projectSchema = new mongoose.Schema(
     },
     client: {
       type: String,
-      required: [true, 'Client is required'],
+      required: [true, "Client is required"],
       trim: true,
     },
     industry: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Industry',
+      ref: "Industry",
     },
     services: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Service',
+        ref: "Service",
       },
     ],
     technologies: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Technology',
+        ref: "Technology",
       },
     ],
     shortDescription: {
       type: String,
-      required: [true, 'Short description is required'],
+      required: [true, "Short description is required"],
       trim: true,
-      maxlength: [300, 'Short description cannot exceed 300 characters'],
+      maxlength: [300, "Short description cannot exceed 300 characters"],
     },
     description: {
       type: String,
-      required: [true, 'Description is required'],
+      required: [true, "Description is required"],
     },
     problem: {
       type: String,
@@ -100,8 +100,8 @@ const projectSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ['draft', 'published', 'archived'],
-      default: 'draft',
+      enum: ["draft", "published", "archived"],
+      default: "draft",
     },
     seo: {
       metaTitle: {
@@ -121,12 +121,12 @@ const projectSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 // Generate slug before saving
-projectSchema.pre('save', function (next) {
-  if (this.isModified('title') && !this.slug) {
+projectSchema.pre("save", function (next) {
+  if (this.isModified("title") && !this.slug) {
     this.slug = generateSlug(this.title);
   }
   next();
@@ -139,6 +139,6 @@ projectSchema.index({ industry: 1 });
 projectSchema.index({ technologies: 1 });
 projectSchema.index({ services: 1 });
 
-const Project = mongoose.model('Project', projectSchema);
+const Project = mongoose.model("Project", projectSchema);
 
 export default Project;

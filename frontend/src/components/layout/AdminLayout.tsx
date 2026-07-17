@@ -29,6 +29,7 @@ import {
   Settings,
   Shield,
   Tags,
+  UserCheck,
   Users,
   UserSquare,
   Wrench,
@@ -97,6 +98,9 @@ const navGroups: NavGroup[] = [
     items: [
       { label: 'Careers', to: '/admin/careers', icon: Briefcase },
       { label: 'Applications', to: '/admin/applications', icon: ClipboardList },
+      { label: 'Candidates', to: '/admin/candidates', icon: UserSquare },
+      { label: 'Employees', to: '/admin/employees', icon: UserCheck },
+      { label: 'Email Logs', to: '/admin/email-logs', icon: Mail },
     ],
   },
   {

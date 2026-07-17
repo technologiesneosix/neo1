@@ -1,13 +1,13 @@
-import mongoose from 'mongoose';
-import { generateSlug } from '../utils/generateSlug.js';
+import mongoose from "mongoose";
+import { generateSlug } from "../utils/generateSlug.js";
 
 const solutionSchema = new mongoose.Schema(
   {
     title: {
       type: String,
-      required: [true, 'Title is required'],
+      required: [true, "Title is required"],
       trim: true,
-      maxlength: [200, 'Title cannot exceed 200 characters'],
+      maxlength: [200, "Title cannot exceed 200 characters"],
     },
     slug: {
       type: String,
@@ -17,7 +17,7 @@ const solutionSchema = new mongoose.Schema(
     },
     description: {
       type: String,
-      required: [true, 'Description is required'],
+      required: [true, "Description is required"],
     },
     banner: {
       type: String,
@@ -31,13 +31,13 @@ const solutionSchema = new mongoose.Schema(
     industries: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Industry',
+        ref: "Industry",
       },
     ],
     technologies: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Technology',
+        ref: "Technology",
       },
     ],
     gallery: [
@@ -62,18 +62,18 @@ const solutionSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ['draft', 'published', 'archived'],
-      default: 'draft',
+      enum: ["draft", "published", "archived"],
+      default: "draft",
     },
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 // Generate slug before saving
-solutionSchema.pre('save', function (next) {
-  if (this.isModified('title') && !this.slug) {
+solutionSchema.pre("save", function (next) {
+  if (this.isModified("title") && !this.slug) {
     this.slug = generateSlug(this.title);
   }
   next();
@@ -82,6 +82,6 @@ solutionSchema.pre('save', function (next) {
 // Indexes
 solutionSchema.index({ status: 1 });
 
-const Solution = mongoose.model('Solution', solutionSchema);
+const Solution = mongoose.model("Solution", solutionSchema);
 
 export default Solution;

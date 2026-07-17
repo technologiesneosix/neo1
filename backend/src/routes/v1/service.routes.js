@@ -1,17 +1,21 @@
-import { Router } from 'express';
-import { asyncHandler, authenticate, validate } from '../../middleware/index.js';
+import { Router } from "express";
+import {
+  asyncHandler,
+  authenticate,
+  validate,
+} from "../../middleware/index.js";
 import {
   createServiceValidation,
   updateServiceValidation,
   serviceIdValidation,
-} from '../../validations/serviceValidation.js';
+} from "../../validations/serviceValidation.js";
 import {
   createService,
   getAllServices,
   getServiceById,
   updateService,
   deleteService,
-} from '../../controllers/serviceController.js';
+} from "../../controllers/serviceController.js";
 
 const router = Router();
 
@@ -21,11 +25,11 @@ const router = Router();
  * @access  Private (Admin)
  */
 router.post(
-  '/',
+  "/",
   authenticate,
   createServiceValidation,
   validate,
-  asyncHandler(createService)
+  asyncHandler(createService),
 );
 
 /**
@@ -33,11 +37,7 @@ router.post(
  * @desc    Get all services
  * @access  Private (Admin)
  */
-router.get(
-  '/',
-  authenticate,
-  asyncHandler(getAllServices)
-);
+router.get("/", authenticate, asyncHandler(getAllServices));
 
 /**
  * @route   GET /api/v1/admin/services/:id
@@ -45,11 +45,11 @@ router.get(
  * @access  Private (Admin)
  */
 router.get(
-  '/:id',
+  "/:id",
   authenticate,
   serviceIdValidation,
   validate,
-  asyncHandler(getServiceById)
+  asyncHandler(getServiceById),
 );
 
 /**
@@ -58,12 +58,12 @@ router.get(
  * @access  Private (Admin)
  */
 router.put(
-  '/:id',
+  "/:id",
   authenticate,
   serviceIdValidation,
   updateServiceValidation,
   validate,
-  asyncHandler(updateService)
+  asyncHandler(updateService),
 );
 
 /**
@@ -72,11 +72,11 @@ router.put(
  * @access  Private (Admin)
  */
 router.delete(
-  '/:id',
+  "/:id",
   authenticate,
   serviceIdValidation,
   validate,
-  asyncHandler(deleteService)
+  asyncHandler(deleteService),
 );
 
 export default router;

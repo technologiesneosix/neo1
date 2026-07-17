@@ -1,6 +1,6 @@
-import { validationResult } from 'express-validator';
-import ApiError from '../utils/ApiError.js';
-import { logger } from '../utils/logger.js';
+import { validationResult } from "express-validator";
+import ApiError from "../utils/ApiError.js";
+import { logger } from "../utils/logger.js";
 
 export const validate = (req, res, next) => {
   const errors = validationResult(req);
@@ -12,8 +12,8 @@ export const validate = (req, res, next) => {
       value: error.value,
     }));
 
-    logger.warn('Validation failed:', formattedErrors);
-    return next(ApiError.validationError('Validation failed', formattedErrors));
+    logger.warn("Validation failed:", formattedErrors);
+    return next(ApiError.validationError("Validation failed", formattedErrors));
   }
 
   next();

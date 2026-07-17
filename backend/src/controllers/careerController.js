@@ -1,7 +1,7 @@
-import Career from '../models/Career.js';
-import ApiError from '../utils/ApiError.js';
-import ApiResponse from '../utils/ApiResponse.js';
-import { logger } from '../utils/logger.js';
+import Career from "../models/Career.js";
+import ApiError from "../utils/ApiError.js";
+import ApiResponse from "../utils/ApiResponse.js";
+import { logger } from "../utils/logger.js";
 
 /**
  * Create career
@@ -14,9 +14,9 @@ export const createCareer = async (req, res, next) => {
 
     logger.info(`Career created: ${career.title}`);
 
-    return res.status(201).json(
-      ApiResponse.success('Career created successfully', career)
-    );
+    return res
+      .status(201)
+      .json(ApiResponse.success("Career created successfully", career));
   } catch (error) {
     next(error);
   }
@@ -27,10 +27,20 @@ export const createCareer = async (req, res, next) => {
  */
 export const getAllCareers = async (req, res, next) => {
   try {
-    const { page = 1, limit = 10, status, department, employmentType, experience, search, sortBy = 'createdAt', sortOrder = 'desc' } = req.query;
+    const {
+      page = 1,
+      limit = 10,
+      status,
+      department,
+      employmentType,
+      experience,
+      search,
+      sortBy = "createdAt",
+      sortOrder = "desc",
+    } = req.query;
 
     const query = {};
-    
+
     if (status) {
       query.status = status;
     }
@@ -49,26 +59,23 @@ export const getAllCareers = async (req, res, next) => {
 
     if (search) {
       query.$or = [
-        { title: { $regex: search, $options: 'i' } },
-        { description: { $regex: search, $options: 'i' } },
+        { title: { $regex: search, $options: "i" } },
+        { description: { $regex: search, $options: "i" } },
       ];
     }
 
     const skip = (page - 1) * limit;
 
     const sortOptions = {};
-    sortOptions[sortBy] = sortOrder === 'asc' ? 1 : -1;
+    sortOptions[sortBy] = sortOrder === "asc" ? 1 : -1;
 
     const [careers, total] = await Promise.all([
-      Career.find(query)
-        .sort(sortOptions)
-        .skip(skip)
-        .limit(parseInt(limit)),
+      Career.find(query).sort(sortOptions).skip(skip).limit(parseInt(limit)),
       Career.countDocuments(query),
     ]);
 
     return res.status(200).json(
-      ApiResponse.success('Careers retrieved successfully', {
+      ApiResponse.success("Careers retrieved successfully", {
         careers,
         pagination: {
           page: parseInt(page),
@@ -76,7 +83,7 @@ export const getAllCareers = async (req, res, next) => {
           total,
           pages: Math.ceil(total / limit),
         },
-      })
+      }),
     );
   } catch (error) {
     next(error);
@@ -93,12 +100,12 @@ export const getCareerById = async (req, res, next) => {
     const career = await Career.findById(id);
 
     if (!career) {
-      throw ApiError.notFound('Career not found');
+      throw ApiError.notFound("Career not found");
     }
 
-    return res.status(200).json(
-      ApiResponse.success('Career retrieved successfully', career)
-    );
+    return res
+      .status(200)
+      .json(ApiResponse.success("Career retrieved successfully", career));
   } catch (error) {
     next(error);
   }
@@ -112,21 +119,20 @@ export const updateCareer = async (req, res, next) => {
     const { id } = req.params;
     const updateData = req.body;
 
-    const career = await Career.findByIdAndUpdate(
-      id,
-      updateData,
-      { new: true, runValidators: true }
-    );
+    const career = await Career.findByIdAndUpdate(id, updateData, {
+      new: true,
+      runValidators: true,
+    });
 
     if (!career) {
-      throw ApiError.notFound('Career not found');
+      throw ApiError.notFound("Career not found");
     }
 
     logger.info(`Career updated: ${career.title}`);
 
-    return res.status(200).json(
-      ApiResponse.success('Career updated successfully', career)
-    );
+    return res
+      .status(200)
+      .json(ApiResponse.success("Career updated successfully", career));
   } catch (error) {
     next(error);
   }
@@ -140,25 +146,25 @@ export const updateCareerStatus = async (req, res, next) => {
     const { id } = req.params;
     const { status } = req.body;
 
-    if (!['open', 'closed', 'on-hold'].includes(status)) {
-      throw ApiError.badRequest('Invalid status value');
+    if (!["open", "closed", "on-hold"].includes(status)) {
+      throw ApiError.badRequest("Invalid status value");
     }
 
     const career = await Career.findByIdAndUpdate(
       id,
       { status },
-      { new: true, runValidators: true }
+      { new: true, runValidators: true },
     );
 
     if (!career) {
-      throw ApiError.notFound('Career not found');
+      throw ApiError.notFound("Career not found");
     }
 
     logger.info(`Career status updated: ${career.title} - ${status}`);
 
-    return res.status(200).json(
-      ApiResponse.success('Career status updated successfully', career)
-    );
+    return res
+      .status(200)
+      .json(ApiResponse.success("Career status updated successfully", career));
   } catch (error) {
     next(error);
   }
@@ -174,14 +180,14 @@ export const deleteCareer = async (req, res, next) => {
     const career = await Career.findByIdAndDelete(id);
 
     if (!career) {
-      throw ApiError.notFound('Career not found');
+      throw ApiError.notFound("Career not found");
     }
 
     logger.info(`Career deleted: ${career.title}`);
 
-    return res.status(200).json(
-      ApiResponse.success('Career deleted successfully')
-    );
+    return res
+      .status(200)
+      .json(ApiResponse.success("Career deleted successfully"));
   } catch (error) {
     next(error);
   }

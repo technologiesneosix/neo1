@@ -1,7 +1,7 @@
-import SEO from '../models/SEO.js';
-import ApiError from '../utils/ApiError.js';
-import ApiResponse from '../utils/ApiResponse.js';
-import { logger } from '../utils/logger.js';
+import SEO from "../models/SEO.js";
+import ApiError from "../utils/ApiError.js";
+import ApiResponse from "../utils/ApiResponse.js";
+import { logger } from "../utils/logger.js";
 
 /**
  * Get SEO settings (singleton)
@@ -14,9 +14,9 @@ export const getSEO = async (req, res, next) => {
       seo = await SEO.create({});
     }
 
-    return res.status(200).json(
-      ApiResponse.success('SEO settings retrieved successfully', seo)
-    );
+    return res
+      .status(200)
+      .json(ApiResponse.success("SEO settings retrieved successfully", seo));
   } catch (error) {
     next(error);
   }
@@ -34,18 +34,17 @@ export const updateSEO = async (req, res, next) => {
     if (!seo) {
       seo = await SEO.create(updateData);
     } else {
-      seo = await SEO.findByIdAndUpdate(
-        seo._id,
-        updateData,
-        { new: true, runValidators: true }
-      );
+      seo = await SEO.findByIdAndUpdate(seo._id, updateData, {
+        new: true,
+        runValidators: true,
+      });
     }
 
-    logger.info('SEO settings updated');
+    logger.info("SEO settings updated");
 
-    return res.status(200).json(
-      ApiResponse.success('SEO settings updated successfully', seo)
-    );
+    return res
+      .status(200)
+      .json(ApiResponse.success("SEO settings updated successfully", seo));
   } catch (error) {
     next(error);
   }

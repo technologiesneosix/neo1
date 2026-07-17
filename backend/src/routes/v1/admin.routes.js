@@ -1,5 +1,5 @@
-import { Router } from 'express';
-import { asyncHandler } from '../../middleware/index.js';
+import { Router } from "express";
+import { asyncHandler } from "../../middleware/index.js";
 
 const router = Router();
 
@@ -9,13 +9,13 @@ const router = Router();
  * @access  Private (Admin)
  */
 router.get(
-  '/dashboard',
+  "/dashboard",
   asyncHandler(async (_req, res) => {
     res.status(200).json({
       success: true,
-      message: 'Admin dashboard endpoint',
+      message: "Admin dashboard endpoint",
     });
-  })
+  }),
 );
 
 /**
@@ -24,13 +24,13 @@ router.get(
  * @access  Private (Admin)
  */
 router.get(
-  '/users',
+  "/users",
   asyncHandler(async (_req, res) => {
     res.status(200).json({
       success: true,
-      message: 'Admin users management endpoint',
+      message: "Admin users management endpoint",
     });
-  })
+  }),
 );
 
 /**
@@ -39,13 +39,13 @@ router.get(
  * @access  Private (Admin)
  */
 router.get(
-  '/content',
+  "/content",
   asyncHandler(async (_req, res) => {
     res.status(200).json({
       success: true,
-      message: 'Content management endpoint',
+      message: "Content management endpoint",
     });
-  })
+  }),
 );
 
 /**
@@ -54,13 +54,13 @@ router.get(
  * @access  Private (Admin)
  */
 router.get(
-  '/settings',
+  "/settings",
   asyncHandler(async (_req, res) => {
     res.status(200).json({
       success: true,
-      message: 'Admin settings endpoint',
+      message: "Admin settings endpoint",
     });
-  })
+  }),
 );
 
 export default router;

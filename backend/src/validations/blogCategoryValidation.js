@@ -1,72 +1,72 @@
-import { body, param, query } from 'express-validator';
+import { body, param, query } from "express-validator";
 
 export const createBlogCategoryValidation = [
-  body('name')
+  body("name")
     .trim()
     .notEmpty()
-    .withMessage('Name is required')
+    .withMessage("Name is required")
     .isLength({ max: 100 })
-    .withMessage('Name cannot exceed 100 characters'),
-  body('description')
+    .withMessage("Name cannot exceed 100 characters"),
+  body("description")
     .optional()
     .trim()
     .isString()
-    .withMessage('Description must be a string'),
+    .withMessage("Description must be a string"),
 ];
 
 export const updateBlogCategoryValidation = [
-  body('name')
+  body("name")
     .optional()
     .trim()
     .notEmpty()
-    .withMessage('Name cannot be empty')
+    .withMessage("Name cannot be empty")
     .isLength({ max: 100 })
-    .withMessage('Name cannot exceed 100 characters'),
-  body('description')
+    .withMessage("Name cannot exceed 100 characters"),
+  body("description")
     .optional()
     .trim()
     .isString()
-    .withMessage('Description must be a string'),
+    .withMessage("Description must be a string"),
 ];
 
 export const blogCategoryIdValidation = [
-  param('id')
+  param("id")
     .trim()
     .notEmpty()
-    .withMessage('Blog category ID is required')
+    .withMessage("Blog category ID is required")
     .isMongoId()
-    .withMessage('Invalid blog category ID'),
+    .withMessage("Invalid blog category ID"),
 ];
 
 export const blogCategorySlugValidation = [
-  param('slug')
+  param("slug")
     .trim()
     .notEmpty()
-    .withMessage('Slug is required')
+    .withMessage("Slug is required")
     .isSlug()
-    .withMessage('Invalid slug format'),
+    .withMessage("Invalid slug format"),
 ];
 
 export const getBlogCategoriesValidation = [
-  query('page')
+  query("page")
     .optional()
     .isInt({ min: 1 })
-    .withMessage('Page must be a positive integer'),
-  query('limit')
+    .withMessage("Page must be a positive integer"),
+  query("limit")
     .optional()
     .isInt({ min: 1, max: 100 })
-    .withMessage('Limit must be between 1 and 100'),
-  query('search')
+    .withMessage("Limit must be between 1 and 100"),
+  query("search")
     .optional()
     .trim()
     .isString()
-    .withMessage('Search must be a string'),
-  query('sortBy')
+    .withMessage("Search must be a string"),
+  query("sortBy")
     .optional()
-    .isIn(['createdAt', 'name'])
-    .withMessage('Sort by must be createdAt or name'),
-  query('sortOrder')
+    .isIn(["createdAt", "name"])
+    .withMessage("Sort by must be createdAt or name"),
+  query("sortOrder")
     .optional()
-    .isIn(['asc', 'desc'])
-    .withMessage('Sort order must be asc or desc'),
+    .isIn(["asc", "desc"])
+    .withMessage("Sort order must be asc or desc"),
 ];

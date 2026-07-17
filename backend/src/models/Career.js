@@ -1,13 +1,13 @@
-import mongoose from 'mongoose';
-import { generateSlug } from '../utils/generateSlug.js';
+import mongoose from "mongoose";
+import { generateSlug } from "../utils/generateSlug.js";
 
 const careerSchema = new mongoose.Schema(
   {
     title: {
       type: String,
-      required: [true, 'Title is required'],
+      required: [true, "Title is required"],
       trim: true,
-      maxlength: [200, 'Title cannot exceed 200 characters'],
+      maxlength: [200, "Title cannot exceed 200 characters"],
     },
     slug: {
       type: String,
@@ -17,23 +17,37 @@ const careerSchema = new mongoose.Schema(
     },
     department: {
       type: String,
-      required: [true, 'Department is required'],
-      enum: ['engineering', 'design', 'marketing', 'sales', 'hr', 'finance', 'other'],
+      required: [true, "Department is required"],
+      enum: [
+        "engineering",
+        "design",
+        "marketing",
+        "sales",
+        "hr",
+        "finance",
+        "other",
+      ],
     },
     employmentType: {
       type: String,
-      required: [true, 'Employment type is required'],
-      enum: ['full-time', 'part-time', 'contract', 'internship'],
+      required: [true, "Employment type is required"],
+      enum: ["full-time", "part-time", "contract", "internship"],
     },
     location: {
       type: String,
-      required: [true, 'Location is required'],
+      required: [true, "Location is required"],
       trim: true,
     },
     experience: {
       type: String,
-      required: [true, 'Experience is required'],
-      enum: ['entry-level', '1-2 years', '2-5 years', '5-10 years', '10+ years'],
+      required: [true, "Experience is required"],
+      enum: [
+        "entry-level",
+        "1-2 years",
+        "2-5 years",
+        "5-10 years",
+        "10+ years",
+      ],
     },
     salary: {
       type: String,
@@ -41,7 +55,7 @@ const careerSchema = new mongoose.Schema(
     },
     description: {
       type: String,
-      required: [true, 'Description is required'],
+      required: [true, "Description is required"],
     },
     requirements: [
       {
@@ -64,18 +78,18 @@ const careerSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ['open', 'closed', 'on-hold'],
-      default: 'open',
+      enum: ["open", "closed", "on-hold"],
+      default: "open",
     },
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 // Generate slug before saving
-careerSchema.pre('save', function (next) {
-  if (this.isModified('title') && !this.slug) {
+careerSchema.pre("save", function (next) {
+  if (this.isModified("title") && !this.slug) {
     this.slug = generateSlug(this.title);
   }
   next();
@@ -87,6 +101,6 @@ careerSchema.index({ department: 1 });
 careerSchema.index({ employmentType: 1 });
 careerSchema.index({ deadline: 1 });
 
-const Career = mongoose.model('Career', careerSchema);
+const Career = mongoose.model("Career", careerSchema);
 
 export default Career;

@@ -1,7 +1,14 @@
-import { uploadSingleFile, uploadMultipleFiles, getAllMedia, getMediaById, deleteMedia, deleteMultipleMedia } from '../services/mediaService.js';
-import ApiError from '../utils/ApiError.js';
-import ApiResponse from '../utils/ApiResponse.js';
-import { logger } from '../utils/logger.js';
+import {
+  uploadSingleFile,
+  uploadMultipleFiles,
+  getAllMedia,
+  getMediaById,
+  deleteMedia,
+  deleteMultipleMedia,
+} from "../services/mediaService.js";
+import ApiError from "../utils/ApiError.js";
+import ApiResponse from "../utils/ApiResponse.js";
+import { logger } from "../utils/logger.js";
 
 /**
  * Upload single file
@@ -9,17 +16,17 @@ import { logger } from '../utils/logger.js';
 export const uploadSingle = async (req, res, next) => {
   try {
     if (!req.file) {
-      throw ApiError.badRequest('No file uploaded');
+      throw ApiError.badRequest("No file uploaded");
     }
 
-    const folder = req.body.folder || 'general';
+    const folder = req.body.folder || "general";
     const uploadedBy = req.user?.id;
 
     const media = await uploadSingleFile(req.file, folder, uploadedBy);
 
-    return res.status(201).json(
-      ApiResponse.success('File uploaded successfully', media)
-    );
+    return res
+      .status(201)
+      .json(ApiResponse.success("File uploaded successfully", media));
   } catch (error) {
     next(error);
   }
@@ -31,17 +38,17 @@ export const uploadSingle = async (req, res, next) => {
 export const uploadMultiple = async (req, res, next) => {
   try {
     if (!req.files || req.files.length === 0) {
-      throw ApiError.badRequest('No files uploaded');
+      throw ApiError.badRequest("No files uploaded");
     }
 
-    const folder = req.body.folder || 'general';
+    const folder = req.body.folder || "general";
     const uploadedBy = req.user?.id;
 
     const mediaFiles = await uploadMultipleFiles(req.files, folder, uploadedBy);
 
-    return res.status(201).json(
-      ApiResponse.success('Files uploaded successfully', mediaFiles)
-    );
+    return res
+      .status(201)
+      .json(ApiResponse.success("Files uploaded successfully", mediaFiles));
   } catch (error) {
     next(error);
   }
@@ -56,9 +63,9 @@ export const getAll = async (req, res, next) => {
 
     const result = await getAllMedia({ folder, page, limit });
 
-    return res.status(200).json(
-      ApiResponse.success('Media retrieved successfully', result)
-    );
+    return res
+      .status(200)
+      .json(ApiResponse.success("Media retrieved successfully", result));
   } catch (error) {
     next(error);
   }
@@ -73,9 +80,9 @@ export const getById = async (req, res, next) => {
 
     const media = await getMediaById(id);
 
-    return res.status(200).json(
-      ApiResponse.success('Media retrieved successfully', media)
-    );
+    return res
+      .status(200)
+      .json(ApiResponse.success("Media retrieved successfully", media));
   } catch (error) {
     next(error);
   }
@@ -90,9 +97,9 @@ export const deleteById = async (req, res, next) => {
 
     const result = await deleteMedia(id);
 
-    return res.status(200).json(
-      ApiResponse.success('Media deleted successfully', result)
-    );
+    return res
+      .status(200)
+      .json(ApiResponse.success("Media deleted successfully", result));
   } catch (error) {
     next(error);
   }
@@ -106,14 +113,14 @@ export const deleteMultiple = async (req, res, next) => {
     const { ids } = req.body;
 
     if (!ids || !Array.isArray(ids) || ids.length === 0) {
-      throw ApiError.badRequest('Valid media IDs array is required');
+      throw ApiError.badRequest("Valid media IDs array is required");
     }
 
     const result = await deleteMultipleMedia(ids);
 
-    return res.status(200).json(
-      ApiResponse.success('Media files deleted successfully', result)
-    );
+    return res
+      .status(200)
+      .json(ApiResponse.success("Media files deleted successfully", result));
   } catch (error) {
     next(error);
   }

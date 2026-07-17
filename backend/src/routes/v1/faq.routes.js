@@ -1,6 +1,6 @@
-import { Router } from 'express';
-import { asyncHandler, authenticate } from '../../middleware/index.js';
-import { validate } from '../../middleware/index.js';
+import { Router } from "express";
+import { asyncHandler, authenticate } from "../../middleware/index.js";
+import { validate } from "../../middleware/index.js";
 import {
   createFAQValidation,
   updateFAQValidation,
@@ -8,7 +8,7 @@ import {
   getFAQsValidation,
   updateFAQStatusValidation,
   updateFAQDisplayOrderValidation,
-} from '../../validations/faqValidation.js';
+} from "../../validations/faqValidation.js";
 import {
   createFAQ,
   getAllFAQs,
@@ -17,7 +17,7 @@ import {
   updateFAQStatus,
   updateFAQDisplayOrder,
   deleteFAQ,
-} from '../../controllers/faqController.js';
+} from "../../controllers/faqController.js";
 
 const router = Router();
 
@@ -27,11 +27,11 @@ const router = Router();
  * @access  Private (Admin)
  */
 router.post(
-  '/',
+  "/",
   authenticate,
   createFAQValidation,
   validate,
-  asyncHandler(createFAQ)
+  asyncHandler(createFAQ),
 );
 
 /**
@@ -40,11 +40,11 @@ router.post(
  * @access  Private (Admin)
  */
 router.get(
-  '/',
+  "/",
   authenticate,
   getFAQsValidation,
   validate,
-  asyncHandler(getAllFAQs)
+  asyncHandler(getAllFAQs),
 );
 
 /**
@@ -53,11 +53,11 @@ router.get(
  * @access  Private (Admin)
  */
 router.get(
-  '/:id',
+  "/:id",
   authenticate,
   faqIdValidation,
   validate,
-  asyncHandler(getFAQById)
+  asyncHandler(getFAQById),
 );
 
 /**
@@ -66,12 +66,12 @@ router.get(
  * @access  Private (Admin)
  */
 router.put(
-  '/:id',
+  "/:id",
   authenticate,
   faqIdValidation,
   updateFAQValidation,
   validate,
-  asyncHandler(updateFAQ)
+  asyncHandler(updateFAQ),
 );
 
 /**
@@ -80,11 +80,11 @@ router.put(
  * @access  Private (Admin)
  */
 router.patch(
-  '/:id/status',
+  "/:id/status",
   authenticate,
   updateFAQStatusValidation,
   validate,
-  asyncHandler(updateFAQStatus)
+  asyncHandler(updateFAQStatus),
 );
 
 /**
@@ -93,11 +93,11 @@ router.patch(
  * @access  Private (Admin)
  */
 router.patch(
-  '/:id/display-order',
+  "/:id/display-order",
   authenticate,
   updateFAQDisplayOrderValidation,
   validate,
-  asyncHandler(updateFAQDisplayOrder)
+  asyncHandler(updateFAQDisplayOrder),
 );
 
 /**
@@ -106,11 +106,11 @@ router.patch(
  * @access  Private (Admin)
  */
 router.delete(
-  '/:id',
+  "/:id",
   authenticate,
   faqIdValidation,
   validate,
-  asyncHandler(deleteFAQ)
+  asyncHandler(deleteFAQ),
 );
 
 export default router;

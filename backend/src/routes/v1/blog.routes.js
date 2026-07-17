@@ -1,6 +1,6 @@
-import { Router } from 'express';
-import { asyncHandler, authenticate } from '../../middleware/index.js';
-import { validate } from '../../middleware/index.js';
+import { Router } from "express";
+import { asyncHandler, authenticate } from "../../middleware/index.js";
+import { validate } from "../../middleware/index.js";
 import {
   createBlogValidation,
   updateBlogValidation,
@@ -9,7 +9,7 @@ import {
   getBlogsValidation,
   updateBlogStatusValidation,
   toggleBlogFeaturedValidation,
-} from '../../validations/blogValidation.js';
+} from "../../validations/blogValidation.js";
 import {
   createBlog,
   getAllBlogs,
@@ -19,7 +19,7 @@ import {
   toggleBlogFeatured,
   updateBlogStatus,
   deleteBlog,
-} from '../../controllers/blogController.js';
+} from "../../controllers/blogController.js";
 
 const router = Router();
 
@@ -29,11 +29,11 @@ const router = Router();
  * @access  Private (Admin)
  */
 router.post(
-  '/',
+  "/",
   authenticate,
   createBlogValidation,
   validate,
-  asyncHandler(createBlog)
+  asyncHandler(createBlog),
 );
 
 /**
@@ -42,11 +42,11 @@ router.post(
  * @access  Private (Admin)
  */
 router.get(
-  '/',
+  "/",
   authenticate,
   getBlogsValidation,
   validate,
-  asyncHandler(getAllBlogs)
+  asyncHandler(getAllBlogs),
 );
 
 /**
@@ -55,11 +55,11 @@ router.get(
  * @access  Private (Admin)
  */
 router.get(
-  '/slug/:slug',
+  "/slug/:slug",
   authenticate,
   blogSlugValidation,
   validate,
-  asyncHandler(getBlogBySlug)
+  asyncHandler(getBlogBySlug),
 );
 
 /**
@@ -68,11 +68,11 @@ router.get(
  * @access  Private (Admin)
  */
 router.get(
-  '/:id',
+  "/:id",
   authenticate,
   blogIdValidation,
   validate,
-  asyncHandler(getBlogById)
+  asyncHandler(getBlogById),
 );
 
 /**
@@ -81,12 +81,12 @@ router.get(
  * @access  Private (Admin)
  */
 router.put(
-  '/:id',
+  "/:id",
   authenticate,
   blogIdValidation,
   updateBlogValidation,
   validate,
-  asyncHandler(updateBlog)
+  asyncHandler(updateBlog),
 );
 
 /**
@@ -95,11 +95,11 @@ router.put(
  * @access  Private (Admin)
  */
 router.patch(
-  '/:id/toggle-featured',
+  "/:id/toggle-featured",
   authenticate,
   toggleBlogFeaturedValidation,
   validate,
-  asyncHandler(toggleBlogFeatured)
+  asyncHandler(toggleBlogFeatured),
 );
 
 /**
@@ -108,11 +108,11 @@ router.patch(
  * @access  Private (Admin)
  */
 router.patch(
-  '/:id/status',
+  "/:id/status",
   authenticate,
   updateBlogStatusValidation,
   validate,
-  asyncHandler(updateBlogStatus)
+  asyncHandler(updateBlogStatus),
 );
 
 /**
@@ -121,11 +121,11 @@ router.patch(
  * @access  Private (Admin)
  */
 router.delete(
-  '/:id',
+  "/:id",
   authenticate,
   blogIdValidation,
   validate,
-  asyncHandler(deleteBlog)
+  asyncHandler(deleteBlog),
 );
 
 export default router;

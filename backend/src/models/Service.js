@@ -1,13 +1,13 @@
-import mongoose from 'mongoose';
-import { generateSlug } from '../utils/generateSlug.js';
+import mongoose from "mongoose";
+import { generateSlug } from "../utils/generateSlug.js";
 
 const serviceSchema = new mongoose.Schema(
   {
     title: {
       type: String,
-      required: [true, 'Title is required'],
+      required: [true, "Title is required"],
       trim: true,
-      maxlength: [200, 'Title cannot exceed 200 characters'],
+      maxlength: [200, "Title cannot exceed 200 characters"],
     },
     slug: {
       type: String,
@@ -17,13 +17,13 @@ const serviceSchema = new mongoose.Schema(
     },
     shortDescription: {
       type: String,
-      required: [true, 'Short description is required'],
+      required: [true, "Short description is required"],
       trim: true,
-      maxlength: [300, 'Short description cannot exceed 300 characters'],
+      maxlength: [300, "Short description cannot exceed 300 characters"],
     },
     description: {
       type: String,
-      required: [true, 'Description is required'],
+      required: [true, "Description is required"],
     },
     icon: {
       type: String,
@@ -50,7 +50,7 @@ const serviceSchema = new mongoose.Schema(
     technologies: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Technology',
+        ref: "Technology",
       },
     ],
     seo: {
@@ -78,18 +78,18 @@ const serviceSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ['draft', 'published', 'archived'],
-      default: 'draft',
+      enum: ["draft", "published", "archived"],
+      default: "draft",
     },
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 // Generate slug before saving
-serviceSchema.pre('save', function (next) {
-  if (this.isModified('title') && !this.slug) {
+serviceSchema.pre("save", function (next) {
+  if (this.isModified("title") && !this.slug) {
     this.slug = generateSlug(this.title);
   }
   next();
@@ -99,6 +99,6 @@ serviceSchema.index({ status: 1 });
 serviceSchema.index({ isFeatured: 1 });
 serviceSchema.index({ displayOrder: 1 });
 
-const Service = mongoose.model('Service', serviceSchema);
+const Service = mongoose.model("Service", serviceSchema);
 
 export default Service;

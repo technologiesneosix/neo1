@@ -8,6 +8,9 @@ const MediaLibraryPage = lazy(() => import('./MediaLibraryPage').then((m) => ({ 
 const SeoManagerPage = lazy(() => import('./SeoManagerPage').then((m) => ({ default: m.SeoManagerPage })));
 const SettingsPage = lazy(() => import('./SettingsPage').then((m) => ({ default: m.SettingsPage })));
 const AnalyticsPage = lazy(() => import('./AnalyticsPage').then((m) => ({ default: m.AnalyticsPage })));
+const CandidatesPage = lazy(() => import('./CandidatesPage').then((m) => ({ default: m.CandidatesPage })));
+const EmployeesPage = lazy(() => import('./EmployeesPage').then((m) => ({ default: m.EmployeesPage })));
+const EmailLogsPage = lazy(() => import('./EmailLogsPage').then((m) => ({ default: m.EmailLogsPage })));
 
 export interface AdminRoute {
   path?: string;
@@ -56,4 +59,7 @@ export const adminRoutes: AdminRoute[] = [
   { path: 'seo', element: <SeoManagerPage /> },
   { path: 'settings', element: <SettingsPage /> },
   { path: 'analytics', element: <AnalyticsPage /> },
+  { path: 'candidates', element: <CandidatesPage /> },
+  { path: 'employees', element: <EmployeesPage /> },
+  { path: 'email-logs', element: <EmailLogsPage /> },
 ];

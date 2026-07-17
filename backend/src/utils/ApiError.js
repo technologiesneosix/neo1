@@ -9,39 +9,39 @@ class ApiError extends Error {
     Error.captureStackTrace(this, this.constructor);
   }
 
-  static badRequest(message = 'Bad Request', errors = null) {
+  static badRequest(message = "Bad Request", errors = null) {
     return new ApiError(message, 400, errors);
   }
 
-  static unauthorized(message = 'Unauthorized') {
+  static unauthorized(message = "Unauthorized") {
     return new ApiError(message, 401);
   }
 
-  static forbidden(message = 'Forbidden') {
+  static forbidden(message = "Forbidden") {
     return new ApiError(message, 403);
   }
 
-  static notFound(message = 'Resource not found') {
+  static notFound(message = "Resource not found") {
     return new ApiError(message, 404);
   }
 
-  static conflict(message = 'Conflict') {
+  static conflict(message = "Conflict") {
     return new ApiError(message, 409);
   }
 
-  static validationError(message = 'Validation failed', errors = null) {
+  static validationError(message = "Validation failed", errors = null) {
     return new ApiError(message, 422, errors);
   }
 
-  static tooManyRequests(message = 'Too many requests') {
+  static tooManyRequests(message = "Too many requests") {
     return new ApiError(message, 429);
   }
 
-  static internal(message = 'Internal server error') {
+  static internal(message = "Internal server error") {
     return new ApiError(message, 500);
   }
 
-  static serviceUnavailable(message = 'Service unavailable') {
+  static serviceUnavailable(message = "Service unavailable") {
     return new ApiError(message, 503);
   }
 
@@ -51,7 +51,7 @@ class ApiError extends Error {
       statusCode: this.statusCode,
       errors: this.errors,
       timestamp: this.timestamp,
-      ...(process.env.NODE_ENV === 'development' && { stack: this.stack }),
+      ...(process.env.NODE_ENV === "development" && { stack: this.stack }),
     };
   }
 }

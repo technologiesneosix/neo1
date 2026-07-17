@@ -1,7 +1,10 @@
-import { Router } from 'express';
-import { asyncHandler, authenticate } from '../../middleware/index.js';
-import { validate } from '../../middleware/index.js';
-import { uploadValidation, deleteMediaValidation } from '../../validations/mediaValidation.js';
+import { Router } from "express";
+import { asyncHandler, authenticate } from "../../middleware/index.js";
+import { validate } from "../../middleware/index.js";
+import {
+  uploadValidation,
+  deleteMediaValidation,
+} from "../../validations/mediaValidation.js";
 import {
   uploadSingle,
   uploadMultiple,
@@ -9,10 +12,13 @@ import {
   getById,
   deleteById,
   deleteMultiple,
-} from '../../controllers/mediaController.js';
-import { uploadSingleFile, uploadMultipleFiles } from '../../config/fileUpload.js';
-import Media from '../../models/Media.js';
-import ApiResponse from '../../utils/ApiResponse.js';
+} from "../../controllers/mediaController.js";
+import {
+  uploadSingleFile,
+  uploadMultipleFiles,
+} from "../../config/fileUpload.js";
+import Media from "../../models/Media.js";
+import ApiResponse from "../../utils/ApiResponse.js";
 
 const router = Router();
 
@@ -22,25 +28,32 @@ const router = Router();
  * @access  Private (Admin)
  */
 router.post(
-  '/',
+  "/",
   authenticate,
   asyncHandler(async (req, res) => {
     const { name, url, type, folder, size } = req.body;
-    
+
     // Create Media in database
     const media = await Media.create({
       fileName: name || `file-${Date.now()}`,
-      originalName: name || 'file',
+      originalName: name || "file",
       url,
       publicId: `preuploaded-${Date.now()}-${Math.random().toString(36).substring(2, 11)}`,
-      mimeType: type === 'image' ? 'image/jpeg' : type === 'video' ? 'video/mp4' : 'application/pdf',
+      mimeType:
+        type === "image"
+          ? "image/jpeg"
+          : type === "video"
+            ? "video/mp4"
+            : "application/pdf",
       fileSize: size || 0,
-      folder: folder || 'general',
+      folder: folder || "general",
       uploadedBy: req.user?.id,
     });
 
-    res.status(201).json(ApiResponse.success('Media registered successfully', media));
-  })
+    res
+      .status(201)
+      .json(ApiResponse.success("Media registered successfully", media));
+  }),
 );
 
 /**
@@ -49,10 +62,10 @@ router.post(
  * @access  Private (Admin)
  */
 router.post(
-  '/upload',
-  uploadSingleFile('file'),
+  "/upload",
+  uploadSingleFile("file"),
   authenticate,
-  asyncHandler(uploadSingle)
+  asyncHandler(uploadSingle),
 );
 
 /**
@@ -61,10 +74,10 @@ router.post(
  * @access  Private (Admin)
  */
 router.post(
-  '/upload-multiple',
-  uploadMultipleFiles('files', 10),
+  "/upload-multiple",
+  uploadMultipleFiles("files", 10),
   authenticate,
-  asyncHandler(uploadMultiple)
+  asyncHandler(uploadMultiple),
 );
 
 /**
@@ -72,27 +85,39 @@ router.post(
  * @desc    Get all media files
  * @access  Private (Admin)
  */
-router.get('/', authenticate, asyncHandler(getAll));
+router.get("/", authenticate, asyncHandler(getAll));
 
 /**
  * @route   GET /api/v1/media/:id
  * @desc    Get single media file
  * @access  Private (Admin)
  */
-router.get('/:id', authenticate, deleteMediaValidation, validate, asyncHandler(getById));
+router.get(
+  "/:id",
+  authenticate,
+  deleteMediaValidation,
+  validate,
+  asyncHandler(getById),
+);
 
 /**
  * @route   DELETE /api/v1/media/:id
  * @desc    Delete media file
  * @access  Private (Admin)
  */
-router.delete('/:id', authenticate, deleteMediaValidation, validate, asyncHandler(deleteById));
+router.delete(
+  "/:id",
+  authenticate,
+  deleteMediaValidation,
+  validate,
+  asyncHandler(deleteById),
+);
 
 /**
  * @route   DELETE /api/v1/media/bulk
  * @desc    Delete multiple media files
  * @access  Private (Admin)
  */
-router.delete('/bulk', authenticate, asyncHandler(deleteMultiple));
+router.delete("/bulk", authenticate, asyncHandler(deleteMultiple));
 
 export default router;

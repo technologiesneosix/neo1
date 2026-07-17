@@ -2,6 +2,8 @@ import { Inbox, Pencil, Search, Trash2 } from 'lucide-react';
 import { useMemo, useState, type ReactNode } from 'react';
 import { Badge } from '@/components/ui/Badge';
 import { PageLoader } from '@/components/ui/Spinner';
+import { Modal } from '@/components/ui/Modal';
+import { Button } from '@/components/ui/Button';
 import { truncate } from '@/lib/utils';
 import type { AdminRecord, ModuleConfig } from './types';
 
@@ -59,6 +61,8 @@ interface ResourceTableProps {
 /** Searchable data table shared by every admin CRUD module. */
 export function ResourceTable({ config, rows, loading, onEdit, onDelete }: ResourceTableProps) {
   const [query, setQuery] = useState('');
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [rowToDelete, setRowToDelete] = useState<AdminRecord | null>(null);
 
   const filtered = useMemo(() => {
     const list = rows ?? [];
@@ -73,14 +77,8 @@ export function ResourceTable({ config, rows, loading, onEdit, onDelete }: Resou
   }, [rows, query, config.searchKeys]);
 
   const handleDelete = (row: AdminRecord) => {
-    const label =
-      (typeof row.title === 'string' && row.title) ||
-      (typeof row.name === 'string' && row.name) ||
-      (typeof row.email === 'string' && row.email) ||
-      `this ${config.singular.toLowerCase()}`;
-    if (window.confirm(`Delete "${label}"? This cannot be undone.`)) {
-      onDelete(row);
-    }
+    setRowToDelete(row);
+    setDeleteModalOpen(true);
   };
 
   if (loading) return <PageLoader />;
@@ -167,6 +165,54 @@ export function ResourceTable({ config, rows, loading, onEdit, onDelete }: Resou
             </tbody>
           </table>
         </div>
+      )}
+
+      {deleteModalOpen && rowToDelete && (
+        <Modal
+          open={deleteModalOpen}
+          onClose={() => {
+            setDeleteModalOpen(false);
+            setRowToDelete(null);
+          }}
+          title={`Delete ${config.singular}`}
+          size="md"
+        >
+          <div className="space-y-4 py-2">
+            <p className="text-sm text-neutral-600">
+              Are you sure you want to delete{' '}
+              <strong className="text-heading">
+                {String(
+                  rowToDelete.title ||
+                    rowToDelete.name ||
+                    rowToDelete.email ||
+                    `this ${config.singular.toLowerCase()}`
+                )}
+              </strong>
+              ? This action cannot be undone.
+            </p>
+            <div className="flex justify-end gap-3 pt-2">
+              <Button
+                variant="ghost"
+                onClick={() => {
+                  setDeleteModalOpen(false);
+                  setRowToDelete(null);
+                }}
+              >
+                Cancel
+              </Button>
+              <Button
+                variant="danger"
+                onClick={() => {
+                  onDelete(rowToDelete);
+                  setDeleteModalOpen(false);
+                  setRowToDelete(null);
+                }}
+              >
+                Delete
+              </Button>
+            </div>
+          </div>
+        </Modal>
       )}
     </div>
   );

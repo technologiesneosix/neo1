@@ -1,7 +1,7 @@
-import Technology from '../models/Technology.js';
-import ApiError from '../utils/ApiError.js';
-import ApiResponse from '../utils/ApiResponse.js';
-import { logger } from '../utils/logger.js';
+import Technology from "../models/Technology.js";
+import ApiError from "../utils/ApiError.js";
+import ApiResponse from "../utils/ApiResponse.js";
+import { logger } from "../utils/logger.js";
 
 /**
  * Create technology
@@ -14,9 +14,9 @@ export const createTechnology = async (req, res, next) => {
 
     logger.info(`Technology created: ${technology.name}`);
 
-    return res.status(201).json(
-      ApiResponse.success('Technology created successfully', technology)
-    );
+    return res
+      .status(201)
+      .json(ApiResponse.success("Technology created successfully", technology));
   } catch (error) {
     next(error);
   }
@@ -27,10 +27,18 @@ export const createTechnology = async (req, res, next) => {
  */
 export const getAllTechnologies = async (req, res, next) => {
   try {
-    const { page = 1, limit = 100, status, category, search, sortBy = 'displayOrder', sortOrder = 'asc' } = req.query;
+    const {
+      page = 1,
+      limit = 100,
+      status,
+      category,
+      search,
+      sortBy = "displayOrder",
+      sortOrder = "asc",
+    } = req.query;
 
     const query = {};
-    
+
     if (status) {
       query.status = status;
     }
@@ -41,15 +49,15 @@ export const getAllTechnologies = async (req, res, next) => {
 
     if (search) {
       query.$or = [
-        { name: { $regex: search, $options: 'i' } },
-        { description: { $regex: search, $options: 'i' } },
+        { name: { $regex: search, $options: "i" } },
+        { description: { $regex: search, $options: "i" } },
       ];
     }
 
     const skip = (page - 1) * limit;
 
     const sortOptions = {};
-    sortOptions[sortBy] = sortOrder === 'asc' ? 1 : -1;
+    sortOptions[sortBy] = sortOrder === "asc" ? 1 : -1;
 
     const [technologies, total] = await Promise.all([
       Technology.find(query)
@@ -60,7 +68,7 @@ export const getAllTechnologies = async (req, res, next) => {
     ]);
 
     return res.status(200).json(
-      ApiResponse.success('Technologies retrieved successfully', {
+      ApiResponse.success("Technologies retrieved successfully", {
         technologies,
         pagination: {
           page: parseInt(page),
@@ -68,7 +76,7 @@ export const getAllTechnologies = async (req, res, next) => {
           total,
           pages: Math.ceil(total / limit),
         },
-      })
+      }),
     );
   } catch (error) {
     next(error);
@@ -85,12 +93,14 @@ export const getTechnologyById = async (req, res, next) => {
     const technology = await Technology.findById(id);
 
     if (!technology) {
-      throw ApiError.notFound('Technology not found');
+      throw ApiError.notFound("Technology not found");
     }
 
-    return res.status(200).json(
-      ApiResponse.success('Technology retrieved successfully', technology)
-    );
+    return res
+      .status(200)
+      .json(
+        ApiResponse.success("Technology retrieved successfully", technology),
+      );
   } catch (error) {
     next(error);
   }
@@ -106,12 +116,14 @@ export const getTechnologyBySlug = async (req, res, next) => {
     const technology = await Technology.findOne({ slug });
 
     if (!technology) {
-      throw ApiError.notFound('Technology not found');
+      throw ApiError.notFound("Technology not found");
     }
 
-    return res.status(200).json(
-      ApiResponse.success('Technology retrieved successfully', technology)
-    );
+    return res
+      .status(200)
+      .json(
+        ApiResponse.success("Technology retrieved successfully", technology),
+      );
   } catch (error) {
     next(error);
   }
@@ -125,21 +137,20 @@ export const updateTechnology = async (req, res, next) => {
     const { id } = req.params;
     const updateData = req.body;
 
-    const technology = await Technology.findByIdAndUpdate(
-      id,
-      updateData,
-      { new: true, runValidators: true }
-    );
+    const technology = await Technology.findByIdAndUpdate(id, updateData, {
+      new: true,
+      runValidators: true,
+    });
 
     if (!technology) {
-      throw ApiError.notFound('Technology not found');
+      throw ApiError.notFound("Technology not found");
     }
 
     logger.info(`Technology updated: ${technology.name}`);
 
-    return res.status(200).json(
-      ApiResponse.success('Technology updated successfully', technology)
-    );
+    return res
+      .status(200)
+      .json(ApiResponse.success("Technology updated successfully", technology));
   } catch (error) {
     next(error);
   }
@@ -153,25 +164,30 @@ export const updateTechnologyStatus = async (req, res, next) => {
     const { id } = req.params;
     const { status } = req.body;
 
-    if (!['draft', 'published', 'archived'].includes(status)) {
-      throw ApiError.badRequest('Invalid status value');
+    if (!["draft", "published", "archived"].includes(status)) {
+      throw ApiError.badRequest("Invalid status value");
     }
 
     const technology = await Technology.findByIdAndUpdate(
       id,
       { status },
-      { new: true, runValidators: true }
+      { new: true, runValidators: true },
     );
 
     if (!technology) {
-      throw ApiError.notFound('Technology not found');
+      throw ApiError.notFound("Technology not found");
     }
 
     logger.info(`Technology status updated: ${technology.name} - ${status}`);
 
-    return res.status(200).json(
-      ApiResponse.success('Technology status updated successfully', technology)
-    );
+    return res
+      .status(200)
+      .json(
+        ApiResponse.success(
+          "Technology status updated successfully",
+          technology,
+        ),
+      );
   } catch (error) {
     next(error);
   }
@@ -186,26 +202,33 @@ export const updateTechnologyDisplayOrder = async (req, res, next) => {
     const { displayOrder } = req.body;
 
     const order = parseInt(displayOrder, 10);
-    
+
     if (isNaN(order) || order < 0) {
-      throw ApiError.badRequest('Display order must be a non-negative number');
+      throw ApiError.badRequest("Display order must be a non-negative number");
     }
 
     const technology = await Technology.findByIdAndUpdate(
       id,
       { displayOrder: order },
-      { new: true, runValidators: true }
+      { new: true, runValidators: true },
     );
 
     if (!technology) {
-      throw ApiError.notFound('Technology not found');
+      throw ApiError.notFound("Technology not found");
     }
 
-    logger.info(`Technology display order updated: ${technology.name} - ${order}`);
-
-    return res.status(200).json(
-      ApiResponse.success('Technology display order updated successfully', technology)
+    logger.info(
+      `Technology display order updated: ${technology.name} - ${order}`,
     );
+
+    return res
+      .status(200)
+      .json(
+        ApiResponse.success(
+          "Technology display order updated successfully",
+          technology,
+        ),
+      );
   } catch (error) {
     next(error);
   }
@@ -221,14 +244,14 @@ export const deleteTechnology = async (req, res, next) => {
     const technology = await Technology.findByIdAndDelete(id);
 
     if (!technology) {
-      throw ApiError.notFound('Technology not found');
+      throw ApiError.notFound("Technology not found");
     }
 
     logger.info(`Technology deleted: ${technology.name}`);
 
-    return res.status(200).json(
-      ApiResponse.success('Technology deleted successfully')
-    );
+    return res
+      .status(200)
+      .json(ApiResponse.success("Technology deleted successfully"));
   } catch (error) {
     next(error);
   }

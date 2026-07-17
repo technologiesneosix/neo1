@@ -1,7 +1,7 @@
-import WebsiteSetting from '../models/WebsiteSetting.js';
-import ApiError from '../utils/ApiError.js';
-import ApiResponse from '../utils/ApiResponse.js';
-import { logger } from '../utils/logger.js';
+import WebsiteSetting from "../models/WebsiteSetting.js";
+import ApiError from "../utils/ApiError.js";
+import ApiResponse from "../utils/ApiResponse.js";
+import { logger } from "../utils/logger.js";
 
 /**
  * Get website settings (singleton)
@@ -14,9 +14,14 @@ export const getWebsiteSettings = async (req, res, next) => {
       settings = await WebsiteSetting.create({});
     }
 
-    return res.status(200).json(
-      ApiResponse.success('Website settings retrieved successfully', settings)
-    );
+    return res
+      .status(200)
+      .json(
+        ApiResponse.success(
+          "Website settings retrieved successfully",
+          settings,
+        ),
+      );
   } catch (error) {
     next(error);
   }
@@ -37,15 +42,17 @@ export const updateWebsiteSettings = async (req, res, next) => {
       settings = await WebsiteSetting.findByIdAndUpdate(
         settings._id,
         updateData,
-        { new: true, runValidators: true }
+        { new: true, runValidators: true },
       );
     }
 
-    logger.info('Website settings updated');
+    logger.info("Website settings updated");
 
-    return res.status(200).json(
-      ApiResponse.success('Website settings updated successfully', settings)
-    );
+    return res
+      .status(200)
+      .json(
+        ApiResponse.success("Website settings updated successfully", settings),
+      );
   } catch (error) {
     next(error);
   }

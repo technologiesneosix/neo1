@@ -1,19 +1,19 @@
-import { Router } from 'express';
-import { asyncHandler, authenticate } from '../../middleware/index.js';
-import { validate } from '../../middleware/index.js';
+import { Router } from "express";
+import { asyncHandler, authenticate } from "../../middleware/index.js";
+import { validate } from "../../middleware/index.js";
 import {
   createPricingPlanValidation,
   updatePricingPlanValidation,
   pricingPlanIdValidation,
   getPricingPlansValidation,
-} from '../../validations/pricingValidation.js';
+} from "../../validations/pricingValidation.js";
 import {
   createPricingPlan,
   getAllPricingPlans,
   getPricingPlanById,
   updatePricingPlan,
   deletePricingPlan,
-} from '../../controllers/pricingController.js';
+} from "../../controllers/pricingController.js";
 
 const router = Router();
 
@@ -23,11 +23,11 @@ const router = Router();
  * @access  Private (Admin)
  */
 router.post(
-  '/',
+  "/",
   authenticate,
   createPricingPlanValidation,
   validate,
-  asyncHandler(createPricingPlan)
+  asyncHandler(createPricingPlan),
 );
 
 /**
@@ -36,11 +36,11 @@ router.post(
  * @access  Private (Admin)
  */
 router.get(
-  '/',
+  "/",
   authenticate,
   getPricingPlansValidation,
   validate,
-  asyncHandler(getAllPricingPlans)
+  asyncHandler(getAllPricingPlans),
 );
 
 /**
@@ -49,11 +49,11 @@ router.get(
  * @access  Private (Admin)
  */
 router.get(
-  '/:id',
+  "/:id",
   authenticate,
   pricingPlanIdValidation,
   validate,
-  asyncHandler(getPricingPlanById)
+  asyncHandler(getPricingPlanById),
 );
 
 /**
@@ -62,12 +62,12 @@ router.get(
  * @access  Private (Admin)
  */
 router.put(
-  '/:id',
+  "/:id",
   authenticate,
   pricingPlanIdValidation,
   updatePricingPlanValidation,
   validate,
-  asyncHandler(updatePricingPlan)
+  asyncHandler(updatePricingPlan),
 );
 
 /**
@@ -76,11 +76,11 @@ router.put(
  * @access  Private (Admin)
  */
 router.delete(
-  '/:id',
+  "/:id",
   authenticate,
   pricingPlanIdValidation,
   validate,
-  asyncHandler(deletePricingPlan)
+  asyncHandler(deletePricingPlan),
 );
 
 export default router;

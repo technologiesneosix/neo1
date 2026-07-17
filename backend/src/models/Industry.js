@@ -1,13 +1,13 @@
-import mongoose from 'mongoose';
-import { generateSlug } from '../utils/generateSlug.js';
+import mongoose from "mongoose";
+import { generateSlug } from "../utils/generateSlug.js";
 
 const industrySchema = new mongoose.Schema(
   {
     title: {
       type: String,
-      required: [true, 'Title is required'],
+      required: [true, "Title is required"],
       trim: true,
-      maxlength: [200, 'Title cannot exceed 200 characters'],
+      maxlength: [200, "Title cannot exceed 200 characters"],
     },
     slug: {
       type: String,
@@ -17,7 +17,7 @@ const industrySchema = new mongoose.Schema(
     },
     description: {
       type: String,
-      required: [true, 'Description is required'],
+      required: [true, "Description is required"],
     },
     banner: {
       type: String,
@@ -30,13 +30,13 @@ const industrySchema = new mongoose.Schema(
     services: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Service',
+        ref: "Service",
       },
     ],
     projects: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Project',
+        ref: "Project",
       },
     ],
     seo: {
@@ -56,18 +56,18 @@ const industrySchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ['draft', 'published', 'archived'],
-      default: 'draft',
+      enum: ["draft", "published", "archived"],
+      default: "draft",
     },
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 // Generate slug before saving
-industrySchema.pre('save', function (next) {
-  if (this.isModified('title') && !this.slug) {
+industrySchema.pre("save", function (next) {
+  if (this.isModified("title") && !this.slug) {
     this.slug = generateSlug(this.title);
   }
   next();
@@ -76,6 +76,6 @@ industrySchema.pre('save', function (next) {
 // Indexes
 industrySchema.index({ status: 1 });
 
-const Industry = mongoose.model('Industry', industrySchema);
+const Industry = mongoose.model("Industry", industrySchema);
 
 export default Industry;

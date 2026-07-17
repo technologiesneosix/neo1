@@ -1,4 +1,4 @@
-import { body, param, query } from 'express-validator';
+import { body, param, query } from "express-validator";
 
 export const sanitizeBody = (fields) => {
   const validations = fields.map((field) => body(field).trim().escape());
@@ -18,7 +18,7 @@ export const sanitizeQuery = (fields) => {
 export const sanitizeInput = (req, res, next) => {
   if (req.body) {
     Object.keys(req.body).forEach((key) => {
-      if (typeof req.body[key] === 'string') {
+      if (typeof req.body[key] === "string") {
         req.body[key] = req.body[key].trim();
       }
     });
@@ -26,7 +26,7 @@ export const sanitizeInput = (req, res, next) => {
 
   if (req.query) {
     Object.keys(req.query).forEach((key) => {
-      if (typeof req.query[key] === 'string') {
+      if (typeof req.query[key] === "string") {
         req.query[key] = req.query[key].trim();
       }
     });

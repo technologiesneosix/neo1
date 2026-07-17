@@ -338,3 +338,56 @@ export interface AnalyticsPoint {
   views: number;
   visitors: number;
 }
+
+/* --------------------------------- HR --------------------------------- */
+
+export interface Candidate extends BaseEntity {
+  fullName: string;
+  email: string;
+  phone?: string;
+  designation?: string;
+  notes?: string;
+  status: 'Draft' | 'Offer Sent' | 'Accepted' | 'Rejected' | 'Joined';
+  isDeleted: boolean;
+  deletedAt?: string;
+  offerLetter?: {
+    path: string | null;
+    originalName: string | null;
+    size: number | null;
+    mimeType: string | null;
+    uploadedAt: string | null;
+  };
+  draft?: {
+    subject: string;
+    body: string;
+    to: string;
+    cc: string;
+    bcc: string;
+    attachments: {
+      path: string;
+      originalName: string;
+      size: number;
+      mimeType: string;
+    }[];
+  };
+}
+
+export interface EmailLog extends BaseEntity {
+  candidate: string | { _id: string; fullName: string; email: string; designation?: string };
+  subject: string;
+  recipient: string;
+  cc: string;
+  bcc: string;
+  sentBy: string;
+  deliveryStatus: 'success' | 'failed';
+  resendEmailId?: string;
+  errorMessage?: string;
+  body: string;
+  attachments?: {
+    path: string;
+    originalName: string;
+    size: number;
+    mimeType: string;
+  }[];
+}
+

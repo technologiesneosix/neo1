@@ -1,12 +1,12 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const testimonialSchema = new mongoose.Schema(
   {
     clientName: {
       type: String,
-      required: [true, 'Client name is required'],
+      required: [true, "Client name is required"],
       trim: true,
-      maxlength: [100, 'Client name cannot exceed 100 characters'],
+      maxlength: [100, "Client name cannot exceed 100 characters"],
     },
     company: {
       type: String,
@@ -24,14 +24,14 @@ const testimonialSchema = new mongoose.Schema(
     },
     rating: {
       type: Number,
-      required: [true, 'Rating is required'],
+      required: [true, "Rating is required"],
       min: 1,
       max: 5,
       default: 5,
     },
     review: {
       type: String,
-      required: [true, 'Review is required'],
+      required: [true, "Review is required"],
     },
     featured: {
       type: Boolean,
@@ -43,13 +43,13 @@ const testimonialSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ['active', 'inactive'],
-      default: 'active',
+      enum: ["active", "inactive"],
+      default: "active",
     },
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 // Indexes
@@ -58,6 +58,6 @@ testimonialSchema.index({ featured: 1 });
 testimonialSchema.index({ displayOrder: 1 });
 testimonialSchema.index({ rating: 1 });
 
-const Testimonial = mongoose.model('Testimonial', testimonialSchema);
+const Testimonial = mongoose.model("Testimonial", testimonialSchema);
 
 export default Testimonial;
