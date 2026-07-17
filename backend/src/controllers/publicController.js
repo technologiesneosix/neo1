@@ -80,7 +80,7 @@ export const getHomeContent = async (req, res, next) => {
         .limit(3),
 
       FAQ.find({ status: "active" })
-        .select("-_id question answer category displayOrder")
+        .select("question answer category displayOrder")
         .sort({ displayOrder: 1 })
         .limit(6),
       WebsiteSetting.findOne().select(
@@ -866,7 +866,7 @@ export const getFAQs = async (req, res, next) => {
     sortOptions[sortBy] = sortOrder === "asc" ? 1 : -1;
 
     const faqs = await FAQ.find(query)
-      .select("-_id question answer category displayOrder")
+      .select("question answer category displayOrder")
       .sort(sortOptions);
 
     return res
