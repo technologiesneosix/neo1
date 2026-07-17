@@ -133,7 +133,7 @@ export function EmailComposerModal({ open, onClose, candidate, onSuccess }: Emai
       <p>Congratulations!</p>
       <p>Please find your Offer Letter attached for your review.</p>
       <p>We are delighted to welcome you to NeoSix Technologies and look forward to working with you.</p>
-      <p>Should you have any questions, please feel free to contact us.</p>
+      <p>For any enquiry send mail to notification@neosix.in.</p>
       <p>We wish you every success and look forward to having you on our team.</p>
       <br>
       <p>Regards,</p>
@@ -355,16 +355,12 @@ export function EmailComposerModal({ open, onClose, candidate, onSuccess }: Emai
       ) : (
         <div className="space-y-5">
           {/* Header configuration info */}
-          <div className="grid grid-cols-1 gap-4 rounded-lg bg-mist-50 p-4 border border-neutral-100 sm:grid-cols-2">
+          <div className="rounded-lg bg-mist-50 p-4 border border-neutral-100">
             <div>
               <span className="block text-[10px] font-bold uppercase tracking-wider text-neutral-500">From</span>
               <span className="text-sm font-semibold text-heading">
                 {config ? `${config.senderName} <${config.senderEmail}>` : 'Aditya Dhirendra Singh <aditya@neosix.in>'}
               </span>
-            </div>
-            <div>
-              <span className="block text-[10px] font-bold uppercase tracking-wider text-neutral-500">Reply-To</span>
-              <span className="text-sm text-neutral-600">{config?.replyTo || 'aditya@neosix.in'}</span>
             </div>
           </div>
 

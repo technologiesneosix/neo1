@@ -146,7 +146,6 @@ export const sendOfferLetterEmail = async (req, res, next) => {
         to: toList,
         subject,
         html: sanitizedBody,
-        reply_to: HR_CONFIG.replyTo,
       };
 
       if (ccList.length > 0) payload.cc = ccList;
@@ -328,7 +327,6 @@ export const resendEmailLog = async (req, res, next) => {
         to: toList,
         subject: log.subject,
         html: log.body,
-        reply_to: HR_CONFIG.replyTo,
       };
 
       if (ccList.length > 0) payload.cc = ccList;
