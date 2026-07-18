@@ -92,8 +92,8 @@ export function DetailPageLayout({ item, siblings, basePath, label }: DetailPage
                   <div className="mt-4 rounded-md bg-mist-100 p-8">
                     <h2 className="text-xl font-bold">What&rsquo;s Included</h2>
                     <ul className="mt-5 grid gap-4 sm:grid-cols-2">
-                      {item.features.map((feature) => (
-                        <li key={feature} className="flex items-start gap-3 text-sm text-body">
+                      {item.features.map((feature, idx) => (
+                        <li key={`${feature}-${idx}`} className="flex items-start gap-3 text-sm text-body">
                           <CheckCircle2
                             size={18}
                             aria-hidden="true"
@@ -120,7 +120,7 @@ export function DetailPageLayout({ item, siblings, basePath, label }: DetailPage
                       {siblings.map((sibling) => {
                         const active = sibling.slug === item.slug;
                         return (
-                          <li key={sibling.id}>
+                          <li key={sibling.id || sibling.slug}>
                             <Link
                               to={`${basePath}/${sibling.slug}`}
                               aria-current={active ? 'page' : undefined}
