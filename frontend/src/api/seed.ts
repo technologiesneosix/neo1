@@ -2,7 +2,7 @@
  * Seed content for the local mock database. All copy is original Neosix
  * content; images are neutral placeholders swappable from the Media Library.
  */
-export const SEED_VERSION = 6;
+export const SEED_VERSION = 7;
 
 let seq = 0;
 function base(daysAgo = 30) {
@@ -31,8 +31,8 @@ export function seedDatabase(): Record<string, unknown[]> {
       logoUrl: '',
       logoDarkUrl: '',
       faviconUrl: '/favicon.svg',
-      phone: '+91 91153 70316, +91 88813 54465',
-      email: 'technologiesneosix@gmail.com',
+      phone: '',
+      email: 'notifications@neosix.in',
       address: '9A, 62, MMRDA Colony, J.V.L.R Road,\nAndheri (E), Mumbai, Maharashtra - 400060',
       workingHours: 'Mon – Sun / 9:00AM – 8:00PM',
       mapEmbedUrl:

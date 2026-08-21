@@ -11,7 +11,9 @@ import { FounderCard } from '@/features/about/FounderCard';
 
 export function TeamPage() {
   const { data: teamMembers, isLoading } = useList(api.teamMembers);
-  const members = [...(teamMembers ?? [])].sort((a, b) => a.order - b.order);
+  const members = [...(teamMembers ?? [])]
+    .filter((m) => m.status !== 'inactive')
+    .sort((a, b) => a.order - b.order);
 
   return (
     <>

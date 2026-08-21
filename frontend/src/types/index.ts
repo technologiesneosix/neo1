@@ -231,6 +231,7 @@ export interface TeamMember extends BaseEntity {
   bio: string;
   socialLinks: SocialLink[];
   order: number;
+  status?: 'active' | 'inactive';
 }
 
 export interface Testimonial extends BaseEntity {

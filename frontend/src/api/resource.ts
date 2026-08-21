@@ -438,6 +438,7 @@ function mapBackendTeamToFrontend(b: any): any {
     bio: b.bio || '',
     socialLinks: socialLinksArray,
     order: b.displayOrder || 0,
+    status: b.status || 'active',
     createdAt: b.createdAt || '',
     updatedAt: b.updatedAt || '',
   };
@@ -463,7 +464,7 @@ function mapFrontendTeamToBackend(f: any): any {
     bio: f.bio,
     socialLinks: socialLinksObj,
     displayOrder: Number(f.order || 0),
-    status: 'active',
+    status: f.status || 'active',
   };
 }
 

@@ -442,6 +442,7 @@ export const resourceConfigs: Record<string, ModuleConfig> = {
       { key: 'photoUrl', label: 'Photo' },
       { key: 'name', label: 'Name' },
       { key: 'role', label: 'Role' },
+      { key: 'status', label: 'Status', render: (row) => statusBadge(row.status || 'active') },
       { key: 'order', label: 'Order' },
     ],
     fields: [
@@ -449,10 +450,19 @@ export const resourceConfigs: Record<string, ModuleConfig> = {
       { name: 'role', label: 'Role', type: 'text', required: true },
       { name: 'photoUrl', label: 'Photo', type: 'image' },
       { name: 'bio', label: 'Bio', type: 'textarea' },
+      {
+        name: 'status',
+        label: 'Status',
+        type: 'select',
+        options: [
+          { value: 'active', label: 'Active (Visible)' },
+          { value: 'inactive', label: 'Inactive (Hidden)' },
+        ],
+      },
       orderField,
     ],
-    defaults: { name: '', role: '', photoUrl: '', bio: '', socialLinks: [], order: 0 },
-    searchKeys: ['name', 'role'],
+    defaults: { name: '', role: '', photoUrl: '', bio: '', socialLinks: [], order: 0, status: 'active' },
+    searchKeys: ['name', 'role', 'status'],
   },
 
   timeline: {

@@ -36,6 +36,20 @@ function CrudModule({ config }: { config: ModuleConfig }) {
     setEditing(null);
   };
 
+  const handleToggleStatus = async (row: AdminRecord) => {
+    const isHidden = row.status === 'inactive' || row.active === false;
+    const nextStatus = isHidden ? 'active' : 'inactive';
+    const nextActive = isHidden;
+    await update.mutateAsync({
+      id: row.id,
+      data: {
+        ...row,
+        status: nextStatus,
+        active: nextActive,
+      },
+    });
+  };
+
   return (
     <section aria-label={config.title}>
       <header className="mb-6 flex flex-wrap items-center justify-between gap-4">
@@ -56,6 +70,7 @@ function CrudModule({ config }: { config: ModuleConfig }) {
           loading={isLoading}
           onEdit={openEdit}
           onDelete={(row) => remove.mutate(row.id)}
+          onToggleStatus={handleToggleStatus}
         />
       </Card>
 

@@ -1,4 +1,4 @@
-import { Inbox, Pencil, Search, Trash2 } from 'lucide-react';
+import { Eye, EyeOff, Inbox, Pencil, Search, Trash2 } from 'lucide-react';
 import { useMemo, useState, type ReactNode } from 'react';
 import { Badge } from '@/components/ui/Badge';
 import { PageLoader } from '@/components/ui/Spinner';
@@ -56,10 +56,18 @@ interface ResourceTableProps {
   loading: boolean;
   onEdit: (row: AdminRecord) => void;
   onDelete: (row: AdminRecord) => void;
+  onToggleStatus?: (row: AdminRecord) => void;
 }
 
 /** Searchable data table shared by every admin CRUD module. */
-export function ResourceTable({ config, rows, loading, onEdit, onDelete }: ResourceTableProps) {
+export function ResourceTable({
+  config,
+  rows,
+  loading,
+  onEdit,
+  onDelete,
+  onToggleStatus,
+}: ResourceTableProps) {
   const [query, setQuery] = useState('');
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [rowToDelete, setRowToDelete] = useState<AdminRecord | null>(null);
@@ -130,38 +138,62 @@ export function ResourceTable({ config, rows, loading, onEdit, onDelete }: Resou
               </tr>
             </thead>
             <tbody>
-              {filtered.map((row) => (
-                <tr
-                  key={row.id}
-                  className="border-b border-neutral-50 transition-colors last:border-0 hover:bg-mist-50"
-                >
-                  {config.columns.map((column) => (
-                    <td key={column.key} className="px-4 py-3 align-middle text-neutral-600">
-                      {column.render ? column.render(row) : renderCell(row, column.key)}
+              {filtered.map((row) => {
+                const isHidden = row.status === 'inactive' || row.active === false;
+                return (
+                  <tr
+                    key={row.id}
+                    className={`border-b border-neutral-50 transition-colors last:border-0 hover:bg-mist-50 ${
+                      isHidden ? 'bg-neutral-50/60 opacity-60' : ''
+                    }`}
+                  >
+                    {config.columns.map((column) => (
+                      <td key={column.key} className="px-4 py-3 align-middle text-neutral-600">
+                        {column.render ? column.render(row) : renderCell(row, column.key)}
+                      </td>
+                    ))}
+                    <td className="px-4 py-3 text-right">
+                      <div className="inline-flex items-center gap-1">
+                        {onToggleStatus && (
+                          <button
+                            type="button"
+                            onClick={() => onToggleStatus(row)}
+                            title={isHidden ? `Unhide ${config.singular.toLowerCase()}` : `Hide ${config.singular.toLowerCase()}`}
+                            aria-label={isHidden ? `Unhide ${config.singular.toLowerCase()}` : `Hide ${config.singular.toLowerCase()}`}
+                            className={`rounded-md p-2 transition-colors ${
+                              isHidden
+                                ? 'text-amber-500 hover:bg-amber-50 hover:text-amber-600'
+                                : 'text-neutral-400 hover:bg-neutral-100 hover:text-neutral-600'
+                            }`}
+                          >
+                            {isHidden ? (
+                              <EyeOff size={15} aria-hidden="true" />
+                            ) : (
+                              <Eye size={15} aria-hidden="true" />
+                            )}
+                          </button>
+                        )}
+                        <button
+                          type="button"
+                          onClick={() => onEdit(row)}
+                          aria-label={`Edit ${config.singular.toLowerCase()}`}
+                          className="rounded-md p-2 text-neutral-400 transition-colors hover:bg-primary-50 hover:text-primary-600"
+                        >
+                          <Pencil size={15} aria-hidden="true" />
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => handleDelete(row)}
+                          aria-label={`Delete ${config.singular.toLowerCase()}`}
+                          className="rounded-md p-2 text-neutral-400 transition-colors hover:bg-red-50 hover:text-red-600"
+                        >
+                          <Trash2 size={15} aria-hidden="true" />
+                        </button>
+                      </div>
                     </td>
-                  ))}
-                  <td className="px-4 py-3 text-right">
-                    <div className="inline-flex items-center gap-1">
-                      <button
-                        type="button"
-                        onClick={() => onEdit(row)}
-                        aria-label={`Edit ${config.singular.toLowerCase()}`}
-                        className="rounded-md p-2 text-neutral-400 transition-colors hover:bg-primary-50 hover:text-primary-600"
-                      >
-                        <Pencil size={15} aria-hidden="true" />
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => handleDelete(row)}
-                        aria-label={`Delete ${config.singular.toLowerCase()}`}
-                        className="rounded-md p-2 text-neutral-400 transition-colors hover:bg-red-50 hover:text-red-600"
-                      >
-                        <Trash2 size={15} aria-hidden="true" />
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>

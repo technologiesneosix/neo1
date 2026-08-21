@@ -92,20 +92,10 @@ export function Footer() {
               <MapPin size={15} className="mt-1 shrink-0 text-accent-400" aria-hidden="true" />
               <span className="whitespace-pre-line">{settings?.address}</span>
             </p>
-            <div className="flex items-start gap-2.5">
-              <Phone size={15} className="mt-1 shrink-0 text-primary-400" aria-hidden="true" />
-              <div>
-                {phoneNumbers.map((phone) => (
-                  <a key={phone} href={phoneHref(phone)} className="block transition-colors hover:text-white">
-                    {phone}
-                  </a>
-                ))}
-              </div>
-            </div>
             <p className="flex items-center gap-2.5">
               <Mail size={15} className="shrink-0 text-primary-400" aria-hidden="true" />
-              <a href={settings?.email ? `mailto:${settings.email}` : undefined} className="transition-colors hover:text-white">
-                {settings?.email}
+              <a href="mailto:notifications@neosix.in" className="transition-colors hover:text-white">
+                notifications@neosix.in
               </a>
             </p>
           </address>
