@@ -26,6 +26,7 @@ import subscriberRoutes from "./subscriber.routes.js";
 import certificationRoutes from "./certification.routes.js";
 import pricingRoutes from "./pricing.routes.js";
 import hrRoutes from "./hr.routes.js";
+import caseStudyRoutes from "./caseStudy.routes.js";
 
 const router = Router();
 
@@ -42,6 +43,7 @@ router.use("/admin/solutions", solutionRoutes);
 router.use("/admin/industries", industryRoutes);
 router.use("/admin/technologies", technologyRoutes);
 router.use("/admin/projects", projectRoutes);
+router.use("/admin/case-studies", caseStudyRoutes);
 router.use("/admin/blog-categories", blogCategoryRoutes);
 router.use("/admin/blogs", blogRoutes);
 router.use("/admin/team", teamRoutes);
@@ -60,3 +62,4 @@ router.use("/admin/pricing", pricingRoutes);
 router.use("/admin/hr", hrRoutes);
 
 export default router;
+

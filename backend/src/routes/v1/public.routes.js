@@ -25,6 +25,8 @@ import {
   getSettings,
   getPublicCertifications,
   getPricingPlans,
+  getCaseStudies,
+  getCaseStudyBySlug,
 } from "../../controllers/publicController.js";
 
 import { createContactMessage } from "../../controllers/contactController.js";
@@ -236,4 +238,19 @@ router.post(
   asyncHandler(createJobApplication),
 );
 
+/**
+ * @route   GET /api/v1/public/case-studies
+ * @desc    Get case studies
+ * @access  Public
+ */
+router.get("/case-studies", asyncHandler(getCaseStudies));
+
+/**
+ * @route   GET /api/v1/public/case-studies/:slug
+ * @desc    Get case study by slug
+ * @access  Public
+ */
+router.get("/case-studies/:slug", asyncHandler(getCaseStudyBySlug));
+
 export default router;
+

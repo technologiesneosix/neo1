@@ -22,3 +22,5 @@ export { default as Certification } from "./Certification.js";
 export { default as PricingPlan } from "./PricingPlan.js";
 export { default as Candidate } from "./Candidate.js";
 export { default as EmailLog } from "./EmailLog.js";
+export { default as CaseStudy } from "./CaseStudy.js";
+

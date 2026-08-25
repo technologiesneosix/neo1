@@ -14,6 +14,8 @@ import FAQ from '../models/FAQ.js';
 import WebsiteSetting from '../models/WebsiteSetting.js';
 import Certification from '../models/Certification.js';
 import PricingPlan from '../models/PricingPlan.js';
+import CaseStudy from '../models/CaseStudy.js';
+
 
 import ApiError from '../utils/ApiError.js';
 import ApiResponse from '../utils/ApiResponse.js';
@@ -822,4 +824,44 @@ export const getPricingPlans = async (req, res, next) => {
     next(error);
   }
 };
+
+/**
+ * Get all published case studies
+ */
+export const getCaseStudies = async (req, res, next) => {
+  try {
+    const caseStudies = await CaseStudy.find({ status: 'published' })
+      .populate('projectId', 'title slug')
+      .sort({ createdAt: -1 });
+
+    return res.status(200).json(
+      ApiResponse.success('Case studies retrieved successfully', { caseStudies })
+    );
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ * Get case study by slug
+ */
+export const getCaseStudyBySlug = async (req, res, next) => {
+  try {
+    const { slug } = req.params;
+
+    const caseStudy = await CaseStudy.findOne({ slug, status: 'published' })
+      .populate('projectId', 'title slug');
+
+    if (!caseStudy) {
+      throw ApiError.notFound('Case Study not found');
+    }
+
+    return res.status(200).json(
+      ApiResponse.success('Case Study retrieved successfully', caseStudy)
+    );
+  } catch (error) {
+    next(error);
+  }
+};
+
 

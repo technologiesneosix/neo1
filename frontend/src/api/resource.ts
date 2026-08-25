@@ -13,7 +13,8 @@ export interface ResourceApi<T extends BaseEntity> {
 }
 
 // Mock-only resources that do not exist on the backend
-const mockOnlyKeys = ['timeline', 'roles', 'process-steps', 'page-seo', 'case-studies'];
+const mockOnlyKeys = ['timeline', 'roles', 'process-steps', 'page-seo'];
+
 
 
 /* -------------------------------------------------------------------------- */
@@ -358,6 +359,52 @@ function mapFrontendProjectToBackend(f: any): any {
     featured: typeof f.featured === 'boolean' ? f.featured : false,
     status: 'published',
     duration: f.timeline,
+    seo: {
+      metaTitle: f.seo?.metaTitle || '',
+      metaDescription: f.seo?.metaDescription || '',
+      keywords,
+    },
+  };
+}
+
+function mapBackendCaseStudyToFrontend(b: any): any {
+  if (!b) return null;
+  return {
+    id: b._id || b.id,
+    title: b.title || '',
+    slug: b.slug || '',
+    projectId: typeof b.projectId === 'object' && b.projectId ? (b.projectId._id || b.projectId.id || '') : (b.projectId || ''),
+    client: b.client || '',
+    industry: b.industry || '',
+    challenge: b.challenge || '',
+    solution: b.solution || '',
+    results: b.results || [],
+    coverImageUrl: b.coverImageUrl || '',
+    seo: {
+      metaTitle: b.seo?.metaTitle || '',
+      metaDescription: b.seo?.metaDescription || '',
+      keywords: Array.isArray(b.seo?.keywords) ? b.seo.keywords.join(', ') : '',
+    },
+    createdAt: b.createdAt || '',
+    updatedAt: b.updatedAt || '',
+  };
+}
+
+function mapFrontendCaseStudyToBackend(f: any): any {
+  const keywords = typeof f.seo?.keywords === 'string'
+    ? f.seo.keywords.split(',').map((s: string) => s.trim()).filter(Boolean)
+    : Array.isArray(f.seo?.keywords) ? f.seo.keywords : [];
+  return {
+    title: f.title,
+    slug: f.slug,
+    projectId: f.projectId || null,
+    client: f.client,
+    industry: f.industry,
+    challenge: f.challenge,
+    solution: f.solution,
+    results: f.results || [],
+    coverImageUrl: f.coverImageUrl || '',
+    status: 'published',
     seo: {
       metaTitle: f.seo?.metaTitle || '',
       metaDescription: f.seo?.metaDescription || '',
@@ -781,6 +828,12 @@ const mappedKeys: Record<string, {
     publicPath: '/public/projects',
     mapToFrontend: mapBackendProjectToFrontend,
     mapToBackend: mapFrontendProjectToBackend,
+  },
+  'case-studies': {
+    adminPath: '/admin/case-studies',
+    publicPath: '/public/case-studies',
+    mapToFrontend: mapBackendCaseStudyToFrontend,
+    mapToBackend: mapFrontendCaseStudyToBackend,
   },
   'blog-posts': {
     adminPath: '/admin/blogs',
